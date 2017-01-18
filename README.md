@@ -96,7 +96,7 @@ Result :
 Usage :
 ------------------------------------------------------------
 Lint a CSS file :
-scripts/php-css-lint css_file_path_to_lint.css
+bin/php-css-lint css_file_path_to_lint.css
 ------------------------------------------------------------
 ```
 
