@@ -80,6 +80,7 @@ $ bin/php-css-lint
 ```
 
 Result :
+
 ```
 ===========================================================
 
@@ -102,11 +103,13 @@ scripts/php-css-lint css_file_path_to_lint.css
 ### Lint a file
 
 In a terminal, execute :
+
 ```bash
 $ bin/php-css-lint /path/to/css/file.css
 ```
 
 Result :
+
 ```
 ===========================================================
 
