@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="Bootstrap.php"
+         colors="true"
+         verbose="true"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         stopOnFailure="true">
+    <testsuites>
+        <testsuite name="TestSuite">
+            <directory suffix=".php">./TestSuite/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../src/</directory>
+        </whitelist>
+    </filter>
+</phpunit>

@@ -1,0 +1,39 @@
+{
+    "name": "neilime/php-css-lint",
+    "type": "library",
+    "description": "Powerfull & memory efficiant CSS linter for PHP",
+    "keywords": ["CSS", "lint", "linter", "syntax", "validation"],
+    "homepage": "http://neilime.github.io/php-css-lint/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Neilime",
+            "homepage": "https://github.com/neilime",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/neilime/php-css-lint/issues"
+    },
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "CssLint\\": "src/CssLint"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TestSuite\\": "tests/TestSuite"
+        }
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*.*",
+        "satooshi/php-coveralls": "1.*.*"
+    },
+    "bin": [
+        "scripts/php-css-lint"
+    ]
+}
