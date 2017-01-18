@@ -58,6 +58,41 @@ class LinterTest extends \PHPUnit_Framework_TestCase
                 ), $this->linter->getErrors());
     }
 
+    public function testLintStringWithWrongSelectorDoubleComma()
+    {
+        $this->assertFalse($this->linter->lintString('a,, {}'));
+        $this->assertSame(array(
+            'Selector token "," cannot be preceded by "a," (line: 1, char: 3)'
+                ), $this->linter->getErrors());
+    }
+
+    public function testLintStringWithWrongSelectorDoubleHash()
+    {
+        $this->assertFalse($this->linter->lintString('## {}'));
+        $this->assertSame(array(
+            'Selector token "#" cannot be preceded by "#" (line: 1, char: 2)'
+                ), $this->linter->getErrors());
+    }
+
+    public function testLintStringWithWrongPropertyNameUnexpectedToken()
+    {
+        $this->assertFalse($this->linter->lintString('.test {
+     test~: true;
+}'));
+        $this->assertSame(array(
+            'Unexpected property name token "~" (line: 2, char: 10)',
+            'Unknown CSS property "test~" (line: 2, char: 11)'
+                ), $this->linter->getErrors());
+    }
+
+    public function testLintStringWithWrongSelectorUnexpectedToken()
+    {
+        $this->assertFalse($this->linter->lintString('.a| {}'));
+        $this->assertSame(array(
+            'Unexpected selector token "|" (line: 1, char: 3)'
+                ), $this->linter->getErrors());
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Argument "$sString" expects a string, "boolean" given
