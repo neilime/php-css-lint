@@ -7,7 +7,7 @@
 
 _Php CSS Lint_ is a php script that lint css files and strings :
 
-```bash
+```
 ===========================================================
 
   ____  _              ____ ____ ____    _     _       _
@@ -51,17 +51,17 @@ Name | Version
 
 1. Add this project in your composer.json:
 
-    ```json
+```json
     "require": {
         "neilime/php-css-lint": "1.*@stable"
     }
-    ```
+```
 
 2. Now tell composer to download __ANSI escapes to Html__ by running the command:
 
-    ```bash
+```bash
     $ php composer.phar update
-    ```
+```
 
 ### By cloning project (manual)
 
@@ -74,12 +74,13 @@ Name | Version
 ### Display man page
 
 In a terminal, execute :
+
 ```bash
-bin/php-css-lint
+$ bin/php-css-lint
 ```
 
 Result :
-```bash
+```
 ===========================================================
 
   ____  _              ____ ____ ____    _     _       _
@@ -102,11 +103,11 @@ scripts/php-css-lint css_file_path_to_lint.css
 
 In a terminal, execute :
 ```bash
-bin/php-css-lint /path/to/css/file.css
+$ bin/php-css-lint /path/to/css/file.css
 ```
 
 Result :
-```bash
+```
 ===========================================================
 
   ____  _              ____ ____ ____    _     _       _
