@@ -29,6 +29,7 @@ _Php CSS Lint_ is a php script that lint css files and strings :
 # Helping Project
 
 If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can make a donation, thank you.
+
 <a href='https://pledgie.com/campaigns/33252'><img alt='Click here to lend your support to: php-css-lint and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/33252.png?skin_name=chrome' border='0' ></a>
 
 # Contributing
