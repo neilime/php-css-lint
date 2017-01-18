@@ -1,9 +1,9 @@
 # Php CSS Lint
 
-[![Build Status](https://travis-ci.org/neilime/ansi-escapes-to-html.svg?branch=master)](https://travis-ci.org/neilime/ansi-escapes-to-html)
-[![Latest Stable Version](https://poser.pugx.org/neilime/ansi-escapes-to-html/v/stable.svg)](https://packagist.org/packages/neilime/ansi-escapes-to-html)
-[![Total Downloads](https://poser.pugx.org/neilime/ansi-escapes-to-html/downloads.svg)](https://packagist.org/packages/neilime/ansi-escapes-to-html)
-[![Coverage Status](https://coveralls.io/repos/github/neilime/ansi-escapes-to-html/badge.svg?branch=master)](https://coveralls.io/github/neilime/ansi-escapes-to-html?branch=master)
+[![Build Status](https://travis-ci.org/neilime/php-css-lint.svg?branch=master)](https://travis-ci.org/neilime/php-css-lint)
+[![Latest Stable Version](https://poser.pugx.org/neilime/php-css-lint/v/stable.svg)](https://packagist.org/packages/neilime/php-css-lint)
+[![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads.svg)](https://packagist.org/packages/neilime/php-css-lint)
+[![Coverage Status](https://coveralls.io/repos/github/neilime/php-css-lint/badge.svg?branch=master)](https://coveralls.io/github/neilime/php-css-lint?branch=master)
 
 _Php CSS Lint_ is a php script that lint css files and strings :
 
