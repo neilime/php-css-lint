@@ -87,7 +87,7 @@ class Linter
         }
 
         if (!$this->assertContext(null)) {
-            $this->addError('Error : untermined "' . $this->context . '" (Start : ' . json_encode($this->getContextContent()) . ')');
+            $this->addError('Unterminated "' . $this->context . '"');
         }
 
         return !$this->getErrors();
@@ -134,7 +134,7 @@ class Linter
         fclose($rFileHandle);
 
         if (!$this->assertContext(null)) {
-            $this->addError('Error : untermined "' . $this->context . '" (Start : ' . json_encode($this->getContextContent()) . ')');
+            $this->addError('Unterminated "' . $this->context . '"');
         }
 
         return !$this->getErrors();

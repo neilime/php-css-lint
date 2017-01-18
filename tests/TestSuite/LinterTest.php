@@ -15,26 +15,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
         $this->linter = new \CssLint\Linter();
     }
 
-    public function testLintBootstrapCssFile()
-    {
-        $this->assertTrue($this->linter->lintFile(getcwd() . DIRECTORY_SEPARATOR . '_files/bootstrap.css'), print_r($this->linter->getErrors(), true));
-    }
-
-    public function testLintFoundationCssFile()
-    {
-        $this->assertTrue($this->linter->lintFile(getcwd() . DIRECTORY_SEPARATOR . '_files/foundation.css'), print_r($this->linter->getErrors(), true));
-    }
-
-    public function testLintNotValidCssFile()
-    {
-        $this->assertFalse($this->linter->lintFile(getcwd() . DIRECTORY_SEPARATOR . '_files/not_valid.css'));
-        $this->assertSame(array(
-            'Unknown CSS property "bordr-top-style" (line: 8, char: 20)',
-            'Unexpected char ":" (line: 15, char: 5)'
-                ), $this->linter->getErrors());
-    }
-
-    public function testLintString()
+    public function testLintValidString()
     {
         $this->assertTrue($this->linter->lintString('.button.dropdown::after {
     display: block;
@@ -54,5 +35,72 @@ class LinterTest extends \PHPUnit_Framework_TestCase
     top: -0.1em;
     float: none;
     margin-left: 0; }'));
+    }
+
+    public function testLintNotValidString()
+    {
+        $this->assertFalse($this->linter->lintString('.button.dropdown::after {
+             displady: block;
+    width: 0;
+    :
+            '));
+        $this->assertSame(array(
+            'Unknown CSS property "displady" (line: 2, char: 22)',
+            'Unexpected char ":" (line: 4, char: 5)',
+                ), $this->linter->getErrors());
+    }
+
+    public function testLintStringWithUnterminatedContext()
+    {
+        $this->assertFalse($this->linter->lintString('* {'));
+        $this->assertSame(array(
+            'Unterminated "selector content" (line: 1, char: 3)'
+                ), $this->linter->getErrors());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument "$sString" expects a string, "boolean" given
+     */
+    public function testLintStringWithWrongTypeParam()
+    {
+        $this->linter->lintString(false);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument "$sFilePath" expects a string, "boolean" given
+     */
+    public function testLintFileWithWrongTypeParam()
+    {
+        $this->linter->lintFile(false);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Argument "$sFilePath" "wrong" is not an existing file path
+     */
+    public function testLintFileWithUnkownFilePathParam()
+    {
+        $this->linter->lintFile('wrong');
+    }
+
+    public function testLintBootstrapCssFile()
+    {
+        $this->assertTrue($this->linter->lintFile(getcwd() . DIRECTORY_SEPARATOR . '_files/bootstrap.css'), print_r($this->linter->getErrors(), true));
+    }
+
+    public function testLintFoundationCssFile()
+    {
+        $this->assertTrue($this->linter->lintFile(getcwd() . DIRECTORY_SEPARATOR . '_files/foundation.css'), print_r($this->linter->getErrors(), true));
+    }
+
+    public function testLintNotValidCssFile()
+    {
+        $this->assertFalse($this->linter->lintFile(getcwd() . DIRECTORY_SEPARATOR . '_files/not_valid.css'));
+        $this->assertSame(array(
+            'Unknown CSS property "bordr-top-style" (line: 8, char: 20)',
+            'Unterminated "selector content" (line: 17, char: 0)'
+                ), $this->linter->getErrors());
     }
 }
