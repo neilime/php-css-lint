@@ -11,12 +11,20 @@ echo PHP_EOL.
  '             |_|                                           '.PHP_EOL.PHP_EOL.
  '==========================================================='.PHP_EOL.PHP_EOL;
 
-if(file_exists($sComposerAutoloader = __DIR__.'/../vendor/autoload.php')){
-    require $sComposerAutoloader;
+$sComposerAutoloaderWorkingDirectory = getcwd() . '/vendor/autoload.php';
+if (is_file($sComposerAutoloaderWorkingDirectory)) {
+    require_once $sComposerAutoloaderWorkingDirectory;
 }
-else {
-    printError('Composer autoload file "'.$sComposerAutoloader.'" does not exist');
-    exit(1);
+
+if (!class_exists('CssLint\Linter', true)) {
+    // consider being in bin dir
+    $sComposerAutoloader = __DIR__ . '/../vendor/autoload.php';
+    if (!is_file($sComposerAutoloader)) {
+        // consider being in vendor/neilime/php-css-lint/scripts
+        $sComposerAutoloader = __DIR__ . '/../../../autoload.php';
+    }
+
+    require_once $sComposerAutoloader;
 }
 
 function printUsage(){
