@@ -32,11 +32,48 @@ function printUsage(){
          '------------------------------------------------------------'.PHP_EOL.
     'Lint a CSS file : '.PHP_EOL.
     basename(__DIR__).'/'.basename(__FILE__).' css_file_path_to_lint.css'.PHP_EOL.
+    'Lint a CSS string : '.PHP_EOL.
+    basename(__DIR__).'/'.basename(__FILE__).' ".test { color: red; }"'.PHP_EOL.
     '------------------------------------------------------------'.PHP_EOL.PHP_EOL;
 }
 
 function printError($sError){
     echo "\033[31m/!\ Error : ".$sError."\033[0m".PHP_EOL.PHP_EOL;
+}
+
+function lintFile($sFilePath){
+    echo '# Lint file "'.$sFilePath.'"...'.PHP_EOL;
+
+    $oCssLinter = new \CssLint\Linter();
+    if($oCssLinter->lintFile($sFilePath)){
+        echo "\033[32m => File \"".$sFilePath."\" is valid\033[0m".PHP_EOL.PHP_EOL;
+        exit(0);
+    }
+
+    echo "\033[31m => File \"".$sFilePath."\" is not valid :\033[0m".PHP_EOL.PHP_EOL;
+    displayLinterErrors($oCssLinter->getErrors());
+    exit(1);
+}
+
+function lintString($sString){
+    echo '# Lint css string...'.PHP_EOL;
+
+    $oCssLinter = new \CssLint\Linter();
+    if($oCssLinter->lintString($sString)){
+        echo "\033[32m => Css string is valid\033[0m".PHP_EOL.PHP_EOL;
+        exit(0);
+    }
+
+    echo "\033[31m => Css string is not valid :\033[0m".PHP_EOL.PHP_EOL;
+    displayLinterErrors($oCssLinter->getErrors());
+    exit(1);
+}
+
+function displayLinterErrors($aErrors){
+    foreach($aErrors as $sError){
+        echo "\033[31m    - ".$sError."\033[0m".PHP_EOL;
+    }
+    echo PHP_EOL;
 }
 
 if(empty($_SERVER['argv']) || count($_SERVER['argv']) === 1){
@@ -50,28 +87,14 @@ if(count($_SERVER['argv']) > 2){
     exit(1);
 }
 
-$sFilePath = $_SERVER['argv'][1];
-if(!file_exists($sFilePath)){
-    printError('File "'.$sFilePath.'" does not exist');
-    exit(1);
+$sFilePathOrCssString = $_SERVER['argv'][1];
+if(!file_exists($sFilePathOrCssString)){
+   lintString($sFilePath);
 }
 
+$sFilePath = $sFilePathOrCssString;
 if(!is_readable($sFilePath)){
     printError('File "'.$sFilePath.'" is not readable');
     exit(1);
 }
-
-echo '# Lint file "'.$sFilePath.'"...'.PHP_EOL;
-
-$oCssLinter = new \CssLint\Linter();
-if($oCssLinter->lintFile($sFilePath)){
-    echo "\033[32m => File \"".$sFilePath."\" is valid\033[0m".PHP_EOL.PHP_EOL;
-    exit(0);
-}
-
-echo "\033[31m => File \"".$sFilePath."\" is not valid :\033[0m".PHP_EOL.PHP_EOL;
-foreach($oCssLinter->getErrors() as $sError){
-    echo "\033[31m    - ".$sError."\033[0m".PHP_EOL;
-}
-echo PHP_EOL;
-exit(0);
+lintFile($sFilePath);
