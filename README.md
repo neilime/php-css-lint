@@ -49,18 +49,8 @@ Name | Version
 
 ### With composer (the faster way)
 
-1. Add this project in your composer.json:
-
-```json
-    "require": {
-        "neilime/php-css-lint": "1.*@stable"
-    }
-```
-
-2. Now tell composer to download __ANSI escapes to Html__ by running the command:
-
 ```bash
-    $ php composer.phar update
+    $ php composer.phar install neilime/php-css-lint
 ```
 
 ### By cloning project (manual)
@@ -76,7 +66,7 @@ Name | Version
 In a terminal, execute :
 
 ```bash
-$ bin/php-css-lint
+$ php vendor/bin/php-css-lint
 ```
 
 Result :
@@ -97,6 +87,9 @@ Usage :
 ------------------------------------------------------------
 Lint a CSS file :
 bin/php-css-lint css_file_path_to_lint.css
+
+Lint a CSS string :
+scripts/php-css-lint ".test { color: red; }"
 ------------------------------------------------------------
 ```
 
@@ -127,6 +120,35 @@ Result :
 
     - Unknown CSS property "bordr-top-style" (line: 8, char: 20)
     - Unexpected char ":" (line: 15, char: 5)
+```
+
+### Lint a css script
+
+In a terminal, execute :
+
+```bash
+$ bin/php-css-lint ".test { color: red; fail }"
+```
+
+Result :
+
+```
+===========================================================
+
+  ____  _              ____ ____ ____    _     _       _
+ |  _ \| |__  _ __    / ___/ ___/ ___|  | |   (_)_ __ | |_
+ | |_) | '_ \| '_ \  | |   \___ \___ \  | |   | | '_ \| __|
+ |  __/| | | | |_) | | |___ ___) |__) | | |___| | | | | |_
+ |_|   |_| |_| .__/   \____|____/____/  |_____|_|_| |_|\__|
+             |_|
+
+===========================================================
+
+# Lint css string...
+ => Css string is not valid :
+
+    - Unexpected property name token "}" (line: 1, char: 26)
+    - Unterminated "property name" (line: 1, char: 26)
 ```
 
 ## In a php script
