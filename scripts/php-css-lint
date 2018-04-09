@@ -31,7 +31,7 @@ function printUsage(){
     echo 'Usage : '.PHP_EOL.
          '------------------------------------------------------------'.PHP_EOL.
     'Lint a CSS file : '.PHP_EOL.
-    basename(__DIR__).'/'.basename(__FILE__).' css_file_path_to_lint.css'.PHP_EOL.
+    basename(__DIR__).'/'.basename(__FILE__).' css_file_path_to_lint.css'.PHP_EOL.PHP_EOL.
     'Lint a CSS string : '.PHP_EOL.
     basename(__DIR__).'/'.basename(__FILE__).' ".test { color: red; }"'.PHP_EOL.
     '------------------------------------------------------------'.PHP_EOL.PHP_EOL;
@@ -89,7 +89,7 @@ if(count($_SERVER['argv']) > 2){
 
 $sFilePathOrCssString = $_SERVER['argv'][1];
 if(!file_exists($sFilePathOrCssString)){
-   lintString($sFilePath);
+   lintString($sFilePathOrCssString);
 }
 
 $sFilePath = $sFilePathOrCssString;
@@ -98,3 +98,4 @@ if(!is_readable($sFilePath)){
     exit(1);
 }
 lintFile($sFilePath);
+
