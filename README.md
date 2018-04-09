@@ -122,7 +122,7 @@ Result :
     - Unexpected char ":" (line: 15, char: 5)
 ```
 
-### Lint a css script
+### Lint a css string
 
 In a terminal, execute :
 
