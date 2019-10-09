@@ -2,7 +2,7 @@
 
 namespace TestSuite;
 
-class LinterTest extends \PHPUnit_Framework_TestCase
+class LinterTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -10,7 +10,7 @@ class LinterTest extends \PHPUnit_Framework_TestCase
      */
     protected $linter;
 
-    public function setUp()
+    protected function setUp() : void
     {
         $this->linter = new \CssLint\Linter();
     }
@@ -93,30 +93,24 @@ class LinterTest extends \PHPUnit_Framework_TestCase
                 ), $this->linter->getErrors());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument "$sString" expects a string, "boolean" given
-     */
     public function testLintStringWithWrongTypeParam()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument "$sString" expects a string, "boolean" given');
         $this->linter->lintString(false);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument "$sFilePath" expects a string, "boolean" given
-     */
     public function testLintFileWithWrongTypeParam()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument "$sFilePath" expects a string, "boolean" given');
         $this->linter->lintFile(false);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Argument "$sFilePath" "wrong" is not an existing file path
-     */
     public function testLintFileWithUnkownFilePathParam()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument "$sFilePath" "wrong" is not an existing file path');
         $this->linter->lintFile('wrong');
     }
 

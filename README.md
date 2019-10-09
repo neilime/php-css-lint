@@ -1,9 +1,12 @@
 # Php CSS Lint
 
-[![Build Status](https://travis-ci.org/neilime/php-css-lint.svg?branch=master)](https://travis-ci.org/neilime/php-css-lint)
-[![Latest Stable Version](https://poser.pugx.org/neilime/php-css-lint/v/stable.svg)](https://packagist.org/packages/neilime/php-css-lint)
-[![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads.svg)](https://packagist.org/packages/neilime/php-css-lint)
-[![Coverage Status](https://coveralls.io/repos/github/neilime/php-css-lint/badge.svg?branch=master)](https://coveralls.io/github/neilime/php-css-lint?branch=master)
+[![Build Status](https://travis-ci.org/neilime/php-css-lint.png?branch=master)](https://travis-ci.org/neilime/php-css-lint)
+[![Coverage Status](https://coveralls.io/repos/github/neilime/php-css-lint/badge.svg)](https://coveralls.io/github/neilime/php-css-lint)
+[![Latest Stable Version](https://poser.pugx.org/neilime/php-css-lint/v/stable.png)](https://packagist.org/packages/neilime/php-css-lint)
+[![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads.png)](https://packagist.org/packages/neilime/php-css-lint)
+
+Introduction
+------------
 
 _Php CSS Lint_ is a php script that lint css files and strings :
 
@@ -30,8 +33,6 @@ _Php CSS Lint_ is a php script that lint css files and strings :
 
 If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can make a donation, thank you.
 
-<a href='https://pledgie.com/campaigns/33252'><img alt='Click here to lend your support to: php-css-lint and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/33252.png?skin_name=chrome' border='0' ></a>
-
 # Contributing
 
 If you wish to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
@@ -50,7 +51,7 @@ Name | Version
 ### With composer (the faster way)
 
 ```bash
-    $ php composer.phar install neilime/php-css-lint
+$ php composer.phar install neilime/php-css-lint
 ```
 
 ### By cloning project (manual)
