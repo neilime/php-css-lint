@@ -10,7 +10,7 @@ title: Home
 [![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads.png)](https://packagist.org/packages/neilime/php-css-lint)
 [![Beerpay](https://beerpay.io/neilime/php-css-lint/badge.svg)](https://beerpay.io/neilime/php-css-lint)
 
-__Php CSS Lint__ is a php script that lint css files and strings :
+📢 __Php CSS Lint__ is a php script that lint css files and strings :
 
 ```
 ===========================================================
@@ -33,9 +33,16 @@ __Php CSS Lint__ is a php script that lint css files and strings :
 
 # Helping Project
 
-❤️ If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can support him on [![Beerpay](https://beerpay.io/neilime/zf2-assets-bundle/badge.svg)](https://beerpay.io/neilime/zf2-assets-bundle) Thank you !
+❤️ If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can support him on [![Beerpay](https://beerpay.io/neilime/php-css-lint/badge.svg)](https://beerpay.io/neilime/php-css-lint) Thank you !
 
 # Contributing
 
-If you wish to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
-NOTE : If you want to contribute don't hesitate, I'll review any PR.
+👍 If you wish to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file. \
+👍 NOTE : If you want to contribute don't hesitate, I'll review any PR.
+
+# Documentation
+
+1. [Installation](https://github.com/neilime/php-css-lint/wiki/Installation)
+2. [Usage](https://github.com/neilime/php-css-lint/wiki/Usage)
+3. [Code Coverage](https://coveralls.io/github/neilime/php-css-lint)
+4. [PHP Doc](https://neilime.github.io/php-css-lint/phpdoc)
