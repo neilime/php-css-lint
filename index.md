@@ -56,17 +56,11 @@ Name | Version
 
 # Installation
 
-## Main Setup
-
-### With composer (the faster way)
+## With composer (the faster way)
 
 ```bash
 $ php composer.phar install neilime/php-css-lint
 ```
-
-### By cloning project (manual)
-
-1. Clone this project into your `./vendor/` directory.
 
 # Usage
 
