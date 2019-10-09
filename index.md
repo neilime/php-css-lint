@@ -10,7 +10,7 @@ title: Home
 [![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads.png)](https://packagist.org/packages/neilime/php-css-lint)
 [![Beerpay](https://beerpay.io/neilime/php-css-lint/badge.svg)](https://beerpay.io/neilime/php-css-lint)
 
-📢 __Php CSS Lint__ is a php script that lint css files and strings :
+📢 __Php CSS Lint__ is a php script that lint css files and strings:
 
 ```
 ===========================================================
@@ -37,8 +37,7 @@ title: Home
 
 # Contributing
 
-👍 If you wish to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file. \
-👍 NOTE : If you want to contribute don't hesitate, I'll review any PR.
+👍 If you wish to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file. Note: If you want to contribute don't hesitate, I'll review any PR.
 
 # Documentation
 
