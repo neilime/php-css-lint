@@ -42,7 +42,12 @@ NOTE : If you want to contribute don't hesitate, I'll review any PR.
 
 Name | Version
 -----|--------
-[php](https://secure.php.net/) | >=5.3.3
+[php](https://secure.php.net/) | ^7.2
+
+
+# [Code coverage](https://coveralls.io/github/neilime/php-css-lint)
+
+# [PHP Doc](https://neilime.github.io/php-css-lint/phpdoc)
 
 # Installation
 
