@@ -4,12 +4,12 @@ title: Home
 ---
 # Php CSS Lint
 
-[![License](https://poser.pugx.org/neilime/php-css-lint/license)](https://packagist.org/packages/neilime/php-css-lint)
-[![Build Status](https://travis-ci.org/neilime/php-css-lint.png?branch=master)](https://travis-ci.org/neilime/php-css-lint)
+[![Build Status](https://travis-ci.org/neilime/php-css-lint.svg?branch=master)](https://travis-ci.org/neilime/php-css-lint)
 [![Coverage Status](https://coveralls.io/repos/github/neilime/php-css-lint/badge.svg)](https://coveralls.io/github/neilime/php-css-lint)
-[![Latest Stable Version](https://poser.pugx.org/neilime/php-css-lint/v/stable.png)](https://packagist.org/packages/neilime/php-css-lint)
-[![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads.png)](https://packagist.org/packages/neilime/php-css-lint)
-[![Beerpay](https://beerpay.io/neilime/php-css-lint/badge.svg)](https://beerpay.io/neilime/php-css-lint)
+[![Latest Stable Version](https://poser.pugx.org/neilime/php-css-lint/v/stable)](https://packagist.org/packages/neilime/php-css-lint)
+[![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads)](https://packagist.org/packages/neilime/php-css-lint)
+[![License](https://poser.pugx.org/neilime/php-css-lint/license)](https://packagist.org/packages/neilime/php-css-lint)
+[![Beerpay](https://beerpay.io/neilime/php-css-lint/badge.svg)](https://beerpay.io/neilime/php-css-lint) 
 
 📢 __Php CSS Lint__ is a php script that lint css files and strings:
 
