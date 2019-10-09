@@ -4,6 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/neilime/php-css-lint/badge.svg)](https://coveralls.io/github/neilime/php-css-lint)
 [![Latest Stable Version](https://poser.pugx.org/neilime/php-css-lint/v/stable.png)](https://packagist.org/packages/neilime/php-css-lint)
 [![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads.png)](https://packagist.org/packages/neilime/php-css-lint)
+[![Beerpay](https://beerpay.io/neilime/php-css-lint/badge.svg)](https://beerpay.io/neilime/php-css-lint)
 
 Introduction
 ------------
@@ -31,7 +32,7 @@ _Php CSS Lint_ is a php script that lint css files and strings :
 
 # Helping Project
 
-If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can make a donation, thank you.
+❤️ If this project helps you reduce time to develop and/or you want to help the maintainer of this project, you can support him on [![Beerpay](https://beerpay.io/neilime/zf2-assets-bundle/badge.svg)](https://beerpay.io/neilime/zf2-assets-bundle) Thank you !
 
 # Contributing
 
