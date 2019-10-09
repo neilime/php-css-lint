@@ -34,7 +34,7 @@
 # Contributing
 
 👍 If you wish to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file. \
-NOTE : If you want to contribute don't hesitate, I'll review any PR.
+👍 NOTE : If you want to contribute don't hesitate, I'll review any PR.
 
 # Documentation
 
