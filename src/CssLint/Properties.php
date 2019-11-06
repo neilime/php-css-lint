@@ -464,7 +464,7 @@ class Properties
      * @param string $sProperty
      * @return boolean
      */
-    public function propertyExists($sProperty)
+    public function propertyExists(string $sProperty): bool
     {
         if (isset($this->standards[$sProperty])) {
             return true;
