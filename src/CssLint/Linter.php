@@ -18,7 +18,7 @@ class Linter
     protected $cssLintProperties;
 
     /**
-     * Errors occured during the lint process
+     * Errors occurred during the lint process
      * @var array
      */
     protected $errors = array();
@@ -54,7 +54,7 @@ class Linter
     protected $previousChar;
 
     /**
-     * Tells if the linter is parsing a nested selecter. Ex: @media, @keyframes...
+     * Tells if the linter is parsing a nested selector. Ex: @media, @keyframes...
      * @var boolean
      */
     protected $nestedSelector = false;
@@ -108,7 +108,7 @@ class Linter
 
         $rFileHandle = fopen($sFilePath, 'r');
         if ($rFileHandle === false) {
-            throw new \RuntimeException('An error occured while opening file "' . $sFilePath . '"');
+            throw new \RuntimeException('An error occurred while opening file "' . $sFilePath . '"');
         }
 
         $this->initLint();
@@ -121,7 +121,7 @@ class Linter
         }
 
         if (!feof($rFileHandle)) {
-            throw new \RuntimeException('An error occured while reading file "' . $sFilePath . '"');
+            throw new \RuntimeException('An error occurred while reading file "' . $sFilePath . '"');
         }
         fclose($rFileHandle);
 
@@ -609,7 +609,7 @@ class Linter
     }
 
     /**
-     * Return the errors occured during the lint process
+     * Return the errors occurred during the lint process
      * @return array
      */
     public function getErrors(): ?array

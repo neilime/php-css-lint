@@ -6,7 +6,7 @@ class Properties
 {
 
     /**
-     * List of exsiting constructor prefix
+     * List of existing constructor prefix
      * @var array
      */
     protected $constructors = array(
