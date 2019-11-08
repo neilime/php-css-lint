@@ -66,6 +66,17 @@ class Linter
     protected $comment = false;
 
     /**
+     * Constructor
+     * @param \CssLint\Properties $oProperties (optional) an instance of the "\CssLint\Properties" helper
+     */
+    public function __construct(\CssLint\Properties $oProperties = null)
+    {
+        if ($oProperties) {
+            $this->setCssLintProperties($oProperties);
+        }
+    }
+
+    /**
      * Performs lint on a given string
      * @param string $sString
      * @return boolean : true if the string is a valid css string, false else
@@ -666,11 +677,19 @@ class Linter
      * Return an instance of the "\CssLint\Properties" helper, initialize a new one if not define already
      * @return \CssLint\Properties
      */
-    public function getCssLintProperties(): Properties
+    public function getCssLintProperties(): \CssLint\Properties
     {
         if (!$this->cssLintProperties) {
-            $this->cssLintProperties = new \CssLint\Properties();
+            $this->setCssLintProperties(new \CssLint\Properties());
         }
         return $this->cssLintProperties;
+    }
+
+    /**
+     * Set an instance of the "\CssLint\Properties" helper
+     */
+    public function setCssLintProperties(\CssLint\Properties $oCssLintProperties): void
+    {
+        $this->cssLintProperties = $oCssLintProperties;
     }
 }

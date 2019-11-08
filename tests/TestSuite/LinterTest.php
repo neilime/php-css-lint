@@ -15,6 +15,13 @@ class LinterTest extends \PHPUnit\Framework\TestCase
         $this->linter = new \CssLint\Linter();
     }
 
+    public function testConstructWithCustomCssLintProperties()
+    {
+        $oProperties = new \CssLint\Properties();
+        $oLinter = new \CssLint\Linter($oProperties);
+        $this->assertSame($oProperties, $oLinter->getCssLintProperties());
+    }
+
     public function testLintValidString()
     {
         $this->assertTrue($this->linter->lintString('.button.dropdown::after {
