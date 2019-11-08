@@ -95,16 +95,18 @@ class LinterTest extends \PHPUnit\Framework\TestCase
 
     public function testLintStringWithWrongTypeParam()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "$sString" expects a string, "boolean" given');
-        $this->linter->lintString(false);
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 passed to CssLint\Linter::lintString() must be of the type string, array given');
+        
+        $this->linter->lintString(['wrong']);
+        $this->assertFalse(false);
     }
 
     public function testLintFileWithWrongTypeParam()
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "$sFilePath" expects a string, "boolean" given');
-        $this->linter->lintFile(false);
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('Argument 1 passed to CssLint\Linter::lintFile() must be of the type string, array given');
+        $this->linter->lintFile(['wrong']);
     }
 
     public function testLintFileWithUnknownFilePathParam()

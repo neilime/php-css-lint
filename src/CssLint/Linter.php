@@ -69,7 +69,6 @@ class Linter
      * Performs lint on a given string
      * @param string $sString
      * @return boolean : true if the string is a valid css string, false else
-     * @throws \InvalidArgumentException
      */
     public function lintString(string $sString): bool
     {
