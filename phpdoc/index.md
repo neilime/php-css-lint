@@ -50,5 +50,5 @@
 
 | Visibility | Function |
 |:-----------|:---------|
-| public | <strong>propertyExists(</strong><em>string</em> <strong>$sProperty</strong>)</strong> : <em>boolean</em> |
+| public static | <strong>propertyExists(</strong><em>string</em> <strong>$sProperty</strong>)</strong> : <em>boolean</em> |
 
