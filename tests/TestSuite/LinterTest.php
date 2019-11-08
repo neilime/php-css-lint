@@ -107,7 +107,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
         $this->linter->lintFile(false);
     }
 
-    public function testLintFileWithUnkownFilePathParam()
+    public function testLintFileWithUnknownFilePathParam()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument "$sFilePath" "wrong" is not an existing file path');

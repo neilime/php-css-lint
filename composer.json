@@ -1,7 +1,7 @@
 {
     "name": "neilime/php-css-lint",
     "type": "library",
-    "description": "Powerfull & memory efficiant CSS linter for PHP",
+    "description": "Powerful & memory efficient CSS linter for PHP",
     "keywords": ["CSS", "lint", "linter", "syntax", "validation"],
     "homepage": "https://neilime.github.io/php-css-lint/",
     "license": "MIT",
