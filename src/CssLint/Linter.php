@@ -71,12 +71,8 @@ class Linter
      * @return boolean : true if the string is a valid css string, false else
      * @throws \InvalidArgumentException
      */
-    public function lintString($sString)
+    public function lintString(string $sString): bool
     {
-        if (!is_string($sString)) {
-            throw new \InvalidArgumentException('Argument "$sString" expects a string, "' . (is_object($sString) ? get_class($sString) : gettype($sString)) . '" given');
-        }
-
         $this->initLint();
         $iIterator = 0;
         while (isset($sString[$iIterator])) {
@@ -100,12 +96,8 @@ class Linter
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function lintFile($sFilePath)
+    public function lintFile(string  $sFilePath): bool
     {
-        if (!is_string($sFilePath)) {
-            throw new \InvalidArgumentException('Argument "$sFilePath" expects a string, "' . (is_object($sFilePath) ? get_class($sFilePath) : gettype($sFilePath)) . '" given');
-        }
-
         if (!file_exists($sFilePath)) {
             throw new \InvalidArgumentException('Argument "$sFilePath" "' . $sFilePath . '" is not an existing file path');
         }
@@ -161,7 +153,7 @@ class Linter
      * @param string $sChar
      * @return boolean : true if the process should continue, else false
      */
-    protected function lintChar($sChar)
+    protected function lintChar(string $sChar): ?bool
     {
         $this->incrementCharNumber();
         if ($this->isEndOfLine($sChar)) {
@@ -212,7 +204,7 @@ class Linter
      * @param string $sChar
      * @return boolean|null : true if the process should continue, else false, null if this char is not about comment
      */
-    protected function lintCommentChar($sChar)
+    protected function lintCommentChar(string $sChar): ?bool
     {
         // Manage comment context
         if ($this->isComment()) {
@@ -231,6 +223,8 @@ class Linter
             $this->setComment(true);
             return true;
         }
+
+        return null;
     }
 
     /**
@@ -238,7 +232,7 @@ class Linter
      * @param string $sChar
      * @return boolean|null : true if the process should continue, else false, null if this char is not about selector
      */
-    protected function lintSelectorChar($sChar)
+    protected function lintSelectorChar(string $sChar): ?bool
     {
         // Selector must start by #.a-zA-Z
         if ($this->assertContext(null)) {
@@ -250,7 +244,7 @@ class Linter
                 $this->addContextContent($sChar);
                 return true;
             }
-            return;
+            return null;
         }
         // Selector must contains
         if ($this->assertContext(self::CONTEXT_SELECTOR)) {
@@ -321,6 +315,8 @@ class Linter
             $this->addError('Unexpected selector token "' . $sChar . '"');
             return true;
         }
+
+        return null;
     }
 
     /**
@@ -328,10 +324,10 @@ class Linter
      * @param string $sChar
      * @return boolean|null : true if the process should continue, else false, null if this char is not about selector content
      */
-    protected function lintSelectorContentChar($sChar)
+    protected function lintSelectorContentChar(string $sChar): ?bool
     {
         if (!$this->assertContext(self::CONTEXT_SELECTOR_CONTENT)) {
-            return;
+            return null;
         }
         if ($sChar === ' ') {
             return true;
@@ -350,6 +346,8 @@ class Linter
             $this->addContextContent($sChar);
             return true;
         }
+
+        return null;
     }
 
     /**
@@ -357,10 +355,10 @@ class Linter
      * @param string $sChar
      * @return boolean|null : true if the process should continue, else false, null if this char is not about property name
      */
-    protected function lintPropertyNameChar($sChar)
+    protected function lintPropertyNameChar(string $sChar): ?bool
     {
         if (!$this->assertContext(self::CONTEXT_PROPERTY_NAME)) {
-            return;
+            return null;
         }
 
         if ($sChar === ':') {
@@ -391,10 +389,10 @@ class Linter
      * @param string $sChar
      * @return boolean|null : true if the process should continue, else false, null if this char is not about property content
      */
-    protected function lintPropertyContentChar($sChar)
+    protected function lintPropertyContentChar(string $sChar): ?bool
     {
         if (!$this->assertContext(self::CONTEXT_PROPERTY_CONTENT)) {
-            return;
+            return null;
         }
 
         $this->addContextContent($sChar);
@@ -421,13 +419,15 @@ class Linter
      * @param string $sChar
      * @return boolean|null : true if the process should continue, else false, null if this char is not about nested selector
      */
-    protected function lintNestedSelectorChar($sChar)
+    protected function lintNestedSelectorChar(string $sChar): ?bool
     {
         // End of nested selector
         if ($this->isNestedSelector() && $this->assertContext(null) && $sChar === '}') {
             $this->setNestedSelector(false);
             return true;
         }
+
+        return null;
     }
 
     /**
@@ -435,7 +435,7 @@ class Linter
      * @param string $sChar
      * @return boolean : true if the char is an end of line token, else false
      */
-    protected function isEndOfLine($sChar)
+    protected function isEndOfLine(string $sChar): bool
     {
         return $sChar === "\r" || $sChar === "\n";
     }
@@ -444,7 +444,7 @@ class Linter
      * Return the current char number
      * @return int
      */
-    protected function getCharNumber()
+    protected function getCharNumber(): int
     {
         return $this->charNumber;
     }
@@ -454,7 +454,7 @@ class Linter
      * @param string $sChar
      * @return boolean
      */
-    protected function assertPreviousChar($sChar)
+    protected function assertPreviousChar(string $sChar): bool
     {
         return $this->previousChar === $sChar;
     }
@@ -463,7 +463,7 @@ class Linter
      * Reset previous char property
      * @return \CssLint\Linter
      */
-    protected function resetPreviousChar()
+    protected function resetPreviousChar(): Linter
     {
         $this->previousChar = null;
         return $this;
@@ -474,7 +474,7 @@ class Linter
      * @param string $sChar
      * @return \CssLint\Linter
      */
-    protected function setPreviousChar($sChar)
+    protected function setPreviousChar(string $sChar): Linter
     {
         $this->previousChar = $sChar;
         return $this;
@@ -484,7 +484,7 @@ class Linter
      * Return the current line number
      * @return int
      */
-    protected function getLineNumber()
+    protected function getLineNumber(): int
     {
         return $this->lineNumber;
     }
@@ -493,7 +493,7 @@ class Linter
      * Add 1 to the current line number
      * @return \CssLint\Linter
      */
-    protected function incrementLineNumber()
+    protected function incrementLineNumber(): Linter
     {
         $this->lineNumber++;
         return $this;
@@ -503,7 +503,7 @@ class Linter
      * Reset current line number property
      * @return \CssLint\Linter
      */
-    protected function resetLineNumber()
+    protected function resetLineNumber(): Linter
     {
         $this->lineNumber = 0;
         return $this;
@@ -513,7 +513,7 @@ class Linter
      * Reset current char number property
      * @return \CssLint\Linter
      */
-    protected function resetCharNumber()
+    protected function resetCharNumber(): Linter
     {
         $this->charNumber = 0;
         return $this;
@@ -523,7 +523,7 @@ class Linter
      * Add 1 to the current char number
      * @return \CssLint\Linter
      */
-    protected function incrementCharNumber()
+    protected function incrementCharNumber(): Linter
     {
         $this->charNumber++;
         return $this;
@@ -534,7 +534,7 @@ class Linter
      * @param string|array $sContext
      * @return boolean
      */
-    protected function assertContext($sContext)
+    protected function assertContext($sContext): bool
     {
         if (is_array($sContext)) {
             foreach ($sContext as $sTmpContext) {
@@ -551,7 +551,7 @@ class Linter
      * Reset context property
      * @return \CssLint\Linter
      */
-    protected function resetContext()
+    protected function resetContext(): Linter
     {
         return $this->setContext(null);
     }
@@ -561,7 +561,7 @@ class Linter
      * @param string $sContext
      * @return \CssLint\Linter
      */
-    protected function setContext($sContext)
+    protected function setContext($sContext): Linter
     {
         $this->context = $sContext;
         return $this->resetContextContent();
@@ -571,7 +571,7 @@ class Linter
      * Return context content
      * @return string
      */
-    protected function getContextContent()
+    protected function getContextContent(): string
     {
         return $this->contextContent;
     }
@@ -580,7 +580,7 @@ class Linter
      * Reset context content property
      * @return \CssLint\Linter
      */
-    protected function resetContextContent()
+    protected function resetContextContent(): Linter
     {
         $this->contextContent = '';
         return $this;
@@ -591,7 +591,7 @@ class Linter
      * @param string $sContextContent
      * @return \CssLint\Linter
      */
-    protected function addContextContent($sContextContent)
+    protected function addContextContent($sContextContent): Linter
     {
         $this->contextContent .= $sContextContent;
         return $this;
@@ -602,7 +602,7 @@ class Linter
      * @param string $sError
      * @return \CssLint\Linter
      */
-    protected function addError($sError)
+    protected function addError($sError): Linter
     {
         $this->errors[] = $sError . ' (line: ' . $this->getLineNumber() . ', char: ' . $this->getCharNumber() . ')';
         return $this;
@@ -612,7 +612,7 @@ class Linter
      * Return the errors occurred during the lint process
      * @return array
      */
-    public function getErrors()
+    public function getErrors(): ?array
     {
         return $this->errors;
     }
@@ -621,7 +621,7 @@ class Linter
      * Reset the errors property
      * @return \CssLint\Linter
      */
-    protected function resetErrors()
+    protected function resetErrors(): Linter
     {
         $this->errors = null;
         return $this;
@@ -631,7 +631,7 @@ class Linter
      * Tells if the linter is parsing a nested selector
      * @return boolean
      */
-    protected function isNestedSelector()
+    protected function isNestedSelector(): bool
     {
         return $this->nestedSelector;
     }
@@ -640,7 +640,7 @@ class Linter
      * Set the nested selector flag
      * @param boolean $bNestedSelector
      */
-    protected function setNestedSelector($bNestedSelector)
+    protected function setNestedSelector(bool $bNestedSelector): void
     {
         $this->nestedSelector = $bNestedSelector;
     }
@@ -649,7 +649,7 @@ class Linter
      * Tells if the linter is parsing a comment
      * @return boolean
      */
-    protected function isComment()
+    protected function isComment(): bool
     {
         return $this->comment;
     }
@@ -658,7 +658,7 @@ class Linter
      * Set the comment flag
      * @param boolean $bComment
      */
-    protected function setComment($bComment)
+    protected function setComment(bool $bComment): void
     {
         $this->comment = $bComment;
     }
@@ -667,7 +667,7 @@ class Linter
      * Return an instance of the "\CssLint\Properties" helper, initialize a new one if not define already
      * @return \CssLint\Properties
      */
-    public function getCssLintProperties()
+    public function getCssLintProperties(): Properties
     {
         if (!$this->cssLintProperties) {
             $this->cssLintProperties = new \CssLint\Properties();
