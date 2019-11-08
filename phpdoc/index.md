@@ -10,7 +10,7 @@
 | Visibility | Function |
 |:-----------|:---------|
 | public | <strong>getCssLintProperties()</strong> : <em>[\CssLint\Properties](#class-csslintproperties)</em><br /><em>Return an instance of the "\CssLint\Properties" helper, initialize a new one if not define already</em> |
-| public | <strong>getErrors()</strong> : <em>array</em><br /><em>Return the errors occured during the lint process</em> |
+| public | <strong>getErrors()</strong> : <em>array</em><br /><em>Return the errors occurred during the lint process</em> |
 | public | <strong>lintFile(</strong><em>string</em> <strong>$sFilePath</strong>)</strong> : <em>boolean : true if the file is a valid css file, else false</em><br /><em>Performs lint for a given file path</em> |
 | public | <strong>lintString(</strong><em>string</em> <strong>$sString</strong>)</strong> : <em>boolean : true if the string is a valid css string, false else</em><br /><em>Performs lint on a given string</em> |
 | protected | <strong>addContextContent(</strong><em>string</em> <strong>$sContextContent</strong>)</strong> : <em>[\CssLint\Linter](#class-csslintlinter)</em><br /><em>Append new value to context content</em> |
