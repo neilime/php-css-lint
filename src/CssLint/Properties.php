@@ -9,7 +9,7 @@ class Properties
      * List of existing constructor prefix
      * @var array
      */
-    protected $constructors = array(
+    protected static $constructors = array(
         'ms', 'moz', 'webkit', 'o',
     );
 
@@ -18,7 +18,7 @@ class Properties
      * https://www.w3.org/Style/CSS/all-properties.en.html
      * @var array
      */
-    protected $standards = array(
+    protected static $standards = array(
         'align-content' => '',
         'align-items' => '',
         'align-self' => '',
@@ -451,7 +451,7 @@ class Properties
      * List of non standards properties
      * @var array
      */
-    protected $nonStandards = array(
+    protected static $nonStandards = array(
         'font-smoothing' => '',
         'interpolation-mode' => '',
         'osx-font-smoothing' => '',
@@ -464,18 +464,18 @@ class Properties
      * @param string $sProperty
      * @return boolean
      */
-    public function propertyExists($sProperty)
+    public static function propertyExists($sProperty)
     {
-        if (isset($this->standards[$sProperty])) {
+        if (isset(static::$standards[$sProperty])) {
             return true;
         }
 
-        $sPropertyWithoutConstructor = preg_replace('/^(-(' . join('|', $this->constructors) . ')-)/', '', $sProperty);
+        $sPropertyWithoutConstructor = preg_replace('/^(-(' . join('|', static::$constructors) . ')-)/', '', $sProperty);
         if ($sPropertyWithoutConstructor !== $sProperty) {
-            if (isset($this->standards[$sPropertyWithoutConstructor])) {
+            if (isset(static::$standards[$sPropertyWithoutConstructor])) {
                 return true;
             }
-            if (isset($this->nonStandards[$sPropertyWithoutConstructor])) {
+            if (isset(static::$nonStandards[$sPropertyWithoutConstructor])) {
                 return true;
             }
         }
