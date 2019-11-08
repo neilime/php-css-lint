@@ -9,10 +9,12 @@
 
 | Visibility | Function |
 |:-----------|:---------|
+| public | <strong>__construct(</strong><em>[\CssLint\Properties](#class-csslintproperties)</em> <strong>$oProperties=null</strong>)</strong> : <em>void</em><br /><em>Constructor</em> |
 | public | <strong>getCssLintProperties()</strong> : <em>[\CssLint\Properties](#class-csslintproperties)</em><br /><em>Return an instance of the "\CssLint\Properties" helper, initialize a new one if not define already</em> |
 | public | <strong>getErrors()</strong> : <em>array</em><br /><em>Return the errors occurred during the lint process</em> |
 | public | <strong>lintFile(</strong><em>\string</em> <strong>$sFilePath</strong>)</strong> : <em>boolean : true if the file is a valid css file, else false</em><br /><em>Performs lint for a given file path</em> |
 | public | <strong>lintString(</strong><em>\string</em> <strong>$sString</strong>)</strong> : <em>boolean : true if the string is a valid css string, false else</em><br /><em>Performs lint on a given string</em> |
+| public | <strong>setCssLintProperties(</strong><em>[\CssLint\Properties](#class-csslintproperties)</em> <strong>$oCssLintProperties</strong>)</strong> : <em>void</em><br /><em>Set an instance of the "\CssLint\Properties" helper</em> |
 | protected | <strong>addContextContent(</strong><em>string</em> <strong>$sContextContent</strong>)</strong> : <em>[\CssLint\Linter](#class-csslintlinter)</em><br /><em>Append new value to context content</em> |
 | protected | <strong>addError(</strong><em>string</em> <strong>$sError</strong>)</strong> : <em>[\CssLint\Linter](#class-csslintlinter)</em><br /><em>Add a new error message to the errors property, it adds extra infos to the given error message</em> |
 | protected | <strong>assertContext(</strong><em>string/array</em> <strong>$sContext</strong>)</strong> : <em>boolean</em><br /><em>Assert that current context is the same as given</em> |
