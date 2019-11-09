@@ -69,11 +69,13 @@ class Linter
      * Constructor
      * @param \CssLint\Properties $oProperties (optional) an instance of the "\CssLint\Properties" helper
      */
-    public function __construct(\CssLint\Properties $oProperties = null)
+    public function __construct(?\CssLint\Properties $oProperties = null)
     {
-        if ($oProperties) {
-            $this->setCssLintProperties($oProperties);
+        if ($oProperties === null) {
+            $oProperties = new Properties();
         }
+
+        $this->cssLintProperties = $oProperties;
     }
 
     /**
@@ -375,7 +377,7 @@ class Linter
             // Check if property name exists
             $sPropertyName = trim($this->getContextContent());
 
-            if (!$this->getCssLintProperties()::propertyExists($sPropertyName)) {
+            if (!$this->cssLintProperties::propertyExists($sPropertyName)) {
                 $this->addError('Unknown CSS property "' . $sPropertyName . '"');
             }
             $this->setContext(self::CONTEXT_PROPERTY_CONTENT);
@@ -679,9 +681,6 @@ class Linter
      */
     public function getCssLintProperties(): \CssLint\Properties
     {
-        if (!$this->cssLintProperties) {
-            $this->setCssLintProperties(new \CssLint\Properties());
-        }
         return $this->cssLintProperties;
     }
 
