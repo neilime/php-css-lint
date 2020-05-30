@@ -31,7 +31,7 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7 || ^8.2"
+        "phpunit/phpunit": "^8.5.5"
     },
     "scripts": {
         "test": "cd tests && phpunit -d max_execution_time=0 && cd ..",
