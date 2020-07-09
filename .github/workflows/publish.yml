@@ -10,13 +10,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - run: mkdir ./site
-      - run: 'echo -e "---\nlayout: default\ntitle: Home\n---\n" > ./site/index.md'
-      - run: 'echo "$(sed -r s"/(\{%[^%]+%\})/{% raw %}\1{% endraw %}/g" ./README.md)" >> ./site/index.md'
-      - uses: actions/upload-artifact@v1
+      - run: |
+          mkdir -p ./artifact/wiki
+          cp ./README.md ./artifact/wiki/Home.md
+          mkdir -p ./artifact/site
+          echo -e "---\nlayout: default\ntitle: Home\n---\n" > ./artifact/site/index.md
+          echo "$(sed -r s"/(\{%[^%]+%\})/{% raw %}\1{% endraw %}/g" ./README.md)" >> ./artifact/site/index.md
+
+      - uses: actions/upload-artifact@v2
         with:
-          name: site
-          path: ./site
+          name: artifact
+          path: ./artifact
 
   phpdoc:
     runs-on: ubuntu-latest
@@ -48,12 +52,12 @@ jobs:
 
       - name: Configure phpdoc-md
         run: |
-          mkdir -p ./site/phpdoc;
+          mkdir -p ./artifact/site/phpdoc;
 
           php -d display_errors=0 -d error_reporting=0 -r "file_put_contents('.phpdoc-md','<?php
               return (object)[
                 \'rootNamespace\' => \'CssLint\', 
-                \'destDirectory\' => \'./site/phpdoc\',
+                \'destDirectory\' => \'./artifact/site/phpdoc\',
                 \'format\' => \'github\',
                 \'classes\' => '.var_export (array_values(array_filter(
                     array_keys(require('./vendor/composer/autoload_classmap.php')),
@@ -68,23 +72,32 @@ jobs:
       - name: Execute phpdoc-md
         run: |
           vendor/bin/phpdoc-md -v
-          mv ./site/phpdoc/README.md ./site/phpdoc/index.md
+          mv ./artifact/site/phpdoc/README.md ./artifact/site/phpdoc/index.md
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         with:
-          name: site
-          path: ./site
+          name: artifact
+          path: ./artifact
 
   build_and_deploy:
     runs-on: ubuntu-latest
     needs: [homepage, phpdoc]
     steps:
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
-          name: site
+          name: artifact
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
+          publish_dir: ./artifact/site
           enable_jekyll: true
           keep_files: true
+
+      - uses: Decathlon/wiki-page-creator-action@v2.0.0
+        env:
+          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
+          ACTION_MAIL: action@github.com
+          ACTION_NAME: GitHub Action
+          OWNER: ${{ github.actor }}
+          REPO_NAME: ${{ github.repository }}
+          MD_FOLDER: ./artifact/wiki
