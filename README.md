@@ -2,15 +2,14 @@
   <a href="https://github.com/neilime/easy-win-setup" target="_blank"><img src="https://repository-images.githubusercontent.com/79255687/759bde80-eaaa-11e9-8919-6a8ad3b4a34d" width="600"></a>
 </p>
 
-
-[![Build Status](https://travis-ci.org/neilime/php-css-lint.svg?branch=master)](https://travis-ci.org/neilime/php-css-lint)
+[![Continuous integration](https://github.com/neilime/php-css-lint/workflows/Continuous%20integration/badge.svg)](https://github.com/neilime/php-css-lint/actions?query=workflow%3A%22Continuous+integration%22)
 [![Coverage Status](https://coveralls.io/repos/github/neilime/php-css-lint/badge.svg)](https://coveralls.io/github/neilime/php-css-lint)
 [![Latest Stable Version](https://poser.pugx.org/neilime/php-css-lint/v/stable)](https://packagist.org/packages/neilime/php-css-lint)
 [![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads)](https://packagist.org/packages/neilime/php-css-lint)
 [![License](https://poser.pugx.org/neilime/php-css-lint/license)](https://packagist.org/packages/neilime/php-css-lint)
-[![Sponsor](https://img.shields.io/badge/%E2%9D%A4-Sponsor-ff69b4)](https://github.com/sponsors/neilime) 
+[![Sponsor](https://img.shields.io/badge/%E2%9D%A4-Sponsor-ff69b4)](https://github.com/sponsors/neilime)
 
-📢 __Php CSS Lint__ is a php script that lint css files and strings:
+📢 **Php CSS Lint** is a php script that lint css files and strings:
 
 ```
 ===========================================================

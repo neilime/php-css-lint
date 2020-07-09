@@ -10,7 +10,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
      */
     protected $linter;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->linter = new \CssLint\Linter();
     }
@@ -51,34 +51,34 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     width: 0;
     :
             '));
-        $this->assertSame(array(
+        $this->assertSame([
             'Unknown CSS property "displady" (line: 2, char: 22)',
             'Unexpected char ":" (line: 4, char: 5)',
-                ), $this->linter->getErrors());
+        ], $this->linter->getErrors());
     }
 
     public function testLintStringWithUnterminatedContext()
     {
         $this->assertFalse($this->linter->lintString('* {'));
-        $this->assertSame(array(
+        $this->assertSame([
             'Unterminated "selector content" (line: 1, char: 3)'
-                ), $this->linter->getErrors());
+        ], $this->linter->getErrors());
     }
 
     public function testLintStringWithWrongSelectorDoubleComma()
     {
         $this->assertFalse($this->linter->lintString('a,, {}'));
-        $this->assertSame(array(
+        $this->assertSame([
             'Selector token "," cannot be preceded by "a," (line: 1, char: 3)'
-                ), $this->linter->getErrors());
+        ], $this->linter->getErrors());
     }
 
     public function testLintStringWithWrongSelectorDoubleHash()
     {
         $this->assertFalse($this->linter->lintString('## {}'));
-        $this->assertSame(array(
+        $this->assertSame([
             'Selector token "#" cannot be preceded by "#" (line: 1, char: 2)'
-                ), $this->linter->getErrors());
+        ], $this->linter->getErrors());
     }
 
     public function testLintStringWithWrongPropertyNameUnexpectedToken()
@@ -86,25 +86,27 @@ class LinterTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->linter->lintString('.test {
      test~: true;
 }'));
-        $this->assertSame(array(
+        $this->assertSame([
             'Unexpected property name token "~" (line: 2, char: 10)',
             'Unknown CSS property "test~" (line: 2, char: 11)'
-                ), $this->linter->getErrors());
+        ], $this->linter->getErrors());
     }
 
     public function testLintStringWithWrongSelectorUnexpectedToken()
     {
         $this->assertFalse($this->linter->lintString('.a| {}'));
-        $this->assertSame(array(
+        $this->assertSame([
             'Unexpected selector token "|" (line: 1, char: 3)'
-                ), $this->linter->getErrors());
+        ], $this->linter->getErrors());
     }
 
     public function testLintStringWithWrongTypeParam()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 passed to CssLint\Linter::lintString() must be of the type string, array given');
-        
+        $this->expectExceptionMessage(
+            'Argument 1 passed to CssLint\Linter::lintString() must be of the type string, array given'
+        );
+
         $this->linter->lintString(['wrong']);
         $this->assertFalse(false);
     }
@@ -112,7 +114,9 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     public function testLintFileWithWrongTypeParam()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage('Argument 1 passed to CssLint\Linter::lintFile() must be of the type string, array given');
+        $this->expectExceptionMessage(
+            'Argument 1 passed to CssLint\Linter::lintFile() must be of the type string, array given'
+        );
         $this->linter->lintFile(['wrong']);
     }
 
@@ -125,20 +129,26 @@ class LinterTest extends \PHPUnit\Framework\TestCase
 
     public function testLintBootstrapCssFile()
     {
-        $this->assertTrue($this->linter->lintFile(getcwd() . DIRECTORY_SEPARATOR . '_files/bootstrap.css'), print_r($this->linter->getErrors(), true));
+        $this->assertTrue(
+            $this->linter->lintFile(__DIR__ .  '/../_files/bootstrap.css'),
+            print_r($this->linter->getErrors(), true)
+        );
     }
 
     public function testLintFoundationCssFile()
     {
-        $this->assertTrue($this->linter->lintFile(getcwd() . DIRECTORY_SEPARATOR . '_files/foundation.css'), print_r($this->linter->getErrors(), true));
+        $this->assertTrue(
+            $this->linter->lintFile(__DIR__ .  '/../_files/foundation.css'),
+            print_r($this->linter->getErrors(), true)
+        );
     }
 
     public function testLintNotValidCssFile()
     {
-        $this->assertFalse($this->linter->lintFile(getcwd() . DIRECTORY_SEPARATOR . '_files/not_valid.css'));
-        $this->assertSame(array(
+        $this->assertFalse($this->linter->lintFile(__DIR__ .  '/../_files/not_valid.css'));
+        $this->assertSame([
             'Unknown CSS property "bordr-top-style" (line: 8, char: 20)',
             'Unterminated "selector content" (line: 17, char: 0)'
-                ), $this->linter->getErrors());
+        ], $this->linter->getErrors());
     }
 }

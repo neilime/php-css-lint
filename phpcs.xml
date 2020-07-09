@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="TwbsHelper coding standard">
+    
+    <!-- Include some specific sniffs -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <rule ref="PSR12">
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace"/>
+    </rule>
+
+    <!-- Paths to check -->
+    <file>src</file>
+    <file>tests</file>
+</ruleset>
