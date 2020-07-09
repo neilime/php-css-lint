@@ -5,23 +5,23 @@ namespace CssLint;
 class Linter
 {
 
-    const CONTEXT_SELECTOR = 'selector';
-    const CONTEXT_SELECTOR_CONTENT = 'selector content';
-    const CONTEXT_NESTED_SELECTOR_CONTENT = 'nested selector content';
-    const CONTEXT_PROPERTY_NAME = 'property name';
-    const CONTEXT_PROPERTY_CONTENT = 'property content';
+    public const CONTEXT_SELECTOR = 'selector';
+    public const CONTEXT_SELECTOR_CONTENT = 'selector content';
+    public const CONTEXT_NESTED_SELECTOR_CONTENT = 'nested selector content';
+    public const CONTEXT_PROPERTY_NAME = 'property name';
+    public const CONTEXT_PROPERTY_CONTENT = 'property content';
 
     /**
      * Class to provide css properties knowledge
-     * @var \CssLint\Properties
+     * @var \CssLint\Properties|null
      */
     protected $cssLintProperties;
 
     /**
      * Errors occurred during the lint process
-     * @var array
+     * @var array|null
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * Current line number
@@ -37,7 +37,7 @@ class Linter
 
     /**
      * Current context of parsing (must be a constant starting by CONTEXT_...)
-     * @var string
+     * @var string|null
      */
     protected $context;
 
@@ -49,7 +49,7 @@ class Linter
 
     /**
      * The previous linted char
-     * @var string
+     * @var string|null
      */
     protected $previousChar;
 
@@ -106,14 +106,20 @@ class Linter
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
-    public function lintFile(string  $sFilePath): bool
+    public function lintFile(string $sFilePath): bool
     {
         if (!file_exists($sFilePath)) {
-            throw new \InvalidArgumentException('Argument "$sFilePath" "' . $sFilePath . '" is not an existing file path');
+            throw new \InvalidArgumentException(sprintf(
+                'Argument "$sFilePath" "%s" is not an existing file path',
+                $sFilePath
+            ));
         }
 
         if (!is_readable($sFilePath)) {
-            throw new \InvalidArgumentException('Argument "$sFilePath" "' . $sFilePath . '" is not a readable file path');
+            throw new \InvalidArgumentException(sprintf(
+                'Argument "$sFilePath" "%s" is not a readable file path',
+                $sFilePath
+            ));
         }
 
         $rFileHandle = fopen($sFilePath, 'r');
@@ -149,12 +155,12 @@ class Linter
     protected function initLint()
     {
         $this
-                ->resetPreviousChar()
-                ->resetContext()
-                ->resetLineNumber()->incrementLineNumber()
-                ->resetCharNumber()
-                ->resetErrors()
-                ->resetContextContent();
+            ->resetPreviousChar()
+            ->resetContext()
+            ->resetLineNumber()->incrementLineNumber()
+            ->resetCharNumber()
+            ->resetErrors()
+            ->resetContextContent();
         return $this;
     }
 
@@ -227,9 +233,8 @@ class Linter
         // First char for a comment
         if ($sChar === '/') {
             return true;
-        }
-        // End of comment
-        elseif ($sChar === '*' && $this->assertPreviousChar('/')) {
+        } elseif ($sChar === '*' && $this->assertPreviousChar('/')) {
+            // End of comment
             $this->setComment(true);
             return true;
         }
@@ -258,7 +263,6 @@ class Linter
         }
         // Selector must contains
         if ($this->assertContext(self::CONTEXT_SELECTOR)) {
-
             // A space is valid
             if ($sChar === ' ') {
                 $this->addContextContent($sChar);
@@ -271,10 +275,10 @@ class Linter
 
                 // @nested is a specific selector content
                 if (
-                // @media selector
-                        preg_match('/^@media.+/', $sSelector)
-                        // Keyframes selector
-                        || preg_match('/^@.*keyframes.+/', $sSelector)
+                    // @media selector
+                    preg_match('/^@media.+/', $sSelector)
+                    // Keyframes selector
+                    || preg_match('/^@.*keyframes.+/', $sSelector)
                 ) {
                     $this->setNestedSelector(true);
                     $this->resetContext();
@@ -292,12 +296,16 @@ class Linter
                     $this->addContextContent($sChar);
                     return true;
                 }
-                $this->addError('Selector token ' . json_encode($sChar) . ' cannot be preceded by "' . $sSelector . '"');
+                $this->addError(sprintf(
+                    'Selector token %s cannot be preceded by "%s"',
+                    json_encode($sChar),
+                    $sSelector
+                ));
                 return false;
             }
 
             // Wildcard and hash
-            if (in_array($sChar, array('*', '#'), true)) {
+            if (in_array($sChar, ['*', '#'], true)) {
                 $sSelector = $this->getContextContent();
                 if (!$sSelector || preg_match('/[a-zA-Z>,\'"] *$/', $sSelector)) {
                     $this->addContextContent($sChar);
@@ -332,7 +340,7 @@ class Linter
     /**
      * Performs lint for a given char, check selector content part
      * @param string $sChar
-     * @return boolean|null : true if the process should continue, else false, null if this char is not about selector content
+     * @return bool|null : true if the process should continue, else false, null if this char is not a selector content
      */
     protected function lintSelectorContentChar(string $sChar): ?bool
     {
@@ -363,7 +371,7 @@ class Linter
     /**
      * Performs lint for a given char, check property name part
      * @param string $sChar
-     * @return boolean|null : true if the process should continue, else false, null if this char is not about property name
+     * @return bool|null : true if the process should continue, else false, null if this char is not a property name
      */
     protected function lintPropertyNameChar(string $sChar): ?bool
     {
@@ -397,7 +405,7 @@ class Linter
     /**
      * Performs lint for a given char, check property content part
      * @param string $sChar
-     * @return boolean|null : true if the process should continue, else false, null if this char is not about property content
+     * @return bool|null : true if the process should continue, else false, null if this char is not a property content
      */
     protected function lintPropertyContentChar(string $sChar): ?bool
     {
@@ -427,7 +435,7 @@ class Linter
     /**
      * Performs lint for a given char, check nested selector part
      * @param string $sChar
-     * @return boolean|null : true if the process should continue, else false, null if this char is not about nested selector
+     * @return bool|null : true if the process should continue, else false, null if this char is not a nested selector
      */
     protected function lintNestedSelectorChar(string $sChar): ?bool
     {
@@ -541,7 +549,7 @@ class Linter
 
     /**
      * Assert that current context is the same as given
-     * @param string|array $sContext
+     * @param string|array|null $sContext
      * @return boolean
      */
     protected function assertContext($sContext): bool
@@ -568,7 +576,7 @@ class Linter
 
     /**
      * Set new context
-     * @param string $sContext
+     * @param string|null $sContext
      * @return \CssLint\Linter
      */
     protected function setContext($sContext): Linter
