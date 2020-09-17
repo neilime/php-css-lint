@@ -460,6 +460,8 @@ class Properties
         'text-size-adjust' => '',
     ];
 
+    protected static $allowedIndentationChars = [' '];
+
     /**
      * @param string $sProperty
      * @return boolean
@@ -485,5 +487,20 @@ class Properties
             }
         }
         return false;
+    }
+
+    public static function getAllowedIndentationChars(): array
+    {
+        return static::$allowedIndentationChars;
+    }
+
+    public static function setAllowedIndentationChars(array $aAllowedIndentationChars)
+    {
+        static::$allowedIndentationChars = $aAllowedIndentationChars;
+    }
+
+    public static function isAllowedIndentationChar($sChar): bool
+    {
+        return in_array($sChar, static::$allowedIndentationChars, true);
     }
 }

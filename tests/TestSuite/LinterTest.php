@@ -41,7 +41,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
   .button.arrow-only::after {
     top: -0.1em;
     float: none;
-    margin-left: 0; }'));
+    margin-left: 0; }'), print_r($this->linter->getErrors(), true));
     }
 
     public function testLintNotValidString()
@@ -55,6 +55,16 @@ class LinterTest extends \PHPUnit\Framework\TestCase
             'Unknown CSS property "displady" (line: 2, char: 22)',
             'Unexpected char ":" (line: 4, char: 5)',
         ], $this->linter->getErrors());
+    }
+
+    public function testLintValidStringContainingTabs()
+    {
+        $this->linter->getCssLintProperties()->setAllowedIndentationChars(["\t"]);
+        $this->assertTrue($this->linter->lintString("\t\t" . '.button.dropdown::after {
+' . "\t\t" . 'display: block;
+' . "\t\t" . '}'), print_r($this->linter->getErrors(), true));
+
+        $this->linter->getCssLintProperties()->setAllowedIndentationChars([' ']);
     }
 
     public function testLintStringWithUnterminatedContext()

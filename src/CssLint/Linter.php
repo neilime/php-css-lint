@@ -207,7 +207,7 @@ class Linter
 
         if (is_bool($bLintNestedSelectorChar = $this->lintNestedSelectorChar($sChar))) {
             $this->setPreviousChar($sChar);
-            return $bLintPropertyContentChar;
+            return $bLintNestedSelectorChar;
         }
 
         $this->addError('Unexpected char ' . json_encode($sChar));
@@ -251,9 +251,11 @@ class Linter
     {
         // Selector must start by #.a-zA-Z
         if ($this->assertContext(null)) {
-            if ($sChar === ' ') {
+
+            if ($this->getCssLintProperties()->isAllowedIndentationChar($sChar)) {
                 return true;
             }
+
             if (preg_match('/[@#.a-zA-Z\[\*-:]+/', $sChar)) {
                 $this->setContext(self::CONTEXT_SELECTOR);
                 $this->addContextContent($sChar);
@@ -347,9 +349,14 @@ class Linter
         if (!$this->assertContext(self::CONTEXT_SELECTOR_CONTENT)) {
             return null;
         }
-        if ($sChar === ' ') {
+
+        $sContextContent = $this->getContextContent();
+        if ((!$sContextContent || $sContextContent === '{') &&
+            $this->getCssLintProperties()->isAllowedIndentationChar($sChar)
+        ) {
             return true;
         }
+
         if ($sChar === '}') {
             if ($this->isNestedSelector()) {
                 $this->resetContext();
