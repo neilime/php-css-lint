@@ -23,7 +23,7 @@
     "issues": "https://github.com/neilime/php-css-lint/issues"
   },
   "require": {
-    "php": "^7.3",
+    "php": "^7.3 || ^8",
     "ext-json": "*"
   },
   "require-dev": {
