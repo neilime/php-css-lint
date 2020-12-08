@@ -10,9 +10,20 @@ class LinterTest extends \PHPUnit\Framework\TestCase
      */
     protected $linter;
 
+    /**
+     * @var string
+     */
+    protected $phpVersion;
+
     protected function setUp(): void
     {
         $this->linter = new \CssLint\Linter();
+        $php_version = phpversion();
+        if (version_compare($php_version, '8.0.0', '>=')) {
+            $this->phpVersion = '8';
+        } else {
+            $this->phpVersion = '7';
+        }
     }
 
     public function testConstructWithCustomCssLintProperties()
@@ -113,20 +124,30 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     public function testLintStringWithWrongTypeParam()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            'Argument 1 passed to CssLint\Linter::lintString() must be of the type string, array given'
-        );
-
+        if ($this->phpVersion == '8') {
+            $this->expectExceptionMessage(
+                'CssLint\Linter::lintString(): Argument #1 ($sString) must be of type string, array given'
+            );
+        } else {
+            $this->expectExceptionMessage(
+                'Argument 1 passed to CssLint\Linter::lintString() must be of the type string, array given'
+            );
+        }
         $this->linter->lintString(['wrong']);
-        $this->assertFalse(false);
     }
 
     public function testLintFileWithWrongTypeParam()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(
-            'Argument 1 passed to CssLint\Linter::lintFile() must be of the type string, array given'
-        );
+        if ($this->phpVersion == '8') {
+            $this->expectExceptionMessage(
+                'CssLint\Linter::lintFile(): Argument #1 ($sFilePath) must be of type string, array given'
+            );
+        } else {
+            $this->expectExceptionMessage(
+                'Argument 1 passed to CssLint\Linter::lintFile() must be of the type string, array given'
+            );
+        }
         $this->linter->lintFile(['wrong']);
     }
 
