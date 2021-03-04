@@ -3,18 +3,19 @@ layout: default
 title: Usage
 ---
 
-<p align="center">
-  <a href="https://github.com/neilime/easy-win-setup" target="_blank"><img src="https://repository-images.githubusercontent.com/79255687/759bde80-eaaa-11e9-8919-6a8ad3b4a34d" width="600"></a>
-</p>
+# Usage
 
-[![Continuous integration](https://github.com/neilime/php-css-lint/workflows/Continuous%20integration/badge.svg)](https://github.com/neilime/php-css-lint/actions?query=workflow%3A%22Continuous+integration%22)
-[![codecov](https://codecov.io/gh/neilime/php-css-lint/branch/master/graph/badge.svg?token=eMuwgNub7Z)](https://codecov.io/gh/neilime/php-css-lint)
-[![Latest Stable Version](https://poser.pugx.org/neilime/php-css-lint/v/stable)](https://packagist.org/packages/neilime/php-css-lint)
-[![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads)](https://packagist.org/packages/neilime/php-css-lint)
-[![License](https://poser.pugx.org/neilime/php-css-lint/license)](https://packagist.org/packages/neilime/php-css-lint)
-[![Sponsor](https://img.shields.io/badge/%E2%9D%A4-Sponsor-ff69b4)](https://github.com/sponsors/neilime)
+## As a bin script
 
-📢 **Php CSS Lint** is a php script that lint css files and strings:
+### Display man page
+
+In a terminal, execute:
+
+```sh
+php vendor/bin/php-css-lint
+```
+
+Result:
 
 ```
 ===========================================================
@@ -28,51 +29,152 @@ title: Usage
 
 ===========================================================
 
-# Lint file "/path/to/css/file.css"...
- => File "/path/to/css/file.css" is not valid :
+Usage:
+------
+
+  php-css-lint [--options='{ }'] css_file_or_string_to_lint
+
+Arguments:
+----------
+
+  --options
+    Options (optional), must be a json object:
+     * "allowedIndentationChars" => [" "] or ["\t"]: will override the current property
+     * "constructors": { "property" => bool }: will merge with the current property
+     * "standards": { "property" => bool }: will merge with the current property
+     * "nonStandards": { "property" => bool }: will merge with the current property
+    Example: --options='{ "constructors": {"o" : false}, "allowedIndentationChars": ["\t"] }'
+
+  css_file_or_string_to_lint
+    The CSS file path (absolute or relative) or a CSS string to be linted
+    Example:
+      ./path/to/css_file_path_to_lint.css
+      ".test { color: red; }"
+
+Examples:
+---------
+
+  Lint a CSS file:
+    php-css-lint ./path/to/css_file_path_to_lint.css
+
+  Lint a CSS string:
+    php-css-lint ".test { color: red; }"
+
+  Lint with only tabulation as indentation:
+    php-css-lint --options='{ "allowedIndentationChars": ["\t"] }' ".test { color: red; }"
+```
+
+### Lint a file
+
+In a terminal, execute:
+
+```sh
+php vendor/bin/php-css-lint /path/to/not_valid_file.css
+```
+
+Result:
+
+```
+# Lint CSS file "/path/to/not_valid_file.css"...
+ => CSS file "/path/to/not_valid_file" is not valid:
 
     - Unknown CSS property "bordr-top-style" (line: 8, char: 20)
-    - Unexpected char ":" (line: 15, char: 5)
+    - Unterminated "selector content" (line: 17, char: 0)
 ```
 
-# Helping Project
+### Lint a css string
 
-❤️ If this project helps you reduce time to develop and/or you want to help the maintainer of this project. You can [sponsor](https://github.com/sponsors/neilime) him. Thank you !
-
-# Contributing
-
-👍 If you wish to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file. Note: If you want to contribute don't hesitate, I'll review any PR.
-
-# Documentation
-
-1. [Installation](https://neilime.github.io/php-css-lint/installation)
-2. [Usage](https://neilime.github.io/php-css-lint/usage)
-3. [Code Coverage](https://codecov.io/gh/neilime/php-css-lint)
-4. [PHP Doc](https://neilime.github.io/php-css-lint/phpdoc)
-
-# Development
-
-## Setup
+In a terminal, execute:
 
 ```sh
-docker build -t php-css-lint .
-docker run --rm -it -v $(pwd):/app php-css-lint composer install
+php vendor/bin/php-css-lint ".test { color: red; fail }"
 ```
 
-## Running tests
+Result:
 
-```sh
-docker run --rm -it -v $(pwd):/app php-css-lint composer test
+```
+# Lint CSS string...
+ => CSS string is not valid:
+
+    - Unexpected property name token "}" (line: 1, char: 26)
+    - Unterminated "property name" (line: 1, char: 26)
 ```
 
-## Fix code linting
+## Customize linter properties
+
+### Allowed indentation chars
+
+By default indentation must be spaces, you can change it to accept another chars (tabulation by example)
 
 ```sh
-docker run --rm -it -v $(pwd):/app php-css-lint composer cbf
+php vendor/bin/php-css-lint --options='{"allowedIndentationChars": ["\t"]}' ".test { color: red; }"
 ```
 
-## Running CI scripts
+## In a php script
 
-```sh
-docker run --rm -it -v $(pwd):/app php-css-lint composer ci
+### Composer autoloading
+
+```php
+// Composer autoloading
+if (!file_exists($sComposerAutoloadPath = __DIR__ . '/vendor/autoload.php')) {
+    throw new \RuntimeException('Composer autoload file "' . $sComposerAutoloadPath . '" does not exist');
+}
+if (false === (include $sComposerAutoloadPath)) {
+    throw new \RuntimeException('An error occured while including composer autoload file "' . $sComposerAutoloadPath . '"');
+}
+```
+
+### Initialize Css Linter
+
+```php
+$cssLinter = new \CssLint\Linter();
+```
+
+### Lint string
+
+```php
+if($cssLinter->lintString('
+.button.drodown::after {
+    display: block;
+    width: 0;
+}') === true){
+   echo 'Valid!';
+}
+else {
+     echo 'Not Valid :(';
+     var_dump($cssLinter->getErrors());
+}
+```
+
+### Lint file
+
+```php
+if($cssLinter->lintFile('path/to/css/file.css') === true){
+   echo 'Valid!';
+}
+else {
+     echo 'Not Valid :(';
+     var_dump($cssLinter->getErrors());
+}
+```
+
+## Customize linter properties
+
+### Allowed indentation chars
+
+By default indentation must be spaces, you can change it to accept another chars (tabulation by example)
+
+```php
+$cssLinter = new \CssLint\Linter();
+
+// Set linter must accept only tabulation as indentation
+$cssLinter->getCssLintProperties()->setAllowedIndentationChars(["\t"]);
+
+$cssLinter->lintString('.button.dropdown::after {
+' . "\t" . 'display: block;
+}'); // true
+
+$cssLinter->lintString('.button.dropdown::after {
+  display: block;
+}'); // false
 ```
