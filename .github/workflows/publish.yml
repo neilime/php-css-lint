@@ -93,7 +93,7 @@ jobs:
           enable_jekyll: true
           keep_files: true
 
-      - uses: Decathlon/wiki-page-creator-action@v2.0.0
+      - uses: Decathlon/wiki-page-creator-action@v2.0.3
         env:
           GH_PAT: ${{ secrets.GITHUB_TOKEN }}
           ACTION_MAIL: action@github.com
