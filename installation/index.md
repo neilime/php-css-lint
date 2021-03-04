@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: Installation
 ---
 
 <p align="center">
