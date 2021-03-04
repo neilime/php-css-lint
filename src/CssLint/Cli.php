@@ -23,13 +23,19 @@ class Cli
 
         $oProperties = new \CssLint\Properties();
         if ($oCliArgs->options) {
-            try {
-                $aOptions = json_decode($oCliArgs->options, true, JSON_THROW_ON_ERROR);
-                $oProperties->setOptions($aOptions);
-            } catch (\Throwable $oException) {
-                $this->printError('Unable to parse option argument: ' . $oException->getMessage());
+            $aOptions = json_decode($oCliArgs->options, true);
+
+            if (json_last_error()) {
+                $sErrorMessage = json_last_error_msg();
+                $this->printError('Unable to parse option argument: ' . $sErrorMessage);
                 return self::$RETURN_CODE_ERROR;
             }
+
+            if (!$aOptions) {
+                $this->printError('Unable to parse empty option argument');
+                return self::$RETURN_CODE_ERROR;
+            }
+            $oProperties->setOptions($aOptions);
         }
 
         $oCssLinter = new \CssLint\Linter($oProperties);
