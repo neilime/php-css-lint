@@ -18,8 +18,8 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $this->linter = new \CssLint\Linter();
-        $php_version = phpversion();
-        if (version_compare($php_version, '8.0.0', '>=')) {
+        $sPhpVersion = phpversion();
+        if (version_compare($sPhpVersion, '8.0.0', '>=')) {
             $this->phpVersion = '8';
         } else {
             $this->phpVersion = '7';

@@ -251,7 +251,6 @@ class Linter
     {
         // Selector must start by #.a-zA-Z
         if ($this->assertContext(null)) {
-
             if ($this->getCssLintProperties()->isAllowedIndentationChar($sChar)) {
                 return true;
             }
@@ -351,7 +350,8 @@ class Linter
         }
 
         $sContextContent = $this->getContextContent();
-        if ((!$sContextContent || $sContextContent === '{') &&
+        if (
+            (!$sContextContent || $sContextContent === '{') &&
             $this->getCssLintProperties()->isAllowedIndentationChar($sChar)
         ) {
             return true;
@@ -390,7 +390,7 @@ class Linter
             // Check if property name exists
             $sPropertyName = trim($this->getContextContent());
 
-            if (!$this->getCssLintProperties()::propertyExists($sPropertyName)) {
+            if (!$this->getCssLintProperties()->propertyExists($sPropertyName)) {
                 $this->addError('Unknown CSS property "' . $sPropertyName . '"');
             }
             $this->setContext(self::CONTEXT_PROPERTY_CONTENT);

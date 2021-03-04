@@ -44,3 +44,30 @@
 2. [Usage](https://github.com/neilime/php-css-lint/wiki/Usage)
 3. [Code Coverage](https://codecov.io/gh/neilime/php-css-lint)
 4. [PHP Doc](https://neilime.github.io/php-css-lint/phpdoc)
+
+# Development
+
+## Setup
+
+```sh
+docker build -t php-css-lint .
+docker run --rm -it -v $(pwd):/app php-css-lint composer install
+```
+
+## Running tests
+
+```sh
+docker run --rm -it -v $(pwd):/app php-css-lint composer test
+```
+
+## Fix code linting
+
+```sh
+docker run --rm -it -v $(pwd):/app php-css-lint composer cbf
+```
+
+## Running CI scripts
+
+```sh
+docker run --rm -it -v $(pwd):/app php-css-lint composer ci
+```

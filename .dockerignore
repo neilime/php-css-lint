@@ -1,0 +1,5 @@
+.git/
+nbproject/
+vendor/
+build/
+**/*.cache

@@ -1,22 +1,22 @@
 #!/usr/bin/env php
 <?php
 
-echo PHP_EOL.
- '==========================================================='.PHP_EOL.PHP_EOL.
- '  ____  _              ____ ____ ____    _     _       _   '.PHP_EOL.
- ' |  _ \| |__  _ __    / ___/ ___/ ___|  | |   (_)_ __ | |_ '.PHP_EOL.
- ' | |_) | \'_ \| \'_ \  | |   \___ \___ \  | |   | | \'_ \| __|'.PHP_EOL.
- ' |  __/| | | | |_) | | |___ ___) |__) | | |___| | | | | |_ '.PHP_EOL.
- ' |_|   |_| |_| .__/   \____|____/____/  |_____|_|_| |_|\__|'.PHP_EOL.
- '             |_|                                           '.PHP_EOL.PHP_EOL.
- '==========================================================='.PHP_EOL.PHP_EOL;
+echo PHP_EOL .
+    '===========================================================' . PHP_EOL . PHP_EOL .
+    '  ____  _              ____ ____ ____    _     _       _   ' . PHP_EOL .
+    ' |  _ \| |__  _ __    / ___/ ___/ ___|  | |   (_)_ __ | |_ ' . PHP_EOL .
+    ' | |_) | \'_ \| \'_ \  | |   \___ \___ \  | |   | | \'_ \| __|' . PHP_EOL .
+    ' |  __/| | | | |_) | | |___ ___) |__) | | |___| | | | | |_ ' . PHP_EOL .
+    ' |_|   |_| |_| .__/   \____|____/____/  |_____|_|_| |_|\__|' . PHP_EOL .
+    '             |_|                                           ' . PHP_EOL . PHP_EOL .
+    '===========================================================' . PHP_EOL . PHP_EOL;
 
 $sComposerAutoloaderWorkingDirectory = getcwd() . '/vendor/autoload.php';
 if (is_file($sComposerAutoloaderWorkingDirectory)) {
     require_once $sComposerAutoloaderWorkingDirectory;
 }
 
-if (!class_exists('CssLint\Linter', true)) {
+if (!class_exists('CssLint\CssLint', true)) {
     // consider being in bin dir
     $sComposerAutoloader = __DIR__ . '/../vendor/autoload.php';
     if (!is_file($sComposerAutoloader)) {
@@ -27,75 +27,7 @@ if (!class_exists('CssLint\Linter', true)) {
     require_once $sComposerAutoloader;
 }
 
-function printUsage(){
-    echo 'Usage : '.PHP_EOL.
-         '------------------------------------------------------------'.PHP_EOL.
-    'Lint a CSS file : '.PHP_EOL.
-    basename(__DIR__).'/'.basename(__FILE__).' css_file_path_to_lint.css'.PHP_EOL.PHP_EOL.
-    'Lint a CSS string : '.PHP_EOL.
-    basename(__DIR__).'/'.basename(__FILE__).' ".test { color: red; }"'.PHP_EOL.
-    '------------------------------------------------------------'.PHP_EOL.PHP_EOL;
-}
+$oCssLintCli = new \CssLint\Cli();
+$iReturnCode = $oCssLintCli->run($_SERVER['argv']);
 
-function printError($sError){
-    echo "\033[31m/!\ Error : ".$sError."\033[0m".PHP_EOL.PHP_EOL;
-}
-
-function lintFile($sFilePath){
-    echo '# Lint file "'.$sFilePath.'"...'.PHP_EOL;
-
-    $oCssLinter = new \CssLint\Linter();
-    if($oCssLinter->lintFile($sFilePath)){
-        echo "\033[32m => File \"".$sFilePath."\" is valid\033[0m".PHP_EOL.PHP_EOL;
-        exit(0);
-    }
-
-    echo "\033[31m => File \"".$sFilePath."\" is not valid :\033[0m".PHP_EOL.PHP_EOL;
-    displayLinterErrors($oCssLinter->getErrors());
-    exit(1);
-}
-
-function lintString($sString){
-    echo '# Lint css string...'.PHP_EOL;
-
-    $oCssLinter = new \CssLint\Linter();
-    if($oCssLinter->lintString($sString)){
-        echo "\033[32m => Css string is valid\033[0m".PHP_EOL.PHP_EOL;
-        exit(0);
-    }
-
-    echo "\033[31m => Css string is not valid :\033[0m".PHP_EOL.PHP_EOL;
-    displayLinterErrors($oCssLinter->getErrors());
-    exit(1);
-}
-
-function displayLinterErrors($aErrors){
-    foreach($aErrors as $sError){
-        echo "\033[31m    - ".$sError."\033[0m".PHP_EOL;
-    }
-    echo PHP_EOL;
-}
-
-if(empty($_SERVER['argv']) || count($_SERVER['argv']) === 1){
-    printUsage();
-    exit(1);
-}
-
-if(count($_SERVER['argv']) > 2){
-    printError('"'.basename(__FILE__).'" expects only one argument, '.(count($_SERVER['argv'])-1).' given');
-    printUsage();
-    exit(1);
-}
-
-$sFilePathOrCssString = $_SERVER['argv'][1];
-if(!file_exists($sFilePathOrCssString)){
-   lintString($sFilePathOrCssString);
-}
-
-$sFilePath = $sFilePathOrCssString;
-if(!is_readable($sFilePath)){
-    printError('File "'.$sFilePath.'" is not readable');
-    exit(1);
-}
-lintFile($sFilePath);
-
+exit($iReturnCode);
