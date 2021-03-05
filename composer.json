@@ -28,7 +28,7 @@
   },
   "require-dev": {
     "pcov/clobber": "^2.0",
-    "phpstan/extension-installer": "^1.0",
+    "phpstan/extension-installer": "^1.1",
     "phpstan/phpstan": "^0.12",
     "phpstan/phpstan-phpunit": "^0.12",
     "phpunit/phpunit": "^9.2.5",
