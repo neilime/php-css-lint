@@ -5,9 +5,11 @@ updates:
     schedule:
       interval: weekly
       day: friday
+      time: "04:00"
     versioning-strategy: increase
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: weekly
       day: friday
+      time: "04:00"

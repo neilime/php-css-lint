@@ -4,8 +4,6 @@ on:
   push:
     tags: [v*]
   workflow_dispatch:
-    branches:
-      - main
 
 jobs:
   site:
@@ -39,28 +37,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@master # https://github.com/shivammathur/setup-php
-        with:
-          php-version: 8.0
-          extensions: json
-          coverage: pcov
 
-      - name: Get composer cache directory
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: json
+
+      - name: ♻️ Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - name: Cache composer dependencies
+      - name: ♻️ Cache composer dependencies
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-          composer require clean/phpdoc-md --dev;
+      - name: ⚙️ Install dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
       - name: Configure phpdoc-md
         run: |
@@ -81,7 +77,7 @@ jobs:
             ');
           ";
 
-      - name: Execute phpdoc-md
+      - name: 📃 Execute phpdoc-md
         run: |
           vendor/bin/phpdoc-md -v
           mv ./artifact/site/phpdoc/README.md ./artifact/site/phpdoc/index.md
