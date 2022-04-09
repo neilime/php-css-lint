@@ -3,59 +3,60 @@ name: Continuous integration
 on:
   push:
     branches:
-      - master
-    paths-ignore:
-      - "**.md"
+      - main
   pull_request:
-    paths-ignore:
-      - "**.md"
+    branches:
+      - main
 
 jobs:
   build:
     strategy:
       matrix:
-        operating-system: [ubuntu-latest]
-        php-versions: ["7.4", "8.0"]
-    runs-on: ${{ matrix.operating-system }}
+        include:
+          - php-versions: "7.4"
+          - php-versions: "8.0"
+          - php-versions: "8.1"
+            stable: true
+
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@master #https://github.com/shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring
           coverage: pcov
 
-      - name: Get composer cache directory
+      - name: ♻️ Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - name: Cache composer dependencies
+      - name: ♻️ Cache composer dependencies
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Cache PHPUnit cache
+      - name: ⚙️ Install dependencies
+        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+      - name: ♻️ Test cache
         uses: actions/cache@v3
         with:
           path: tests/.phpunit.result.cache
-          key: ${{ runner.os }}-phpunit-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-phpunit-
+          key: ${{ runner.os }}-test-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-test-
 
-      - name: Install dependencies
-        run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      - name: 🧪 Test
+        run: composer test:ci
 
-      - name: Run tests
-        run: |
-          composer test:ci
-
-      - name: Upload coverage results to Coveralls
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && matrix.php-versions == '8.0'
-        uses: codecov/codecov-action@master
+      - name: 📊 Upload coverage results to Coveralls
+        if: matrix.stable
+        uses: codecov/codecov-action@v3
         with:
           file: ./build/logs/clover.xml
