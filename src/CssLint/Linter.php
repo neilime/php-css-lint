@@ -4,7 +4,6 @@ namespace CssLint;
 
 class Linter
 {
-
     public const CONTEXT_SELECTOR = 'selector';
     public const CONTEXT_SELECTOR_CONTENT = 'selector content';
     public const CONTEXT_NESTED_SELECTOR_CONTENT = 'nested selector content';

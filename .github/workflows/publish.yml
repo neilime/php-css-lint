@@ -38,50 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.1
-          extensions: mbstring
-          coverage: pcov
-
-      - name: ♻️ Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: ♻️ Cache composer dependencies
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: ⚙️ Install dependencies
-        run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-
-      - name: Configure phpdoc-md
+      - name: 📃 Generate PHP documentation
         run: |
-          mkdir -p ./artifact/site/phpdoc;
-
-          php -d display_errors=0 -d error_reporting=0 -r "file_put_contents('.phpdoc-md','<?php
-              return (object)[
-                \'rootNamespace\' => \'CssLint\', 
-                \'destDirectory\' => \'./artifact/site/phpdoc\',
-                \'format\' => \'github\',
-                \'classes\' => '.var_export (array_values(array_filter(
-                    array_keys(require('./vendor/composer/autoload_classmap.php')),
-                    function(\$className) {
-                      return strpos(\$className, 'CssLint') === 0;
-                    }                                  
-                )), true).'
-              ];
-            ');
-          ";
-
-      - name: 📃 Execute phpdoc-md
-        run: |
-          vendor/bin/phpdoc-md -v
-          mv ./artifact/site/phpdoc/README.md ./artifact/site/phpdoc/index.md
+          docker run --rm -v $(pwd):/data phpdoc/phpdoc:3 -d ./src -t ./artifact/site/phpdoc
 
       - uses: actions/upload-artifact@v3
         with:

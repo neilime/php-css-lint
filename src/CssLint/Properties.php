@@ -4,7 +4,6 @@ namespace CssLint;
 
 class Properties
 {
-
     /**
      * List of existing constructor prefix
      * @var array
