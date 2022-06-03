@@ -4,7 +4,6 @@ namespace TestSuite;
 
 class PropertiesTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testShouldReturnTrueWhenGivenStandardPropertyExists()
     {
         $oProperties = new \CssLint\Properties();

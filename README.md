@@ -49,25 +49,27 @@
 
 ## Setup
 
+`PHP_VERSION` is the version of php to use during the development. Example: `8.1`
+
 ```sh
-docker build -t php-css-lint .
-docker run --rm -it -v $(pwd):/app php-css-lint composer install
+make build-php PHP_VERSION
+make install PHP_VERSION
 ```
 
 ## Running tests
 
 ```sh
-docker run --rm -it -v $(pwd):/app php-css-lint composer test
+make test PHP_VERSION
 ```
 
 ## Fix code linting
 
 ```sh
-docker run --rm -it -v $(pwd):/app php-css-lint composer cbf
+make lint-fix PHP_VERSION
 ```
 
 ## Running CI scripts
 
 ```sh
-docker run --rm -it -v $(pwd):/app php-css-lint composer ci
+make ci PHP_VERSION
 ```
