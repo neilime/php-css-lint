@@ -3,7 +3,7 @@
 </p>
 
 [![Continuous integration](https://github.com/neilime/php-css-lint/workflows/Continuous%20integration/badge.svg)](https://github.com/neilime/php-css-lint/actions?query=workflow%3A%22Continuous+integration%22)
-[![codecov](https://codecov.io/gh/neilime/php-css-lint/branch/master/graph/badge.svg?token=eMuwgNub7Z)](https://codecov.io/gh/neilime/php-css-lint)
+[![codecov](https://codecov.io/gh/neilime/php-css-lint/branch/main/graph/badge.svg?token=eMuwgNub7Z)](https://codecov.io/gh/neilime/php-css-lint)
 [![Latest Stable Version](https://poser.pugx.org/neilime/php-css-lint/v/stable)](https://packagist.org/packages/neilime/php-css-lint)
 [![Total Downloads](https://poser.pugx.org/neilime/php-css-lint/downloads)](https://packagist.org/packages/neilime/php-css-lint)
 [![License](https://poser.pugx.org/neilime/php-css-lint/license)](https://packagist.org/packages/neilime/php-css-lint)
@@ -49,7 +49,7 @@
 
 ## Setup
 
-`PHP_VERSION` is the version of php to use during the development. Example: `8.1`
+`PHP_VERSION` is the version of php to use during the development. Example: `8.2`
 
 ```sh
 make build-php PHP_VERSION
