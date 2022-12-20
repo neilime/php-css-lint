@@ -23,10 +23,11 @@
     "issues": "https://github.com/neilime/php-css-lint/issues"
   },
   "require": {
-    "php": "^7.4 || ^8",
+    "php": ">=8.0",
     "ext-json": "*"
   },
   "require-dev": {
+    "mikey179/vfsstream": "^1.6",
     "pcov/clobber": "^2.0",
     "phpstan/extension-installer": "^1.1",
     "phpstan/phpstan": "^0.12",
