@@ -2,6 +2,10 @@
 
 namespace TestSuite;
 
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamFile;
+
 class LinterTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -14,6 +18,11 @@ class LinterTest extends \PHPUnit\Framework\TestCase
      */
     protected $phpVersion;
 
+    /**
+     * @var  vfsStreamDirectory
+     */
+    private $root;
+
     protected function setUp(): void
     {
         $this->linter = new \CssLint\Linter();
@@ -23,6 +32,8 @@ class LinterTest extends \PHPUnit\Framework\TestCase
         } else {
             $this->phpVersion = '7';
         }
+
+        $this->root = vfsStream::setup('testDir');
     }
 
     public function testConstructWithCustomCssLintProperties()
@@ -155,6 +166,21 @@ class LinterTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument "$sFilePath" "wrong" is not an existing file path');
         $this->linter->lintFile('wrong');
+    }
+
+    public function testLintFileWithUnreadableFilePathParam()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument "$sFilePath" "vfs://testDir/foo.txt" is not a readable file path');
+
+        $testFile = new vfsStreamFile('foo.txt', 0000);
+        $this->root->addChild($testFile);
+
+        $fileToLint = $testFile->url();
+
+        $this->assertFileIsNotReadable($fileToLint);
+
+        $this->linter->lintFile($fileToLint);
     }
 
     public function testLintBootstrapCssFile()

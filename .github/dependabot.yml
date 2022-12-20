@@ -1,12 +1,12 @@
 version: 2
 updates:
   - package-ecosystem: composer
+    versioning-strategy: widen
     directory: "/"
     schedule:
       interval: weekly
       day: friday
       time: "04:00"
-    versioning-strategy: increase
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
