@@ -386,9 +386,15 @@ class Linter
         }
 
         if ($sChar === ':') {
-            // Check if property name exists
             $sPropertyName = trim($this->getContextContent());
 
+            // Ignore CSS variables (names starting with --)
+            if (substr($sPropertyName, 0, 2) === '--') {
+                $this->setContext(self::CONTEXT_PROPERTY_CONTENT);
+                return true;
+            }
+            
+            // Check if property name exists
             if (!$this->getCssLintProperties()->propertyExists($sPropertyName)) {
                 $this->addError('Unknown CSS property "' . $sPropertyName . '"');
             }
