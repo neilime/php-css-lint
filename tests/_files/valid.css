@@ -1,4 +1,8 @@
-.button.drodown::after {
+:root {
+  --border-radius: 3px;
+}
+
+.button.dropdown::after {
   display: block;
   width: 0;
   height: 0;
@@ -7,6 +11,7 @@
   border-bottom-width: 0;
   border-top-style: solid;
   border-color: #fefefe transparent transparent;
+  border-radius: var(--border-radius);
   position: relative;
   top: 0.4em;
   display: inline-block;
