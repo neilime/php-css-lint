@@ -402,7 +402,7 @@ class Linter
             return true;
         }
 
-        if (!preg_match('/[-a-zA-Z]+/', $sChar)) {
+        if (!preg_match('/[-a-zA-Z0-9]+/', $sChar)) {
             $this->addError('Unexpected property name token "' . $sChar . '"');
         }
         return true;
