@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
                 <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     </head>
@@ -52,7 +53,7 @@
 <label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
     Menu
 </label>
-<aside class="phpdocumentor-column -four phpdocumentor-sidebar">
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -81,8 +82,9 @@
     </section>
 </aside>
 
-            <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <ul class="phpdocumentor-breadcrumbs">
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                <section>
+                                        <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/csslint.html">CssLint</a></li>
     </ul>
 
@@ -101,6 +103,11 @@
     
     </h2>
 
+<div class="phpdocumentor-label-line">
+
+
+</div>
+
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
@@ -109,16 +116,6 @@
     </aside>
 
         
-    <section class="phpdocumentor-description"></section>
-
-
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
-
 
 
 
@@ -126,46 +123,62 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CssLint-Linter.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+
 </h3>
 
+
+
+
+
+
+
+<h4 id="toc-constants">
+    Constants
+    <a href="classes/CssLint-Linter.html#toc-constants" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/CssLint-Linter.html#constant_CONTEXT_NESTED_SELECTOR_CONTENT">CONTEXT_NESTED_SELECTOR_CONTENT</a>
     <span>
         &nbsp;= &#039;nested selector content&#039;                            </span>
 </dt>
-<dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/CssLint-Linter.html#constant_CONTEXT_PROPERTY_CONTENT">CONTEXT_PROPERTY_CONTENT</a>
     <span>
         &nbsp;= &#039;property content&#039;                            </span>
 </dt>
-<dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/CssLint-Linter.html#constant_CONTEXT_PROPERTY_NAME">CONTEXT_PROPERTY_NAME</a>
     <span>
         &nbsp;= &#039;property name&#039;                            </span>
 </dt>
-<dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/CssLint-Linter.html#constant_CONTEXT_SELECTOR">CONTEXT_SELECTOR</a>
     <span>
         &nbsp;= &#039;selector&#039;                            </span>
 </dt>
-<dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -constant -public">
     <a href="classes/CssLint-Linter.html#constant_CONTEXT_SELECTOR_CONTENT">CONTEXT_SELECTOR_CONTENT</a>
     <span>
         &nbsp;= &#039;selector content&#039;                            </span>
 </dt>
-<dd></dd>
 
-                    <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    </dl>
+
+
+<h4 id="toc-properties">
+    Properties
+    <a href="classes/CssLint-Linter.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a href="classes/CssLint-Linter.html#property_charNumber">$charNumber</a>
     <span>
                         &nbsp;: int            </span>
@@ -228,7 +241,15 @@
 </dt>
 <dd>The previous linted char</dd>
 
-                <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    </dl>
+
+<h4 id="toc-methods">
+    Methods
+    <a href="classes/CssLint-Linter.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CssLint-Linter.html#method___construct">__construct()</a>
     <span>
                                 &nbsp;: mixed    </span>
@@ -480,7 +501,8 @@
 </dt>
 <dd>Set new previous char</dd>
 
-        </dl>
+    </dl>
+
 
 
 
@@ -489,11 +511,13 @@
         <h3 class="phpdocumentor-elements__header" id="constants">
             Constants
             <a href="classes/CssLint-Linter.html#constants" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article class="phpdocumentor-element -constant -public ">
     <h4 class="phpdocumentor-element__name" id="constant_CONTEXT_NESTED_SELECTOR_CONTENT">
         CONTEXT_NESTED_SELECTOR_CONTENT
         <a href="classes/CssLint-Linter.html#constant_CONTEXT_NESTED_SELECTOR_CONTENT" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
 
     <aside class="phpdocumentor-element-found-in">
@@ -512,23 +536,16 @@
 </code>
 
 
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
+    
+    
 
 </article>
                     <article class="phpdocumentor-element -constant -public ">
     <h4 class="phpdocumentor-element__name" id="constant_CONTEXT_PROPERTY_CONTENT">
         CONTEXT_PROPERTY_CONTENT
         <a href="classes/CssLint-Linter.html#constant_CONTEXT_PROPERTY_CONTENT" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
 
     <aside class="phpdocumentor-element-found-in">
@@ -547,23 +564,16 @@
 </code>
 
 
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
+    
+    
 
 </article>
                     <article class="phpdocumentor-element -constant -public ">
     <h4 class="phpdocumentor-element__name" id="constant_CONTEXT_PROPERTY_NAME">
         CONTEXT_PROPERTY_NAME
         <a href="classes/CssLint-Linter.html#constant_CONTEXT_PROPERTY_NAME" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
 
     <aside class="phpdocumentor-element-found-in">
@@ -582,23 +592,16 @@
 </code>
 
 
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
+    
+    
 
 </article>
                     <article class="phpdocumentor-element -constant -public ">
     <h4 class="phpdocumentor-element__name" id="constant_CONTEXT_SELECTOR">
         CONTEXT_SELECTOR
         <a href="classes/CssLint-Linter.html#constant_CONTEXT_SELECTOR" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
 
     <aside class="phpdocumentor-element-found-in">
@@ -617,23 +620,16 @@
 </code>
 
 
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
+    
+    
 
 </article>
                     <article class="phpdocumentor-element -constant -public ">
     <h4 class="phpdocumentor-element__name" id="constant_CONTEXT_SELECTOR_CONTENT">
         CONTEXT_SELECTOR_CONTENT
         <a href="classes/CssLint-Linter.html#constant_CONTEXT_SELECTOR_CONTENT" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
 
     <aside class="phpdocumentor-element-found-in">
@@ -652,17 +648,9 @@
 </code>
 
 
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
+    
+    
 
 </article>
             </section>
@@ -672,6 +660,7 @@
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
             <a href="classes/CssLint-Linter.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="
@@ -683,6 +672,7 @@
     <h4 class="phpdocumentor-element__name" id="property_charNumber">
         $charNumber
         <a href="classes/CssLint-Linter.html#property_charNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -704,12 +694,6 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
 </article>
                     <article
@@ -722,6 +706,7 @@
     <h4 class="phpdocumentor-element__name" id="property_comment">
         $comment
         <a href="classes/CssLint-Linter.html#property_comment" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -743,12 +728,6 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
 </article>
                     <article
@@ -761,6 +740,7 @@
     <h4 class="phpdocumentor-element__name" id="property_context">
         $context
         <a href="classes/CssLint-Linter.html#property_context" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -782,12 +762,6 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
 </article>
                     <article
@@ -800,6 +774,7 @@
     <h4 class="phpdocumentor-element__name" id="property_contextContent">
         $contextContent
         <a href="classes/CssLint-Linter.html#property_contextContent" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -821,12 +796,6 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
 </article>
                     <article
@@ -839,6 +808,7 @@
     <h4 class="phpdocumentor-element__name" id="property_cssLintProperties">
         $cssLintProperties
         <a href="classes/CssLint-Linter.html#property_cssLintProperties" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -860,12 +830,6 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
 </article>
                     <article
@@ -878,6 +842,7 @@
     <h4 class="phpdocumentor-element__name" id="property_errors">
         $errors
         <a href="classes/CssLint-Linter.html#property_errors" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -899,12 +864,6 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
 </article>
                     <article
@@ -917,6 +876,7 @@
     <h4 class="phpdocumentor-element__name" id="property_lineNumber">
         $lineNumber
         <a href="classes/CssLint-Linter.html#property_lineNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -938,12 +898,6 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
 </article>
                     <article
@@ -956,6 +910,7 @@
     <h4 class="phpdocumentor-element__name" id="property_nestedSelector">
         $nestedSelector
         <a href="classes/CssLint-Linter.html#property_nestedSelector" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -979,12 +934,6 @@
 
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
 </article>
                     <article
@@ -997,6 +946,7 @@
     <h4 class="phpdocumentor-element__name" id="property_previousChar">
         $previousChar
         <a href="classes/CssLint-Linter.html#property_previousChar" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -1018,12 +968,6 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
 </article>
             </section>
@@ -1032,6 +976,7 @@
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
             <a href="classes/CssLint-Linter.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="phpdocumentor-element
@@ -1042,6 +987,7 @@
     <h4 class="phpdocumentor-element__name" id="method___construct">
         __construct()
         <a href="classes/CssLint-Linter.html#method___construct" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
@@ -1056,6 +1002,8 @@
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/CssLint-Properties.html"><abbr title="\CssLint\Properties">Properties</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$oProperties</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1071,17 +1019,7 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
     
 </article>
                     <article
@@ -1093,11 +1031,12 @@
     <h4 class="phpdocumentor-element__name" id="method_getCssLintProperties">
         getCssLintProperties()
         <a href="classes/CssLint-Linter.html#method_getCssLintProperties" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">694</span>
+    <span class="phpdocumentor-element-found-in__line">700</span>
 
     </aside>
 
@@ -1107,21 +1046,17 @@
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getCssLintProperties</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Properties.html"><abbr title="\CssLint\Properties">Properties</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Properties.html"><abbr title="\CssLint\Properties">Properties</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Properties.html"><abbr title="\CssLint\Properties">Properties</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1132,11 +1067,12 @@
     <h4 class="phpdocumentor-element__name" id="method_getErrors">
         getErrors()
         <a href="classes/CssLint-Linter.html#method_getErrors" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">639</span>
+    <span class="phpdocumentor-element-found-in__line">645</span>
 
     </aside>
 
@@ -1146,21 +1082,17 @@
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">getErrors</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1171,6 +1103,7 @@
     <h4 class="phpdocumentor-element__name" id="method_lintFile">
         lintFile()
         <a href="classes/CssLint-Linter.html#method_lintFile" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
@@ -1185,6 +1118,8 @@
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">lintFile</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sFilePath</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1202,7 +1137,8 @@
     
     <h5 class="phpdocumentor-tag-list__heading" id="tags">
         Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/CssLint-Linter.html#method_lintFile#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h5>
     <dl class="phpdocumentor-tag-list">
                                     <dt class="phpdocumentor-tag-list__entry">
@@ -1223,13 +1159,15 @@
                                     </dd>
                                             </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the file is a valid css file, else false</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the file is a valid css file, else false</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1240,6 +1178,7 @@
     <h4 class="phpdocumentor-element__name" id="method_lintString">
         lintString()
         <a href="classes/CssLint-Linter.html#method_lintString" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
@@ -1254,6 +1193,8 @@
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">lintString</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sString</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1267,20 +1208,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the string is a valid css string, false else</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the string is a valid css string, false else</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1291,11 +1228,12 @@
     <h4 class="phpdocumentor-element__name" id="method_setCssLintProperties">
         setCssLintProperties()
         <a href="classes/CssLint-Linter.html#method_setCssLintProperties" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">705</span>
+    <span class="phpdocumentor-element-found-in__line">711</span>
 
     </aside>
 
@@ -1305,6 +1243,8 @@
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">setCssLintProperties</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/CssLint-Properties.html"><abbr title="\CssLint\Properties">Properties</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$oCssLintProperties</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1313,23 +1253,12 @@
                 : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/CssLint-Properties.html"><abbr title="\CssLint\Properties">Properties</abbr></a></span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
+                
             </dd>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">void</span>
-            &mdash;
-        
     
 </article>
                     <article
@@ -1341,11 +1270,12 @@
     <h4 class="phpdocumentor-element__name" id="method_addContextContent">
         addContextContent()
         <a href="classes/CssLint-Linter.html#method_addContextContent" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">618</span>
+    <span class="phpdocumentor-element-found-in__line">624</span>
 
     </aside>
 
@@ -1355,6 +1285,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">addContextContent</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sContextContent</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1368,18 +1300,12 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1390,11 +1316,12 @@
     <h4 class="phpdocumentor-element__name" id="method_addError">
         addError()
         <a href="classes/CssLint-Linter.html#method_addError" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">629</span>
+    <span class="phpdocumentor-element-found-in__line">635</span>
 
     </aside>
 
@@ -1404,6 +1331,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">addError</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sError</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1417,18 +1346,12 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1439,11 +1362,12 @@
     <h4 class="phpdocumentor-element__name" id="method_assertContext">
         assertContext()
         <a href="classes/CssLint-Linter.html#method_assertContext" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">561</span>
+    <span class="phpdocumentor-element-found-in__line">567</span>
 
     </aside>
 
@@ -1453,6 +1377,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">assertContext</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string|array&lt;string|int, mixed&gt;|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sContext</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1466,18 +1392,12 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type">bool</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1488,11 +1408,12 @@
     <h4 class="phpdocumentor-element__name" id="method_assertPreviousChar">
         assertPreviousChar()
         <a href="classes/CssLint-Linter.html#method_assertPreviousChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">481</span>
+    <span class="phpdocumentor-element-found-in__line">487</span>
 
     </aside>
 
@@ -1502,6 +1423,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">assertPreviousChar</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1515,18 +1438,12 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type">bool</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1537,11 +1454,12 @@
     <h4 class="phpdocumentor-element__name" id="method_getCharNumber">
         getCharNumber()
         <a href="classes/CssLint-Linter.html#method_getCharNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">471</span>
+    <span class="phpdocumentor-element-found-in__line">477</span>
 
     </aside>
 
@@ -1551,21 +1469,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">getCharNumber</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type">int</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1576,11 +1490,12 @@
     <h4 class="phpdocumentor-element__name" id="method_getContextContent">
         getContextContent()
         <a href="classes/CssLint-Linter.html#method_getContextContent" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">598</span>
+    <span class="phpdocumentor-element-found-in__line">604</span>
 
     </aside>
 
@@ -1590,21 +1505,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">getContextContent</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type">string</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1615,11 +1526,12 @@
     <h4 class="phpdocumentor-element__name" id="method_getLineNumber">
         getLineNumber()
         <a href="classes/CssLint-Linter.html#method_getLineNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">511</span>
+    <span class="phpdocumentor-element-found-in__line">517</span>
 
     </aside>
 
@@ -1629,21 +1541,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">getLineNumber</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type">int</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1654,11 +1562,12 @@
     <h4 class="phpdocumentor-element__name" id="method_incrementCharNumber">
         incrementCharNumber()
         <a href="classes/CssLint-Linter.html#method_incrementCharNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">550</span>
+    <span class="phpdocumentor-element-found-in__line">556</span>
 
     </aside>
 
@@ -1668,21 +1577,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">incrementCharNumber</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1693,11 +1598,12 @@
     <h4 class="phpdocumentor-element__name" id="method_incrementLineNumber">
         incrementLineNumber()
         <a href="classes/CssLint-Linter.html#method_incrementLineNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">520</span>
+    <span class="phpdocumentor-element-found-in__line">526</span>
 
     </aside>
 
@@ -1707,21 +1613,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">incrementLineNumber</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1732,6 +1634,7 @@
     <h4 class="phpdocumentor-element__name" id="method_initLint">
         initLint()
         <a href="classes/CssLint-Linter.html#method_initLint" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
@@ -1746,21 +1649,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">initLint</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1771,11 +1670,12 @@
     <h4 class="phpdocumentor-element__name" id="method_isComment">
         isComment()
         <a href="classes/CssLint-Linter.html#method_isComment" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">676</span>
+    <span class="phpdocumentor-element-found-in__line">682</span>
 
     </aside>
 
@@ -1785,21 +1685,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">isComment</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type">bool</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1810,11 +1706,12 @@
     <h4 class="phpdocumentor-element__name" id="method_isEndOfLine">
         isEndOfLine()
         <a href="classes/CssLint-Linter.html#method_isEndOfLine" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">462</span>
+    <span class="phpdocumentor-element-found-in__line">468</span>
 
     </aside>
 
@@ -1824,6 +1721,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">isEndOfLine</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1837,20 +1736,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the char is an end of line token, else false</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the char is an end of line token, else false</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1861,11 +1756,12 @@
     <h4 class="phpdocumentor-element__name" id="method_isNestedSelector">
         isNestedSelector()
         <a href="classes/CssLint-Linter.html#method_isNestedSelector" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">658</span>
+    <span class="phpdocumentor-element-found-in__line">664</span>
 
     </aside>
 
@@ -1875,21 +1771,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">isNestedSelector</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type">bool</span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1900,6 +1792,7 @@
     <h4 class="phpdocumentor-element__name" id="method_lintChar">
         lintChar()
         <a href="classes/CssLint-Linter.html#method_lintChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
@@ -1914,6 +1807,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">lintChar</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1927,20 +1822,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the process should continue, else false</p>
+        <span class="phpdocumentor-signature__response_type">bool</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the process should continue, else false</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -1951,6 +1842,7 @@
     <h4 class="phpdocumentor-element__name" id="method_lintCommentChar">
         lintCommentChar()
         <a href="classes/CssLint-Linter.html#method_lintCommentChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
@@ -1965,6 +1857,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">lintCommentChar</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -1978,20 +1872,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not about comment</p>
+        <span class="phpdocumentor-signature__response_type">bool|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not about comment</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2002,11 +1892,12 @@
     <h4 class="phpdocumentor-element__name" id="method_lintNestedSelectorChar">
         lintNestedSelectorChar()
         <a href="classes/CssLint-Linter.html#method_lintNestedSelectorChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">446</span>
+    <span class="phpdocumentor-element-found-in__line">452</span>
 
     </aside>
 
@@ -2016,6 +1907,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">lintNestedSelectorChar</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2029,20 +1922,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not a nested selector</p>
+        <span class="phpdocumentor-signature__response_type">bool|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not a nested selector</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2053,11 +1942,12 @@
     <h4 class="phpdocumentor-element__name" id="method_lintPropertyContentChar">
         lintPropertyContentChar()
         <a href="classes/CssLint-Linter.html#method_lintPropertyContentChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">416</span>
+    <span class="phpdocumentor-element-found-in__line">422</span>
 
     </aside>
 
@@ -2067,6 +1957,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">lintPropertyContentChar</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2080,20 +1972,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not a property content</p>
+        <span class="phpdocumentor-signature__response_type">bool|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not a property content</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2104,6 +1992,7 @@
     <h4 class="phpdocumentor-element__name" id="method_lintPropertyNameChar">
         lintPropertyNameChar()
         <a href="classes/CssLint-Linter.html#method_lintPropertyNameChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
@@ -2118,6 +2007,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">lintPropertyNameChar</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2131,20 +2022,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not a property name</p>
+        <span class="phpdocumentor-signature__response_type">bool|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not a property name</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2155,6 +2042,7 @@
     <h4 class="phpdocumentor-element__name" id="method_lintSelectorChar">
         lintSelectorChar()
         <a href="classes/CssLint-Linter.html#method_lintSelectorChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
@@ -2169,6 +2057,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">lintSelectorChar</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2182,20 +2072,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not about selector</p>
+        <span class="phpdocumentor-signature__response_type">bool|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not about selector</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2206,6 +2092,7 @@
     <h4 class="phpdocumentor-element__name" id="method_lintSelectorContentChar">
         lintSelectorContentChar()
         <a href="classes/CssLint-Linter.html#method_lintSelectorContentChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
@@ -2220,6 +2107,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">lintSelectorContentChar</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool|null</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2233,20 +2122,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">bool|null</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not a selector content</p>
+        <span class="phpdocumentor-signature__response_type">bool|null</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>: true if the process should continue, else false, null if this char is not a selector content</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2257,11 +2142,12 @@
     <h4 class="phpdocumentor-element__name" id="method_resetCharNumber">
         resetCharNumber()
         <a href="classes/CssLint-Linter.html#method_resetCharNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">540</span>
+    <span class="phpdocumentor-element-found-in__line">546</span>
 
     </aside>
 
@@ -2271,21 +2157,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">resetCharNumber</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2296,11 +2178,12 @@
     <h4 class="phpdocumentor-element__name" id="method_resetContext">
         resetContext()
         <a href="classes/CssLint-Linter.html#method_resetContext" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">578</span>
+    <span class="phpdocumentor-element-found-in__line">584</span>
 
     </aside>
 
@@ -2310,21 +2193,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">resetContext</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2335,11 +2214,12 @@
     <h4 class="phpdocumentor-element__name" id="method_resetContextContent">
         resetContextContent()
         <a href="classes/CssLint-Linter.html#method_resetContextContent" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">607</span>
+    <span class="phpdocumentor-element-found-in__line">613</span>
 
     </aside>
 
@@ -2349,21 +2229,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">resetContextContent</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2374,11 +2250,12 @@
     <h4 class="phpdocumentor-element__name" id="method_resetErrors">
         resetErrors()
         <a href="classes/CssLint-Linter.html#method_resetErrors" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">648</span>
+    <span class="phpdocumentor-element-found-in__line">654</span>
 
     </aside>
 
@@ -2388,21 +2265,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">resetErrors</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2413,11 +2286,12 @@
     <h4 class="phpdocumentor-element__name" id="method_resetLineNumber">
         resetLineNumber()
         <a href="classes/CssLint-Linter.html#method_resetLineNumber" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">530</span>
+    <span class="phpdocumentor-element-found-in__line">536</span>
 
     </aside>
 
@@ -2427,21 +2301,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">resetLineNumber</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2452,11 +2322,12 @@
     <h4 class="phpdocumentor-element__name" id="method_resetPreviousChar">
         resetPreviousChar()
         <a href="classes/CssLint-Linter.html#method_resetPreviousChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">490</span>
+    <span class="phpdocumentor-element-found-in__line">496</span>
 
     </aside>
 
@@ -2466,21 +2337,17 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">resetPreviousChar</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2491,11 +2358,12 @@
     <h4 class="phpdocumentor-element__name" id="method_setComment">
         setComment()
         <a href="classes/CssLint-Linter.html#method_setComment" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">685</span>
+    <span class="phpdocumentor-element-found-in__line">691</span>
 
     </aside>
 
@@ -2505,6 +2373,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">setComment</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$bComment</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2518,17 +2388,7 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">void</span>
-            &mdash;
-        
     
 </article>
                     <article
@@ -2540,11 +2400,12 @@
     <h4 class="phpdocumentor-element__name" id="method_setContext">
         setContext()
         <a href="classes/CssLint-Linter.html#method_setContext" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">588</span>
+    <span class="phpdocumentor-element-found-in__line">594</span>
 
     </aside>
 
@@ -2554,6 +2415,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">setContext</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sContext</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2567,18 +2430,12 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -2589,11 +2446,12 @@
     <h4 class="phpdocumentor-element__name" id="method_setNestedSelector">
         setNestedSelector()
         <a href="classes/CssLint-Linter.html#method_setNestedSelector" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">667</span>
+    <span class="phpdocumentor-element-found-in__line">673</span>
 
     </aside>
 
@@ -2603,6 +2461,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">setNestedSelector</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$bNestedSelector</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2616,17 +2476,7 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">void</span>
-            &mdash;
-        
     
 </article>
                     <article
@@ -2638,11 +2488,12 @@
     <h4 class="phpdocumentor-element__name" id="method_setPreviousChar">
         setPreviousChar()
         <a href="classes/CssLint-Linter.html#method_setPreviousChar" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Linter.php"><a href="files/src-csslint-linter.html"><abbr title="src/CssLint/Linter.php">Linter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">501</span>
+    <span class="phpdocumentor-element-found-in__line">507</span>
 
     </aside>
 
@@ -2652,6 +2503,8 @@
     <span class="phpdocumentor-signature__visibility">protected</span>
                     <span class="phpdocumentor-signature__name">setPreviousChar</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sChar</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -2665,18 +2518,12 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
-            &mdash;
-        
-    
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a></span>
+            </section>
+
 </article>
             </section>
 
@@ -2773,7 +2620,94 @@
     </script>
 
     </article>
-                <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+                                </section>
+                <section class="phpdocumentor-on-this-page__sidebar">
+                                
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
+        <ul class="phpdocumentor-list -clean">
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                        <li><a href="classes/CssLint-Linter.html#toc-constants">Constants</a></li>
+                                                            <li><a href="classes/CssLint-Linter.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/CssLint-Linter.html#toc-methods">Methods</a></li>
+                                    </ul>
+            </li>
+                            <li class="phpdocumentor-on-this-page-section__title">Constants</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                                                    <li><a href="classes/CssLint-Linter.html#constant_CONTEXT_NESTED_SELECTOR_CONTENT">CONTEXT_NESTED_SELECTOR_CONTENT</a></li>
+                                                    <li><a href="classes/CssLint-Linter.html#constant_CONTEXT_PROPERTY_CONTENT">CONTEXT_PROPERTY_CONTENT</a></li>
+                                                    <li><a href="classes/CssLint-Linter.html#constant_CONTEXT_PROPERTY_NAME">CONTEXT_PROPERTY_NAME</a></li>
+                                                    <li><a href="classes/CssLint-Linter.html#constant_CONTEXT_SELECTOR">CONTEXT_SELECTOR</a></li>
+                                                    <li><a href="classes/CssLint-Linter.html#constant_CONTEXT_SELECTOR_CONTENT">CONTEXT_SELECTOR_CONTENT</a></li>
+                                            </ul>
+                </li>
+            
+                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                                                    <li><a href="classes/CssLint-Linter.html#property_charNumber">$charNumber<a href="classes/CssLint-Linter.html"></li>
+                                                    <li><a href="classes/CssLint-Linter.html#property_comment">$comment<a href="classes/CssLint-Linter.html"></li>
+                                                    <li><a href="classes/CssLint-Linter.html#property_context">$context<a href="classes/CssLint-Linter.html"></li>
+                                                    <li><a href="classes/CssLint-Linter.html#property_contextContent">$contextContent<a href="classes/CssLint-Linter.html"></li>
+                                                    <li><a href="classes/CssLint-Linter.html#property_cssLintProperties">$cssLintProperties<a href="classes/CssLint-Linter.html"></li>
+                                                    <li><a href="classes/CssLint-Linter.html#property_errors">$errors<a href="classes/CssLint-Linter.html"></li>
+                                                    <li><a href="classes/CssLint-Linter.html#property_lineNumber">$lineNumber<a href="classes/CssLint-Linter.html"></li>
+                                                    <li><a href="classes/CssLint-Linter.html#property_nestedSelector">$nestedSelector<a href="classes/CssLint-Linter.html"></li>
+                                                    <li><a href="classes/CssLint-Linter.html#property_previousChar">$previousChar<a href="classes/CssLint-Linter.html"></li>
+                                            </ul>
+                </li>
+            
+                        <li class="phpdocumentor-on-this-page-section__title">Methods</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                            <li><a href="classes/CssLint-Linter.html#method___construct">__construct()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_getCssLintProperties">getCssLintProperties()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_getErrors">getErrors()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_lintFile">lintFile()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_lintString">lintString()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_setCssLintProperties">setCssLintProperties()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_addContextContent">addContextContent()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_addError">addError()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_assertContext">assertContext()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_assertPreviousChar">assertPreviousChar()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_getCharNumber">getCharNumber()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_getContextContent">getContextContent()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_getLineNumber">getLineNumber()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_incrementCharNumber">incrementCharNumber()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_incrementLineNumber">incrementLineNumber()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_initLint">initLint()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_isComment">isComment()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_isEndOfLine">isEndOfLine()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_isNestedSelector">isNestedSelector()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_lintChar">lintChar()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_lintCommentChar">lintCommentChar()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_lintNestedSelectorChar">lintNestedSelectorChar()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_lintPropertyContentChar">lintPropertyContentChar()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_lintPropertyNameChar">lintPropertyNameChar()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_lintSelectorChar">lintSelectorChar()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_lintSelectorContentChar">lintSelectorContentChar()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_resetCharNumber">resetCharNumber()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_resetContext">resetContext()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_resetContextContent">resetContextContent()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_resetErrors">resetErrors()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_resetLineNumber">resetLineNumber()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_resetPreviousChar">resetPreviousChar()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_setComment">setComment()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_setContext">setContext()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_setNestedSelector">setNestedSelector()</a></li>
+                                            <li><a href="classes/CssLint-Linter.html#method_setPreviousChar">setPreviousChar()</a></li>
+                                    </ul>
+            </li>
+                    </ul>
+    </section>
+
+                </section>
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
             <h2 class="phpdocumentor-search-results__title">Search results</h2>
@@ -2784,7 +2718,6 @@
         </section>
     </section>
 </section>
-            </div>
         </div>
         <a href="classes/CssLint-Linter.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 

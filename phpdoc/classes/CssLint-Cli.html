@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/base.css">
             <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@100;200;300;400;600;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/template.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" integrity="sha256-ybRkN9dBjhcS2qrW1z+hfCxq+1aBdwyQM5wlQoQVt/0=" crossorigin="anonymous" />
@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-highlight/prism-line-highlight.css">
                 <script src="https://cdn.jsdelivr.net/npm/fuse.js@3.4.6"></script>
         <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+        <script src="js/template.js"></script>
         <script src="js/search.js"></script>
         <script defer src="js/searchIndex.js"></script>
     </head>
@@ -52,7 +53,7 @@
 <label class="phpdocumentor-sidebar__menu-icon" for="sidebar-button">
     Menu
 </label>
-<aside class="phpdocumentor-column -four phpdocumentor-sidebar">
+<aside class="phpdocumentor-column -three phpdocumentor-sidebar">
                     <section class="phpdocumentor-sidebar__category">
             <h2 class="phpdocumentor-sidebar__category-header">Namespaces</h2>
                                     <h4 class="phpdocumentor-sidebar__root-namespace">
@@ -81,8 +82,9 @@
     </section>
 </aside>
 
-            <div class="phpdocumentor-column -eight phpdocumentor-content">
-                    <ul class="phpdocumentor-breadcrumbs">
+            <div class="phpdocumentor-column -nine phpdocumentor-content">
+                                <section>
+                                        <ul class="phpdocumentor-breadcrumbs">
             <li class="phpdocumentor-breadcrumb"><a href="namespaces/csslint.html">CssLint</a></li>
     </ul>
 
@@ -101,6 +103,11 @@
     
     </h2>
 
+<div class="phpdocumentor-label-line">
+
+
+</div>
+
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Cli.php"><a href="files/src-csslint-cli.html"><abbr title="src/CssLint/Cli.php">Cli.php</abbr></a></abbr>
     :
@@ -109,16 +116,6 @@
     </aside>
 
         
-    <section class="phpdocumentor-description"></section>
-
-
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
-
 
 
 
@@ -126,32 +123,51 @@
 
 <h3 id="toc">
     Table of Contents
-    <a href="#toc" class="headerlink"><i class="fas fa-link"></i></a>
+    <a href="classes/CssLint-Cli.html#toc" class="headerlink"><i class="fas fa-link"></i></a>
+
 </h3>
 
+
+
+
+
+
+
+
+
+<h4 id="toc-properties">
+    Properties
+    <a href="classes/CssLint-Cli.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
 <dl class="phpdocumentor-table-of-contents">
-                    <dt class="phpdocumentor-table-of-contents__entry -property -private">
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/CssLint-Cli.html#property_RETURN_CODE_ERROR">$RETURN_CODE_ERROR</a>
     <span>
                         &nbsp;: mixed            </span>
 </dt>
-<dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/CssLint-Cli.html#property_RETURN_CODE_SUCCESS">$RETURN_CODE_SUCCESS</a>
     <span>
                         &nbsp;: mixed            </span>
 </dt>
-<dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/CssLint-Cli.html#property_SCRIPT_NAME">$SCRIPT_NAME</a>
     <span>
                         &nbsp;: mixed            </span>
 </dt>
-<dd></dd>
 
-                <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    </dl>
+
+<h4 id="toc-methods">
+    Methods
+    <a href="classes/CssLint-Cli.html#toc-methods" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/CssLint-Cli.html#method_run">run()</a>
     <span>
                                 &nbsp;: int    </span>
@@ -207,7 +223,8 @@
 </dt>
 <dd>Display usage of the cli</dd>
 
-        </dl>
+    </dl>
+
 
 
 
@@ -218,6 +235,7 @@
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
             <a href="classes/CssLint-Cli.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="
@@ -229,6 +247,7 @@
     <h4 class="phpdocumentor-element__name" id="property_RETURN_CODE_ERROR">
         $RETURN_CODE_ERROR
         <a href="classes/CssLint-Cli.html#property_RETURN_CODE_ERROR" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -246,17 +265,9 @@
     <span class="phpdocumentor-signature__name">$RETURN_CODE_ERROR</span>
      = <span class="phpdocumentor-signature__default-value">1</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
+    
+    
 
 </article>
                     <article
@@ -269,6 +280,7 @@
     <h4 class="phpdocumentor-element__name" id="property_RETURN_CODE_SUCCESS">
         $RETURN_CODE_SUCCESS
         <a href="classes/CssLint-Cli.html#property_RETURN_CODE_SUCCESS" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -286,17 +298,9 @@
     <span class="phpdocumentor-signature__name">$RETURN_CODE_SUCCESS</span>
      = <span class="phpdocumentor-signature__default-value">0</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
+    
+    
 
 </article>
                     <article
@@ -309,6 +313,7 @@
     <h4 class="phpdocumentor-element__name" id="property_SCRIPT_NAME">
         $SCRIPT_NAME
         <a href="classes/CssLint-Cli.html#property_SCRIPT_NAME" class="headerlink"><i class="fas fa-link"></i></a>
+
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -326,17 +331,9 @@
     <span class="phpdocumentor-signature__name">$SCRIPT_NAME</span>
      = <span class="phpdocumentor-signature__default-value">&#039;php-css-lint&#039;</span></code>
 
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
+    
+    
 
 </article>
             </section>
@@ -345,6 +342,7 @@
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
             <a href="classes/CssLint-Cli.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+
         </h3>
                     <article
         class="phpdocumentor-element
@@ -355,6 +353,7 @@
     <h4 class="phpdocumentor-element__name" id="method_run">
         run()
         <a href="classes/CssLint-Cli.html#method_run" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Cli.php"><a href="files/src-csslint-cli.html"><abbr title="src/CssLint/Cli.php">Cli.php</abbr></a></abbr>
@@ -369,6 +368,8 @@
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">run</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$aArguments</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -384,20 +385,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>the return code related to the execution of the linter</p>
+        <span class="phpdocumentor-signature__response_type">int</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>the return code related to the execution of the linter</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -408,6 +405,7 @@
     <h4 class="phpdocumentor-element__name" id="method_displayLinterErrors">
         displayLinterErrors()
         <a href="classes/CssLint-Cli.html#method_displayLinterErrors" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Cli.php"><a href="files/src-csslint-cli.html"><abbr title="src/CssLint/Cli.php">Cli.php</abbr></a></abbr>
@@ -422,6 +420,8 @@
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">displayLinterErrors</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$aErrors</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -437,17 +437,7 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
     
 </article>
                     <article
@@ -459,6 +449,7 @@
     <h4 class="phpdocumentor-element__name" id="method_lintFile">
         lintFile()
         <a href="classes/CssLint-Cli.html#method_lintFile" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Cli.php"><a href="files/src-csslint-cli.html"><abbr title="src/CssLint/Cli.php">Cli.php</abbr></a></abbr>
@@ -473,6 +464,8 @@
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">lintFile</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$oCssLinter</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sFilePath</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -497,20 +490,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>the return code related to the execution of the linter</p>
+        <span class="phpdocumentor-signature__response_type">int</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>the return code related to the execution of the linter</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -521,6 +510,7 @@
     <h4 class="phpdocumentor-element__name" id="method_lintString">
         lintString()
         <a href="classes/CssLint-Cli.html#method_lintString" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Cli.php"><a href="files/src-csslint-cli.html"><abbr title="src/CssLint/Cli.php">Cli.php</abbr></a></abbr>
@@ -535,6 +525,8 @@
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">lintString</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/CssLint-Linter.html"><abbr title="\CssLint\Linter">Linter</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$oCssLinter</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sString</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -559,20 +551,16 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">int</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>the return code related to the execution of the linter</p>
+        <span class="phpdocumentor-signature__response_type">int</span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>the return code related to the execution of the linter</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -583,6 +571,7 @@
     <h4 class="phpdocumentor-element__name" id="method_parseArguments">
         parseArguments()
         <a href="classes/CssLint-Cli.html#method_parseArguments" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Cli.php"><a href="files/src-csslint-cli.html"><abbr title="src/CssLint/Cli.php">Cli.php</abbr></a></abbr>
@@ -597,6 +586,8 @@
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">parseArguments</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$aArguments</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-CliArgs.html"><abbr title="\CssLint\CliArgs">CliArgs</abbr></a></span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -605,26 +596,21 @@
                 : <span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, mixed&gt;</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
+                
             </dd>
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
+            <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-CliArgs.html"><abbr title="\CssLint\CliArgs">CliArgs</abbr></a></span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>an instance of Cli arguments object containing parsed arguments</p>
+        <span class="phpdocumentor-signature__response_type"><a href="classes/CssLint-CliArgs.html"><abbr title="\CssLint\CliArgs">CliArgs</abbr></a></span>
+                    &mdash;
+                <section class="phpdocumentor-description"><p>an instance of Cli arguments object containing parsed arguments</p>
 </section>
 
-    
+            </section>
+
 </article>
                     <article
         class="phpdocumentor-element
@@ -635,6 +621,7 @@
     <h4 class="phpdocumentor-element__name" id="method_printError">
         printError()
         <a href="classes/CssLint-Cli.html#method_printError" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Cli.php"><a href="files/src-csslint-cli.html"><abbr title="src/CssLint/Cli.php">Cli.php</abbr></a></abbr>
@@ -649,6 +636,8 @@
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">printError</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sError</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -664,17 +653,7 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
     
 </article>
                     <article
@@ -686,6 +665,7 @@
     <h4 class="phpdocumentor-element__name" id="method_printLine">
         printLine()
         <a href="classes/CssLint-Cli.html#method_printLine" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Cli.php"><a href="files/src-csslint-cli.html"><abbr title="src/CssLint/Cli.php">Cli.php</abbr></a></abbr>
@@ -700,6 +680,8 @@
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">printLine</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$sMessage</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
@@ -715,17 +697,7 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
     
 </article>
                     <article
@@ -737,6 +709,7 @@
     <h4 class="phpdocumentor-element__name" id="method_printUsage">
         printUsage()
         <a href="classes/CssLint-Cli.html#method_printUsage" class="headerlink"><i class="fas fa-link"></i></a>
+
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/CssLint/Cli.php"><a href="files/src-csslint-cli.html"><abbr title="src/CssLint/Cli.php">Cli.php</abbr></a></abbr>
@@ -751,20 +724,12 @@
     <span class="phpdocumentor-signature__visibility">private</span>
                     <span class="phpdocumentor-signature__name">printUsage</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
+    <div class="phpdocumentor-label-line">
+        </div>
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                </dl>
 
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-        
     
 </article>
             </section>
@@ -862,7 +827,49 @@
     </script>
 
     </article>
-                <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
+                                </section>
+                <section class="phpdocumentor-on-this-page__sidebar">
+                                
+    <section class="phpdocumentor-on-this-page__content">
+        <strong class="phpdocumentor-on-this-page__title">On this page</strong>
+
+        <ul class="phpdocumentor-list -clean">
+            <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                                            <li><a href="classes/CssLint-Cli.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/CssLint-Cli.html#toc-methods">Methods</a></li>
+                                    </ul>
+            </li>
+            
+                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                                                    <li><a href="classes/CssLint-Cli.html#property_RETURN_CODE_ERROR">$RETURN_CODE_ERROR<a href="classes/CssLint-Cli.html"></li>
+                                                    <li><a href="classes/CssLint-Cli.html#property_RETURN_CODE_SUCCESS">$RETURN_CODE_SUCCESS<a href="classes/CssLint-Cli.html"></li>
+                                                    <li><a href="classes/CssLint-Cli.html#property_SCRIPT_NAME">$SCRIPT_NAME<a href="classes/CssLint-Cli.html"></li>
+                                            </ul>
+                </li>
+            
+                        <li class="phpdocumentor-on-this-page-section__title">Methods</li>
+            <li>
+                <ul class="phpdocumentor-list -clean">
+                                            <li><a href="classes/CssLint-Cli.html#method_run">run()</a></li>
+                                            <li><a href="classes/CssLint-Cli.html#method_displayLinterErrors">displayLinterErrors()</a></li>
+                                            <li><a href="classes/CssLint-Cli.html#method_lintFile">lintFile()</a></li>
+                                            <li><a href="classes/CssLint-Cli.html#method_lintString">lintString()</a></li>
+                                            <li><a href="classes/CssLint-Cli.html#method_parseArguments">parseArguments()</a></li>
+                                            <li><a href="classes/CssLint-Cli.html#method_printError">printError()</a></li>
+                                            <li><a href="classes/CssLint-Cli.html#method_printLine">printLine()</a></li>
+                                            <li><a href="classes/CssLint-Cli.html#method_printUsage">printUsage()</a></li>
+                                    </ul>
+            </li>
+                    </ul>
+    </section>
+
+                </section>
+                            </div>
+            <section data-search-results class="phpdocumentor-search-results phpdocumentor-search-results--hidden">
     <section class="phpdocumentor-search-results__dialog">
         <header class="phpdocumentor-search-results__header">
             <h2 class="phpdocumentor-search-results__title">Search results</h2>
@@ -873,7 +880,6 @@
         </section>
     </section>
 </section>
-            </div>
         </div>
         <a href="classes/CssLint-Cli.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
