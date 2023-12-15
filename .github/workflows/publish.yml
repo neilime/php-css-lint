@@ -27,7 +27,7 @@ jobs:
           echo -e "---\nlayout: default\ntitle: Usage\n---\n" > ./artifact/site/usage/index.md
           echo "$(sed -r s"/(\{%[^%]+%\})/{% raw %}\1{% endraw %}/g" ./docs/usage.md)" >> ./artifact/site/usage/index.md
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: artifact
           path: ./artifact
@@ -42,7 +42,7 @@ jobs:
         run: |
           docker run --rm -v $(pwd):/data phpdoc/phpdoc:3 -d ./src -t ./artifact/site/phpdoc
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: artifact
           path: ./artifact
