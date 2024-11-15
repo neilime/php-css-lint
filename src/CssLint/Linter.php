@@ -393,7 +393,7 @@ class Linter
                 $this->setContext(self::CONTEXT_PROPERTY_CONTENT);
                 return true;
             }
-            
+
             // Check if property name exists
             if (!$this->getCssLintProperties()->propertyExists($sPropertyName)) {
                 $this->addError('Unknown CSS property "' . $sPropertyName . '"');

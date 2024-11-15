@@ -1,7 +1,10 @@
 .git/
 nbproject/
-vendor/
-build/
-.phpdoc/
-**/*.cache
+vendor
+tools/vendor
 **/composer.lock
+**/tests/.phpunit.result.cache
+**/build/
+# From tools/cache/.gitignore
+tools/cache/**/*
+!tools/cache/**/.gitignore

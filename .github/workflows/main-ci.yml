@@ -1,0 +1,110 @@
+name: Main - Continuous Integration
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  ci:
+    name: Continuous Integration
+    uses: ./.github/workflows/__shared-ci.yml
+    secrets: inherit
+
+  docs-generate-site:
+    runs-on: ubuntu-latest
+    needs: ci
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p ./_site
+
+          echo -e "theme: jekyll-theme-cayman" > ./_site/_config.yml
+
+          to_title_case() {
+              echo "$1" | awk '{
+                  for (i=1; i<=NF; i++) {
+                      $i = toupper(substr($i, 1, 1)) tolower(substr($i, 2))
+                  }
+                  print
+              }'
+          }
+
+          create_site_page() {
+              page="$1"
+              title="$(to_title_case "$2")"
+              content_path="$3"
+              echo -e "---\nlayout: default\ntitle: $title\n---\n" > "$page"
+              echo "$(sed -r s"/(\{%[^%]+%\})/{% raw %}\1{% endraw %}/g" "$content_path")" >> "$page"
+          }
+
+          create_site_page "./_site/index.md" "Home" "./README.md"
+
+          for filepath in ./docs/*.md; do
+              filename=$(basename -- "$filepath")
+              section="${filename%.*}"
+              mkdir -p "./_site/$section"
+              create_site_page "./_site/$section/index.md" "$section" "$filepath"
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docs-site
+          path: ./_site
+
+  docs-generate-phpdoc:
+    runs-on: ubuntu-latest
+    needs: ci
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 📃 Generate PHP documentation
+        run: docker run --rm -v $(pwd):/data phpdoc/phpdoc:3 -d ./src -t ./_site/phpdoc
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docs-phpdoc
+          path: ./_site
+
+  docs-publish:
+    name: Publish documentation
+    needs: [docs-generate-site, docs-generate-phpdoc]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: 'docs-*'
+          path: ./
+          merge-multiple: true        
+
+      - name: ⚙️ Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
