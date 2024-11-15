@@ -90,7 +90,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(1, $this->cli->run([
             'php-css-lint',
             '--options={ "allowedIndentationChars": ["\t"] }',
-            '.test { display: block; }'
+            '.test { display: block; }',
         ]));
     }
 
@@ -103,7 +103,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(1, $this->cli->run([
             'php-css-lint',
             '--options={ "allowedIndentationChars":  }',
-            '.test { display: block; }'
+            '.test { display: block; }',
         ]));
     }
 }

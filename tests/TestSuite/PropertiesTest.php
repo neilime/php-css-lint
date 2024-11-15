@@ -114,7 +114,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($oProperties->isAllowedIndentationChar("\t"));
 
         $oProperties->setOptions([
-            'allowedIndentationChars' => ["\t"]
+            'allowedIndentationChars' => ["\t"],
         ]);
         $this->assertTrue($oProperties->isAllowedIndentationChar("\t"));
     }
@@ -125,7 +125,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($oProperties->propertyExists('-new-font-smoothing'));
 
         $oProperties->setOptions([
-            'constructors' => ['new' => true]
+            'constructors' => ['new' => true],
         ]);
         $this->assertTrue($oProperties->propertyExists('-new-font-smoothing'));
     }
@@ -136,7 +136,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($oProperties->propertyExists('new-content'));
 
         $oProperties->setOptions([
-            'standards' => ['new-content' => true]
+            'standards' => ['new-content' => true],
         ]);
         $this->assertTrue($oProperties->propertyExists('new-content'));
     }
@@ -147,7 +147,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($oProperties->propertyExists('-moz-new-content'));
 
         $oProperties->setOptions([
-            'nonStandards' => ['new-content' => true]
+            'nonStandards' => ['new-content' => true],
         ]);
         $this->assertTrue($oProperties->propertyExists('-moz-new-content'));
     }

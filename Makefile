@@ -1,30 +1,50 @@
+PHP_VERSION=8.3
+PROJECT_NAME=$(shell basename $(CURDIR))
+UID=$(shell id -u)
+GID=$(shell id -g)
+IMAGE="${PROJECT_NAME}:${PHP_VERSION}"
+
 .PHONY: help
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-build-php: ## Build PHP image for given version
-	@echo "Build php $(filter-out $@,$(MAKECMDGOALS))"
-	@DOCKER_BUILDKIT=1 docker build -t "twbs-helper-php:$(filter-out $@,$(MAKECMDGOALS))" --build-arg "VERSION=$(filter-out $@,$(MAKECMDGOALS))" .
+setup: build-php install ## Initialize project
 
-install:
-	@$(call run-php,$(filter-out $@,$(MAKECMDGOALS)) composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader)
+build-php: ## Build PHP image
+	@echo "Build php ${PHP_VERSION}"
+	@DOCKER_BUILDKIT=1 docker build -t "${IMAGE}" --build-arg "VERSION=${PHP_VERSION}" --build-arg "UID=${UID}" --build-arg "GID=${GID}" .
 
-shell:
-	@$(call run-php,$(filter-out $@,$(MAKECMDGOALS)) bash)
+install: ## Install PHP dependencies for given PHP version
+	rm -f composer.lock
+	@$(call run-php,composer install --no-progress --prefer-dist --optimize-autoloader)
+	rm -f tools/composer.lock
+	@$(call run-php,composer --working-dir=tools install --no-progress --prefer-dist --optimize-autoloader)
 
-test:
-	@$(call run-php,$(filter-out $@,$(MAKECMDGOALS)) composer test)
+shell: ## Execute shell in given PHP version container
+	@$(call run-php,bash)
 
-lint-fix:
-	@$(call run-php,$(filter-out $@,$(MAKECMDGOALS)) composer cbf)
+test: ## Execute tests for given PHP version
+	@$(call run-php,composer test $(filter-out $@,$(MAKECMDGOALS)))
 
-ci:
-	@$(call run-php,$(filter-out $@,$(MAKECMDGOALS)) composer ci)
+test-update: ## Execute tests and update snapshots for given PHP version
+	@$(call run-php,composer test:update-snapshot $(filter-out $@,$(MAKECMDGOALS)))
+
+lint: ## Execute lint for given PHP version
+	@$(call run-php,composer php-cs-fixer $(filter-out $@,$(MAKECMDGOALS)))
+
+lint-fix: ## Execute lint fixing for given PHP version
+	@$(call run-php,composer php-cs-fixer:fix $(filter-out $@,$(MAKECMDGOALS)))
+
+stan: ## Execute PHPStan for given PHP version
+	@$(call run-php,composer stan $(filter-out $@,$(MAKECMDGOALS)))
+
+ci: ## Execute CI scripts for given PHP version
+	@$(call run-php,composer ci $(filter-out $@,$(MAKECMDGOALS)))
 
 ## Run PHP for given version
 define run-php
-	@docker run -it --rm -u $(shell id -u):$(shell id -g) -v ${PWD}:/usr/src/app -w /usr/src/app twbs-helper-php:$(1)
+	@docker run -it --rm -v ${PWD}:${PWD} -w ${PWD} "${IMAGE}" $(1)
 endef
 
 #############################

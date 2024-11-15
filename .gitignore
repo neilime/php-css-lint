@@ -1,6 +1,6 @@
 /nbproject/
-/vendor/
-/build/
-/.phpdoc/
-*.cache
+/vendor
+/tools/vendor
 composer.lock
+tests/.phpunit.result.cache
+build/

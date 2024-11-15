@@ -92,7 +92,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($this->linter->lintString('* {'));
         $this->assertSame([
-            'Unterminated "selector content" (line: 1, char: 3)'
+            'Unterminated "selector content" (line: 1, char: 3)',
         ], $this->linter->getErrors());
     }
 
@@ -100,7 +100,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($this->linter->lintString('a,, {}'));
         $this->assertSame([
-            'Selector token "," cannot be preceded by "a," (line: 1, char: 3)'
+            'Selector token "," cannot be preceded by "a," (line: 1, char: 3)',
         ], $this->linter->getErrors());
     }
 
@@ -108,7 +108,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($this->linter->lintString('## {}'));
         $this->assertSame([
-            'Selector token "#" cannot be preceded by "#" (line: 1, char: 2)'
+            'Selector token "#" cannot be preceded by "#" (line: 1, char: 2)',
         ], $this->linter->getErrors());
     }
 
@@ -119,7 +119,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
 }'));
         $this->assertSame([
             'Unexpected property name token "~" (line: 2, char: 10)',
-            'Unknown CSS property "test~" (line: 2, char: 11)'
+            'Unknown CSS property "test~" (line: 2, char: 11)',
         ], $this->linter->getErrors());
     }
 
@@ -127,7 +127,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertFalse($this->linter->lintString('.a| {}'));
         $this->assertSame([
-            'Unexpected selector token "|" (line: 1, char: 3)'
+            'Unexpected selector token "|" (line: 1, char: 3)',
         ], $this->linter->getErrors());
     }
 
@@ -173,7 +173,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument "$sFilePath" "vfs://testDir/foo.txt" is not a readable file path');
 
-        $testFile = new vfsStreamFile('foo.txt', 0000);
+        $testFile = new vfsStreamFile('foo.txt', 0o000);
         $this->root->addChild($testFile);
 
         $fileToLint = $testFile->url();
@@ -204,7 +204,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->linter->lintFile(__DIR__ .  '/../_files/not_valid.css'));
         $this->assertSame([
             'Unknown CSS property "bordr-top-style" (line: 8, char: 20)',
-            'Unterminated "selector content" (line: 17, char: 0)'
+            'Unterminated "selector content" (line: 17, char: 0)',
         ], $this->linter->getErrors());
     }
 }
