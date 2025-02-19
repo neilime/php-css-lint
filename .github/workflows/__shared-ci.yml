@@ -24,30 +24,30 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: none,iconv,dom,curl,mbstring,tokenizer,xml,xmlwriter,simplexml,ctype
           coverage: pcov
-  
+
       - name: ♻️ Get composer cache directory
         id: composer-cache
         shell: bash
         run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
-  
+
       - name: ♻️ Cache composer dependencies
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
-  
+
       - name: ⚙️ Install dependencies
         shell: bash
         run: |
           composer install --no-progress --prefer-dist --optimize-autoloader
           composer --working-dir=tools install --no-progress --prefer-dist --optimize-autoloader
-  
+
       - name: ♻️ Tools cache
         uses: actions/cache@v4
         with:
           path: tools/cache
-          key: ${{ runner.os }}-tools-${{ github.sha }}
+          key: ${{ runner.os }}-tools-${{ matrix.php-versions }}-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-tools-
 
@@ -55,9 +55,14 @@ jobs:
         if: matrix.stable
         run: composer php-cs-fixer -- --format=checkstyle | tools/vendor/bin/cs2pr
 
+      - name: 🔬 Rector
+        id: rector
+        if: matrix.stable
+        run: composer rector
+
       - name: 🔬 Static analysis
         if: matrix.stable
-        run: composer stan -- --error-format=checkstyle | tools/vendor/bin/cs2pr
+        run: composer phpstan -- --error-format=github
 
       - name: ♻️ Tests cache
         uses: actions/cache@v4
@@ -66,7 +71,7 @@ jobs:
           key: ${{ runner.os }}-tests-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-tests-
-      
+
       - name: 🧪 Test
         run: composer test:ci
 

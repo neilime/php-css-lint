@@ -34,10 +34,16 @@ lint: ## Execute lint for given PHP version
 	@$(call run-php,composer php-cs-fixer $(filter-out $@,$(MAKECMDGOALS)))
 
 lint-fix: ## Execute lint fixing for given PHP version
-	@$(call run-php,composer php-cs-fixer:fix $(filter-out $@,$(MAKECMDGOALS)))
+	@$(call run-php,composer php-cs-fixer:fix $(filter-out $@,$(MAKECMDGOALS)))	
 
-stan: ## Execute PHPStan for given PHP version
-	@$(call run-php,composer stan $(filter-out $@,$(MAKECMDGOALS)))
+rector: ## Execute rector for given PHP version
+	@$(call run-php,composer rector $(filter-out $@,$(MAKECMDGOALS)))
+
+rector-fix: ## Execute rector fixing for given PHP version
+	@$(call run-php,composer rector:fix $(filter-out $@,$(MAKECMDGOALS)))
+
+phpstan: ## Execute PHPStan for given PHP version
+	@$(call run-php,composer phpstan $(filter-out $@,$(MAKECMDGOALS)))
 
 ci: ## Execute CI scripts for given PHP version
 	@$(call run-php,composer ci $(filter-out $@,$(MAKECMDGOALS)))

@@ -54,28 +54,28 @@ class CliTest extends \PHPUnit\Framework\TestCase
 
     public function testRunWithValidFileShouldReturnSuccessCode()
     {
-        $sFileToLint = realpath(__DIR__ .  '/../_files/valid.css');
+        $fileToLint = realpath(__DIR__ .  '/../_files/valid.css');
         $this->expectOutputString(
-            "# Lint CSS file \"$sFileToLint\"..." . PHP_EOL .
-                "\033[32m => CSS file \"$sFileToLint\" is valid\033[0m" . PHP_EOL .
+            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
+                "\033[32m => CSS file \"$fileToLint\" is valid\033[0m" . PHP_EOL .
                 PHP_EOL
         );
-        $this->assertEquals(0, $this->cli->run(['php-css-lint', $sFileToLint]));
+        $this->assertEquals(0, $this->cli->run(['php-css-lint', $fileToLint]));
     }
 
     public function testRunWithNotValidFileShouldReturnErrorCode()
     {
-        $sFileToLint = realpath(__DIR__ .  '/../_files/not_valid.css');
+        $fileToLint = realpath(__DIR__ .  '/../_files/not_valid.css');
 
         $this->expectOutputString(
-            "# Lint CSS file \"$sFileToLint\"..." . PHP_EOL .
-                "\033[31m => CSS file \"$sFileToLint\" is not valid:\033[0m" . PHP_EOL .
+            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
+                "\033[31m => CSS file \"$fileToLint\" is not valid:\033[0m" . PHP_EOL .
                 PHP_EOL .
                 "\033[31m    - Unknown CSS property \"bordr-top-style\" (line: 8, char: 20)\033[0m" . PHP_EOL .
                 "\033[31m    - Unterminated \"selector content\" (line: 17, char: 0)\033[0m" . PHP_EOL .
                 PHP_EOL
         );
-        $this->assertEquals(1, $this->cli->run(['php-css-lint', $sFileToLint]));
+        $this->assertEquals(1, $this->cli->run(['php-css-lint', $fileToLint]));
     }
 
     public function testRunWithOptionsMustBeUsedByTheLinter()

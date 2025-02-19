@@ -44,32 +44,4 @@
 2. [Usage](https://neilime.github.io/php-css-lint/usage)
 3. [Code Coverage](https://codecov.io/gh/neilime/php-css-lint)
 4. [PHP Doc](https://neilime.github.io/php-css-lint/phpdoc)
-
-# Development
-
-## Setup
-
-`PHP_VERSION` is the version of php to use during the development. Example: `8.2`
-
-```sh
-make build-php PHP_VERSION
-make install PHP_VERSION
-```
-
-## Running tests
-
-```sh
-make test PHP_VERSION
-```
-
-## Fix code linting
-
-```sh
-make lint-fix PHP_VERSION
-```
-
-## Running CI scripts
-
-```sh
-make ci PHP_VERSION
-```
+5. [Development](https://neilime.github.io/php-css-lint/development)

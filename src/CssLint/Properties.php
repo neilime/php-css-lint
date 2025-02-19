@@ -1,12 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CssLint;
 
+/**
+ * @phpstan-type PropertiesOptions array{
+ *  allowedIndentationChars?: AllowedIndentationChars,
+ *  constructors?: Constructors,
+ *  standards?: Standards,
+ *  nonStandards?: NonStandards
+ * }
+ *
+ * @phpstan-type AllowedIndentationChars array<string>
+ * @phpstan-type Constructors array<string, bool>
+ * @phpstan-type Standards array<string, bool>
+ * @phpstan-type NonStandards array<string, bool>
+ *
+ */
 class Properties
 {
     /**
      * List of existing constructor prefix
-     * @var array
+     * @var Constructors
      */
     protected $constructors = [
         'ms' => true,
@@ -18,7 +34,7 @@ class Properties
     /**
      * List of existing css properties
      * https://www.w3.org/Style/CSS/all-properties.en.html
-     * @var array
+     * @var Standards
      */
     protected $standards = [
         'align-content' => true,
@@ -451,7 +467,7 @@ class Properties
 
     /**
      * List of non standards properties
-     * @var array
+     * @var NonStandards
      */
     protected $nonStandards = [
         'font-smoothing' => true,
@@ -464,68 +480,70 @@ class Properties
 
     /**
      * List of allowed indentation chars
-     * @var array
+     * @var AllowedIndentationChars
      */
     protected $allowedIndentationChars = [' '];
 
     /**
-     * Override default properties
+     * @param PropertiesOptions $options Override default properties
      * "allowedIndentationChars" => [" "] or ["\t"]: will override current property
      * "constructors": ["property" => bool]: will merge with current property
      * "standards": ["property" => bool]: will merge with current property
      * "nonStandards": ["property" => bool]: will merge with current property
      */
-    public function setOptions(array $aOptions = [])
+    public function setOptions(array $options = []): void
     {
-        if (isset($aOptions['allowedIndentationChars'])) {
-            $this->setAllowedIndentationChars($aOptions['allowedIndentationChars']);
+        if (isset($options['allowedIndentationChars'])) {
+            $this->setAllowedIndentationChars($options['allowedIndentationChars']);
         }
 
-        if (isset($aOptions['constructors'])) {
-            $this->mergeConstructors($aOptions['constructors']);
+        if (isset($options['constructors'])) {
+            $this->mergeConstructors($options['constructors']);
         }
 
-        if (isset($aOptions['standards'])) {
-            $this->mergeStandards($aOptions['standards']);
+        if (isset($options['standards'])) {
+            $this->mergeStandards($options['standards']);
         }
 
-        if (isset($aOptions['nonStandards'])) {
-            $this->mergeNonStandards($aOptions['nonStandards']);
+        if (isset($options['nonStandards'])) {
+            $this->mergeNonStandards($options['nonStandards']);
         }
     }
 
     /**
      * Checks that the given CSS property is an existing one
-     * @param string $sProperty the property to check
+     * @param string $property the property to check
      * @return boolean true if the property exists, else returns false
      */
-    public function propertyExists(string $sProperty): bool
+    public function propertyExists(string $property): bool
     {
-        if (!empty($this->standards[$sProperty])) {
+        if (!empty($this->standards[$property])) {
             return true;
         }
 
-        $aAllowedConstrutors = array_keys(array_filter($this->constructors));
-        $sPropertyWithoutConstructor = preg_replace(
-            '/^(-(' . join('|', $aAllowedConstrutors) . ')-)/',
+        $allowedConstrutors = array_keys(array_filter($this->constructors));
+        $propertyWithoutConstructor = preg_replace(
+            '/^(-(' . implode('|', $allowedConstrutors) . ')-)/',
             '',
-            $sProperty
+            $property
         );
 
-        if ($sPropertyWithoutConstructor !== $sProperty) {
-            if (!empty($this->standards[$sPropertyWithoutConstructor])) {
+        if ($propertyWithoutConstructor !== $property) {
+            if (!empty($this->standards[$propertyWithoutConstructor])) {
                 return true;
             }
-            if (!empty($this->nonStandards[$sPropertyWithoutConstructor])) {
+
+            if (!empty($this->nonStandards[$propertyWithoutConstructor])) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
      * Retrieve indentation chars allowed by the linter
-     * @return array a list of allowed indentation chars
+     * @return AllowedIndentationChars a list of allowed indentation chars
      */
     public function getAllowedIndentationChars(): array
     {
@@ -534,47 +552,47 @@ class Properties
 
     /**
      * Define the indentation chars allowed by the linter
-     * @param array $aAllowedIndentationChars a list of allowed indentation chars
+     * @param AllowedIndentationChars $allowedIndentationChars a list of allowed indentation chars
      */
-    public function setAllowedIndentationChars(array $aAllowedIndentationChars)
+    public function setAllowedIndentationChars(array $allowedIndentationChars): void
     {
-        $this->allowedIndentationChars = $aAllowedIndentationChars;
+        $this->allowedIndentationChars = $allowedIndentationChars;
     }
 
     /**
      * Check if the given char is allowed as an indentation char
-     * @param string $sChar the character to be checked
+     * @param string $charValue the character to be checked
      * @return bool according to whether the character is allowed or not
      */
-    public function isAllowedIndentationChar(string $sChar): bool
+    public function isAllowedIndentationChar(string $charValue): bool
     {
-        return in_array($sChar, $this->allowedIndentationChars, true);
+        return in_array($charValue, $this->allowedIndentationChars, true);
     }
 
     /**
      * Merge the given constructors properties with the current ones
-     * @param array $aConstructors the constructors properties to be merged
+     * @param Constructors $constructors the constructors properties to be merged
      */
-    public function mergeConstructors(array $aConstructors)
+    public function mergeConstructors(array $constructors): void
     {
-        $this->constructors = array_merge($this->constructors, $aConstructors);
+        $this->constructors = array_merge($this->constructors, $constructors);
     }
 
     /**
      * Merge the given standards properties with the current ones
-     * @param array $aStandards the standards properties to be merged
+     * @param Standards $standards the standards properties to be merged
      */
-    public function mergeStandards(array $aStandards)
+    public function mergeStandards(array $standards): void
     {
-        $this->standards = array_merge($this->standards, $aStandards);
+        $this->standards = array_merge($this->standards, $standards);
     }
 
     /**
      * Merge the given non standards properties with the current ones
-     * @param array $aNonStandards non the standards properties to be merged
+     * @param NonStandards $nonStandards non the standards properties to be merged
      */
-    public function mergeNonStandards(array $aNonStandards)
+    public function mergeNonStandards(array $nonStandards): void
     {
-        $this->nonStandards = array_merge($this->nonStandards, $aNonStandards);
+        $this->nonStandards = array_merge($this->nonStandards, $nonStandards);
     }
 }
