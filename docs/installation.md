@@ -3,5 +3,5 @@
 ## With composer
 
 ```sh
-php composer.phar install php-css-lint
+composer require neilime/php-css-lint
 ```
