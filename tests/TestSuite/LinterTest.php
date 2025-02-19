@@ -14,11 +14,6 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     protected $linter;
 
     /**
-     * @var string
-     */
-    protected $phpVersion;
-
-    /**
      * @var  vfsStreamDirectory
      */
     private $root;
@@ -26,21 +21,15 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         $this->linter = new \CssLint\Linter();
-        $sPhpVersion = phpversion();
-        if (version_compare($sPhpVersion, '8.0.0', '>=')) {
-            $this->phpVersion = '8';
-        } else {
-            $this->phpVersion = '7';
-        }
 
         $this->root = vfsStream::setup('testDir');
     }
 
     public function testConstructWithCustomCssLintProperties()
     {
-        $oProperties = new \CssLint\Properties();
-        $oLinter = new \CssLint\Linter($oProperties);
-        $this->assertSame($oProperties, $oLinter->getCssLintProperties());
+        $properties = new \CssLint\Properties();
+        $linter = new \CssLint\Linter($properties);
+        $this->assertSame($properties, $linter->getCssLintProperties());
     }
 
     public function testLintValidString()
@@ -81,9 +70,14 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     public function testLintValidStringContainingTabs()
     {
         $this->linter->getCssLintProperties()->setAllowedIndentationChars(["\t"]);
-        $this->assertTrue($this->linter->lintString("\t\t" . '.button.dropdown::after {
+        $this->assertTrue(
+            $this->linter->lintString(
+                "\t\t" . '.button.dropdown::after {
 ' . "\t\t" . 'display: block;
-' . "\t\t" . '}'), print_r($this->linter->getErrors(), true));
+' . "\t\t" . '}'
+            ),
+            print_r($this->linter->getErrors(), true)
+        );
 
         $this->linter->getCssLintProperties()->setAllowedIndentationChars([' ']);
     }
@@ -134,30 +128,18 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     public function testLintStringWithWrongTypeParam()
     {
         $this->expectException(\TypeError::class);
-        if ($this->phpVersion == '8') {
-            $this->expectExceptionMessage(
-                'CssLint\Linter::lintString(): Argument #1 ($sString) must be of type string, array given'
-            );
-        } else {
-            $this->expectExceptionMessage(
-                'Argument 1 passed to CssLint\Linter::lintString() must be of the type string, array given'
-            );
-        }
+        $this->expectExceptionMessage(
+            'CssLint\Linter::lintString(): Argument #1 ($stringValue) must be of type string, array given'
+        );
         $this->linter->lintString(['wrong']);
     }
 
     public function testLintFileWithWrongTypeParam()
     {
         $this->expectException(\TypeError::class);
-        if ($this->phpVersion == '8') {
-            $this->expectExceptionMessage(
-                'CssLint\Linter::lintFile(): Argument #1 ($sFilePath) must be of type string, array given'
-            );
-        } else {
-            $this->expectExceptionMessage(
-                'Argument 1 passed to CssLint\Linter::lintFile() must be of the type string, array given'
-            );
-        }
+        $this->expectExceptionMessage(
+            'CssLint\Linter::lintFile(): Argument #1 ($sFilePath) must be of type string, array given'
+        );
         $this->linter->lintFile(['wrong']);
     }
 

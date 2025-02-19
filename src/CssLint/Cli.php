@@ -1,77 +1,92 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CssLint;
 
+/**
+ * @phpstan-import-type Errors from \CssLint\Linter
+ * @package CssLint
+ */
 class Cli
 {
-    private static $SCRIPT_NAME = 'php-css-lint';
-    private static $RETURN_CODE_ERROR = 1;
-    private static $RETURN_CODE_SUCCESS = 0;
+    private const SCRIPT_NAME = 'php-css-lint';
+
+    private const RETURN_CODE_ERROR = 1;
+
+    private const RETURN_CODE_SUCCESS = 0;
 
     /**
      * Entrypoint of the cli, will execute the linter according to the given arguments
-     * @param array $aArguments arguments to be parsed (@see $_SERVER['argv'])
+     * @param string[] $arguments arguments to be parsed (@see $_SERVER['argv'])
      * @return int the return code related to the execution of the linter
      **/
-    public function run(array $aArguments): int
+    public function run(array $arguments): int
     {
-        $oCliArgs = $this->parseArguments($aArguments);
-        if (!$oCliArgs->filePathOrCssString) {
+        $cliArgs = $this->parseArguments($arguments);
+        if ($cliArgs->filePathOrCssString === null || $cliArgs->filePathOrCssString === '' || $cliArgs->filePathOrCssString === '0') {
             $this->printUsage();
-            return self::$RETURN_CODE_SUCCESS;
+            return self::RETURN_CODE_SUCCESS;
         }
 
-        $oProperties = new \CssLint\Properties();
-        if ($oCliArgs->options) {
-            $aOptions = json_decode($oCliArgs->options, true);
+        $properties = new \CssLint\Properties();
+        if ($cliArgs->options !== null && $cliArgs->options !== '' && $cliArgs->options !== '0') {
+            $options = json_decode($cliArgs->options, true);
 
-            if (json_last_error()) {
-                $sErrorMessage = json_last_error_msg();
-                $this->printError('Unable to parse option argument: ' . $sErrorMessage);
-                return self::$RETURN_CODE_ERROR;
+            if (json_last_error() !== 0) {
+                $errorMessage = json_last_error_msg();
+                $this->printError('Unable to parse option argument: ' . $errorMessage);
+                return self::RETURN_CODE_ERROR;
             }
 
-            if (!$aOptions) {
+            if (!$options) {
                 $this->printError('Unable to parse empty option argument');
-                return self::$RETURN_CODE_ERROR;
+                return self::RETURN_CODE_ERROR;
             }
-            $oProperties->setOptions($aOptions);
+
+            if (!is_array($options)) {
+                $this->printError('Unable to parse option argument: must be a json object');
+                return self::RETURN_CODE_ERROR;
+            }
+
+            $properties->setOptions($options);
         }
 
-        $oCssLinter = new \CssLint\Linter($oProperties);
+        $cssLinter = new \CssLint\Linter($properties);
 
-        $sFilePathOrCssString = $oCliArgs->filePathOrCssString;
-        if (!file_exists($sFilePathOrCssString)) {
-            return $this->lintString($oCssLinter, $sFilePathOrCssString);
+        $filePathOrCssString = $cliArgs->filePathOrCssString;
+        if (!file_exists($filePathOrCssString)) {
+            return $this->lintString($cssLinter, $filePathOrCssString);
         }
 
-        $sFilePath = $sFilePathOrCssString;
-        if (!is_readable($sFilePath)) {
-            $this->printError('File "' . $sFilePath . '" is not readable');
-            return self::$RETURN_CODE_ERROR;
+        $filePath = $filePathOrCssString;
+        if (!is_readable($filePath)) {
+            $this->printError('File "' . $filePath . '" is not readable');
+            return self::RETURN_CODE_ERROR;
         }
 
-        return $this->lintFile($oCssLinter, $sFilePath);
+        return $this->lintFile($cssLinter, $filePath);
     }
 
     /**
      * Retrieve the parsed Cli arguments from given arguments array
+     * @param string[] $arguments arguments to be parsed (@see $_SERVER['argv'])
      * @return \CssLint\CliArgs an instance of Cli arguments object containing parsed arguments
      */
-    private function parseArguments(array $aArguments): \CssLint\CliArgs
+    private function parseArguments(array $arguments): \CssLint\CliArgs
     {
-        return new \CssLint\CliArgs($aArguments);
+        return new \CssLint\CliArgs($arguments);
     }
 
     /**
      * Display usage of the cli
      */
-    private function printUsage()
+    private function printUsage(): void
     {
         $this->printLine('Usage:' . PHP_EOL .
             '------' . PHP_EOL .
             PHP_EOL .
-            '  ' . self::$SCRIPT_NAME . ' [--options=\'{ }\'] css_file_or_string_to_lint' . PHP_EOL .
+            '  ' . self::SCRIPT_NAME . " [--options='{ }'] css_file_or_string_to_lint" . PHP_EOL .
             PHP_EOL .
             'Arguments:' . PHP_EOL .
             '----------' . PHP_EOL .
@@ -95,83 +110,84 @@ class Cli
             '---------' . PHP_EOL .
             PHP_EOL .
             '  Lint a CSS file:' . PHP_EOL .
-            '    ' . self::$SCRIPT_NAME . ' ./path/to/css_file_path_to_lint.css' . PHP_EOL . PHP_EOL .
+            '    ' . self::SCRIPT_NAME . ' ./path/to/css_file_path_to_lint.css' . PHP_EOL . PHP_EOL .
             '  Lint a CSS string:' . PHP_EOL .
-            '    ' . self::$SCRIPT_NAME . ' ".test { color: red; }"' . PHP_EOL .  PHP_EOL .
+            '    ' . self::SCRIPT_NAME . ' ".test { color: red; }"' . PHP_EOL .  PHP_EOL .
             '  Lint with only tabulation as indentation:' . PHP_EOL .
-            '    ' . self::$SCRIPT_NAME .
+            '    ' . self::SCRIPT_NAME .
             ' --options=\'{ "allowedIndentationChars": ["\t"] }\' ".test { color: red; }"' . PHP_EOL .
             PHP_EOL . PHP_EOL);
     }
 
     /**
      * Performs lint on a given file path
-     * @param \CssLint\Linter $oCssLinter the instance of the linter
-     * @param string $sFilePath the path of the file to be linted
+     * @param \CssLint\Linter $cssLinter the instance of the linter
+     * @param string $filePath the path of the file to be linted
      * @return int the return code related to the execution of the linter
      */
-    private function lintFile(\CssLint\Linter $oCssLinter, string $sFilePath): int
+    private function lintFile(\CssLint\Linter $cssLinter, string $filePath): int
     {
-        $this->printLine('# Lint CSS file "' . $sFilePath . '"...');
+        $this->printLine('# Lint CSS file "' . $filePath . '"...');
 
-        if ($oCssLinter->lintFile($sFilePath)) {
-            $this->printLine("\033[32m => CSS file \"" . $sFilePath . "\" is valid\033[0m" . PHP_EOL);
-            return self::$RETURN_CODE_SUCCESS;
+        if ($cssLinter->lintFile($filePath)) {
+            $this->printLine("\033[32m => CSS file \"" . $filePath . "\" is valid\033[0m" . PHP_EOL);
+            return self::RETURN_CODE_SUCCESS;
         }
 
-        $this->printLine("\033[31m => CSS file \"" . $sFilePath . "\" is not valid:\033[0m" . PHP_EOL);
-        $this->displayLinterErrors($oCssLinter->getErrors());
-        return self::$RETURN_CODE_ERROR;
+        $this->printLine("\033[31m => CSS file \"" . $filePath . "\" is not valid:\033[0m" . PHP_EOL);
+        $this->displayLinterErrors($cssLinter->getErrors());
+        return self::RETURN_CODE_ERROR;
     }
 
 
     /**
      * Performs lint on a given string
-     * @param \CssLint\Linter $oCssLinter the instance of the linter
-     * @param string $sString the CSS string to be linted
+     * @param \CssLint\Linter $cssLinter the instance of the linter
+     * @param string $stringValue the CSS string to be linted
      * @return int the return code related to the execution of the linter
      */
-    private function lintString(\CssLint\Linter $oCssLinter, string $sString): int
+    private function lintString(\CssLint\Linter $cssLinter, string $stringValue): int
     {
         $this->printLine('# Lint CSS string...');
 
-        if ($oCssLinter->lintString($sString)) {
+        if ($cssLinter->lintString($stringValue)) {
             $this->printLine("\033[32m => CSS string is valid\033[0m" . PHP_EOL);
-            return self::$RETURN_CODE_SUCCESS;
+            return self::RETURN_CODE_SUCCESS;
         }
 
         $this->printLine("\033[31m => CSS string is not valid:\033[0m" . PHP_EOL);
-        $this->displayLinterErrors($oCssLinter->getErrors());
-        return self::$RETURN_CODE_ERROR;
+        $this->displayLinterErrors($cssLinter->getErrors());
+        return self::RETURN_CODE_ERROR;
     }
 
     /**
      * Display an error message
-     * @param string $sError the message to be displayed
+     * @param string $error the message to be displayed
      */
-    private function printError(string $sError)
+    private function printError(string $error): void
     {
-        $this->printLine("\033[31m/!\ Error: " . $sError . "\033[0m" . PHP_EOL);
+        $this->printLine("\033[31m/!\ Error: " . $error . "\033[0m" . PHP_EOL);
     }
 
     /**
      * Display the errors returned by the linter
-     * @param array $aErrors the generated errors to be displayed
+     * @param Errors $errors the generated errors to be displayed
      */
-    private function displayLinterErrors(array $aErrors)
+    private function displayLinterErrors(array $errors): void
     {
-        foreach ($aErrors as $sError) {
-            $this->printLine("\033[31m    - " . $sError . "\033[0m");
+        foreach ($errors as $error) {
+            $this->printLine("\033[31m    - " . $error . "\033[0m");
         }
+
         $this->printLine("");
     }
 
     /**
      * Display the given message in a new line
-     * @param string $sMessage the message to be displayed
+     * @param string $message the message to be displayed
      */
-    private function printLine(string $sMessage)
+    private function printLine(string $message): void
     {
-        echo $sMessage . PHP_EOL;
+        echo $message . PHP_EOL;
     }
 }
