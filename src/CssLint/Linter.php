@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CssLint;
 
+use InvalidArgumentException;
+use RuntimeException;
+
 /**
  * @package CssLint
  * @phpstan-type Errors array<string>
@@ -24,7 +27,7 @@ class Linter
 
     /**
      * Class to provide css properties knowledge
-     * @var \CssLint\Properties|null
+     * @var Properties|null
      */
     protected $cssLintProperties;
 
@@ -78,11 +81,11 @@ class Linter
 
     /**
      * Constructor
-     * @param \CssLint\Properties $oProperties (optional) an instance of the "\CssLint\Properties" helper
+     * @param Properties $oProperties (optional) an instance of the "\CssLint\Properties" helper
      */
-    public function __construct(\CssLint\Properties $oProperties = null)
+    public function __construct(?Properties $oProperties = null)
     {
-        if ($oProperties instanceof \CssLint\Properties) {
+        if ($oProperties instanceof Properties) {
             $this->setCssLintProperties($oProperties);
         }
     }
@@ -114,20 +117,20 @@ class Linter
      * Performs lint for a given file path
      * @param string $sFilePath : a path of an existing and readable file
      * @return boolean : true if the file is a valid css file, else false
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function lintFile(string $sFilePath): bool
     {
         if (!file_exists($sFilePath)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Argument "$sFilePath" "%s" is not an existing file path',
                 $sFilePath
             ));
         }
 
         if (!is_readable($sFilePath)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Argument "$sFilePath" "%s" is not a readable file path',
                 $sFilePath
             ));
@@ -135,7 +138,7 @@ class Linter
 
         $rFileHandle = fopen($sFilePath, 'r');
         if ($rFileHandle === false) {
-            throw new \RuntimeException('An error occurred while opening file "' . $sFilePath . '"');
+            throw new RuntimeException('An error occurred while opening file "' . $sFilePath . '"');
         }
 
         $this->initLint();
@@ -148,7 +151,7 @@ class Linter
         }
 
         if (!feof($rFileHandle)) {
-            throw new \RuntimeException('An error occurred while reading file "' . $sFilePath . '"');
+            throw new RuntimeException('An error occurred while reading file "' . $sFilePath . '"');
         }
 
         fclose($rFileHandle);
@@ -694,19 +697,19 @@ class Linter
     /**
      * Return an instance of the "\CssLint\Properties" helper, initialize a new one if not define already
      */
-    public function getCssLintProperties(): \CssLint\Properties
+    public function getCssLintProperties(): Properties
     {
         if ($this->cssLintProperties) {
             return $this->cssLintProperties;
         }
 
-        return $this->cssLintProperties = new \CssLint\Properties();
+        return $this->cssLintProperties = new Properties();
     }
 
     /**
      * Set an instance of the "\CssLint\Properties" helper
      */
-    public function setCssLintProperties(\CssLint\Properties $cssLintProperties): self
+    public function setCssLintProperties(Properties $cssLintProperties): self
     {
         $this->cssLintProperties = $cssLintProperties;
         return $this;

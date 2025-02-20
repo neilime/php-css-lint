@@ -2,21 +2,23 @@
 
 namespace TestSuite;
 
-class CliTest extends \PHPUnit\Framework\TestCase
+use CssLint\Cli;
+use PHPUnit\Framework\TestCase;
+
+class CliTest extends TestCase
 {
-    /**
-     * @var \CssLint\Cli
-     */
-    protected $cli;
+    private $testFilesDir;
 
     /**
-     * @var string
+     * @var Cli
      */
-    protected $phpVersion;
+    private $cli;
 
     protected function setUp(): void
     {
-        $this->cli = new \CssLint\Cli();
+        $this->testFilesDir =  realpath(__DIR__ . '/../_files');
+
+        $this->cli = new Cli();
     }
 
     public function testRunWithoutArgumentMustReturnsErrorCode()
@@ -34,7 +36,11 @@ class CliTest extends \PHPUnit\Framework\TestCase
                 "\033[32m => CSS string is valid\033[0m" . PHP_EOL .
                 PHP_EOL
         );
-        $this->assertEquals(0, $this->cli->run(['php-css-lint', '.test { display: block; }']));
+        $this->assertEquals(
+            0,
+            $this->cli->run(['php-css-lint', '.test { display: block; }']),
+            $this->getActualOutput()
+        );
     }
 
     public function testRunWithNotValidStringShouldReturnErrorCode()
@@ -54,7 +60,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
 
     public function testRunWithValidFileShouldReturnSuccessCode()
     {
-        $fileToLint = realpath(__DIR__ .  '/../_files/valid.css');
+        $fileToLint = $this->testFilesDir . '/valid.css';
         $this->expectOutputString(
             "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
                 "\033[32m => CSS file \"$fileToLint\" is valid\033[0m" . PHP_EOL .
@@ -65,7 +71,7 @@ class CliTest extends \PHPUnit\Framework\TestCase
 
     public function testRunWithNotValidFileShouldReturnErrorCode()
     {
-        $fileToLint = realpath(__DIR__ .  '/../_files/not_valid.css');
+        $fileToLint = $this->testFilesDir . '/not_valid.css';
 
         $this->expectOutputString(
             "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
@@ -76,6 +82,43 @@ class CliTest extends \PHPUnit\Framework\TestCase
                 PHP_EOL
         );
         $this->assertEquals(1, $this->cli->run(['php-css-lint', $fileToLint]));
+    }
+
+    public function testRunWithGlobShouldReturnSuccessCode()
+    {
+        $fileToLint = $this->testFilesDir . '/valid.css';
+        $this->expectOutputString(
+            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
+                "\033[32m => CSS file \"$fileToLint\" is valid\033[0m" . PHP_EOL .
+                PHP_EOL
+        );
+        $this->assertEquals(0, $this->cli->run(['php-css-lint', $this->testFilesDir . '/valid*.css']));
+    }
+
+    public function testRunWithNoFilesGlobShouldReturnErrorCode()
+    {
+        $filesToLint = $this->testFilesDir . '/unknown*.css';
+
+        $this->expectOutputString(
+            "\033[31m/!\ Error: No files found for glob \"$filesToLint\"\033[0m" . PHP_EOL .
+                PHP_EOL
+        );
+        $this->assertEquals(1, $this->cli->run(['php-css-lint',  $filesToLint]));
+    }
+
+
+    public function testRunWithNotValidFileGlobShouldReturnErrorCode()
+    {
+        $fileToLint = $this->testFilesDir . '/not_valid.css';
+        $this->expectOutputString(
+            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
+                "\033[31m => CSS file \"$fileToLint\" is not valid:\033[0m" . PHP_EOL .
+                PHP_EOL .
+                "\033[31m    - Unknown CSS property \"bordr-top-style\" (line: 8, char: 20)\033[0m" . PHP_EOL .
+                "\033[31m    - Unterminated \"selector content\" (line: 17, char: 0)\033[0m" . PHP_EOL .
+                PHP_EOL
+        );
+        $this->assertEquals(1, $this->cli->run(['php-css-lint', $this->testFilesDir . '/not_valid*.css']));
     }
 
     public function testRunWithOptionsMustBeUsedByTheLinter()

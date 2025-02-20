@@ -10,9 +10,13 @@ $finder = Finder::create()
 
 return (new Config())
     ->setRules([
-        '@PSR12' => true,
-        'array_indentation' => true,
-        '@PHP83Migration' => true,
+        '@PER-CS' => true,
+        '@PHP84Migration' => true,
+        'fully_qualified_strict_types' => [
+            'import_symbols' => true,
+        ],
+        'global_namespace_import' => true,
+
     ])
     ->setFinder($finder)
     ->setUsingCache(true)

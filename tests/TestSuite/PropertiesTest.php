@@ -2,41 +2,44 @@
 
 namespace TestSuite;
 
-class PropertiesTest extends \PHPUnit\Framework\TestCase
+use CssLint\Properties;
+use PHPUnit\Framework\TestCase;
+
+class PropertiesTest extends TestCase
 {
     public function testShouldReturnTrueWhenGivenStandardPropertyExists()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertTrue($oProperties->propertyExists('align-content'));
     }
 
     public function testShouldReturnTrueWhenGivenConstructorStandardPropertyExists()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertTrue($oProperties->propertyExists('-moz-align-content'));
     }
 
     public function testShouldReturnTrueWhenGivenConstructorNonStandardPropertyExists()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertTrue($oProperties->propertyExists('-moz-font-smoothing'));
     }
 
     public function testShouldReturnTrueWhenGivenPropertyDoesNotExist()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertFalse($oProperties->propertyExists('-wrong-font-smoothing'));
     }
 
     public function testGetAllowedIndentationChars()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertEquals([" "], $oProperties->getAllowedIndentationChars());
     }
 
     public function testSetAllowedIndentationChars()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $aAllowedIndentationChars = ["\t"];
         $oProperties->setAllowedIndentationChars($aAllowedIndentationChars);
         $this->assertEquals($aAllowedIndentationChars, $oProperties->getAllowedIndentationChars());
@@ -44,19 +47,19 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testShouldReturnTrueWhenGivenCharIsAnAllowedIndentationChar()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertTrue($oProperties->isAllowedIndentationChar(" "));
     }
 
     public function testShouldReturnTrueWhenGivenCharIsNotAnAllowedIndentationChar()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertFalse($oProperties->isAllowedIndentationChar("\t"));
     }
 
     public function testMergeConstructorsShouldDisableAContructor()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertTrue($oProperties->propertyExists('-moz-font-smoothing'));
 
         $oProperties->mergeConstructors(['moz' => false]);
@@ -65,7 +68,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testMergeConstructorsShouldAddAContructor()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertFalse($oProperties->propertyExists('-new-font-smoothing'));
 
         $oProperties->mergeConstructors(['new' => true]);
@@ -74,7 +77,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testMergeStandardsShouldDisableAContructor()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertTrue($oProperties->propertyExists('align-content'));
 
         $oProperties->mergeStandards(['align-content' => false]);
@@ -83,7 +86,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testMergeStandardsShouldAddAContructor()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertFalse($oProperties->propertyExists('new-content'));
 
         $oProperties->mergeStandards(['new-content' => true]);
@@ -92,7 +95,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testMergeNonStandardsShouldDisableAContructor()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertTrue($oProperties->propertyExists('-moz-font-smoothing'));
 
         $oProperties->mergeNonStandards(['font-smoothing' => false]);
@@ -101,7 +104,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testMergeNonStandardsShouldAddAContructor()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertFalse($oProperties->propertyExists('-moz-new-content'));
 
         $oProperties->mergeNonStandards(['new-content' => true]);
@@ -110,7 +113,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testSetOptionsAllowedIndentationChars()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertFalse($oProperties->isAllowedIndentationChar("\t"));
 
         $oProperties->setOptions([
@@ -121,7 +124,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testSetOptionsConstructors()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertFalse($oProperties->propertyExists('-new-font-smoothing'));
 
         $oProperties->setOptions([
@@ -132,7 +135,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testSetOptionsStandards()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertFalse($oProperties->propertyExists('new-content'));
 
         $oProperties->setOptions([
@@ -143,7 +146,7 @@ class PropertiesTest extends \PHPUnit\Framework\TestCase
 
     public function testSetOptionsNonStandards()
     {
-        $oProperties = new \CssLint\Properties();
+        $oProperties = new Properties();
         $this->assertFalse($oProperties->propertyExists('-moz-new-content'));
 
         $oProperties->setOptions([
