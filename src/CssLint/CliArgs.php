@@ -11,7 +11,7 @@ namespace CssLint;
  */
 class CliArgs
 {
-    public ?string $filePathOrCssString = null;
+    public ?string $input = null;
 
     public ?string $options = null;
 
@@ -29,7 +29,7 @@ class CliArgs
 
         array_shift($arguments);
 
-        $this->filePathOrCssString = array_pop($arguments);
+        $this->input = array_pop($arguments);
 
         if ($arguments !== []) {
             $parsedArguments = $this->parseArguments($arguments);

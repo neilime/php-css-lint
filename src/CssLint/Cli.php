@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CssLint;
 
+use RuntimeException;
+use Throwable;
+
 /**
  * @phpstan-import-type Errors from \CssLint\Linter
  * @package CssLint
@@ -24,58 +27,21 @@ class Cli
     public function run(array $arguments): int
     {
         $cliArgs = $this->parseArguments($arguments);
-        if ($cliArgs->filePathOrCssString === null || $cliArgs->filePathOrCssString === '' || $cliArgs->filePathOrCssString === '0') {
+        if ($cliArgs->input === null || $cliArgs->input === '' || $cliArgs->input === '0') {
             $this->printUsage();
             return self::RETURN_CODE_SUCCESS;
         }
 
-        $properties = new \CssLint\Properties();
-        if ($cliArgs->options !== null && $cliArgs->options !== '' && $cliArgs->options !== '0') {
-            $options = json_decode($cliArgs->options, true);
+        try {
+            $properties = $this->getPropertiesFromOptions($cliArgs->options);
 
-            if (json_last_error() !== 0) {
-                $errorMessage = json_last_error_msg();
-                $this->printError('Unable to parse option argument: ' . $errorMessage);
-                return self::RETURN_CODE_ERROR;
-            }
+            $cssLinter = new Linter($properties);
 
-            if (!$options) {
-                $this->printError('Unable to parse empty option argument');
-                return self::RETURN_CODE_ERROR;
-            }
-
-            if (!is_array($options)) {
-                $this->printError('Unable to parse option argument: must be a json object');
-                return self::RETURN_CODE_ERROR;
-            }
-
-            $properties->setOptions($options);
-        }
-
-        $cssLinter = new \CssLint\Linter($properties);
-
-        $filePathOrCssString = $cliArgs->filePathOrCssString;
-        if (!file_exists($filePathOrCssString)) {
-            return $this->lintString($cssLinter, $filePathOrCssString);
-        }
-
-        $filePath = $filePathOrCssString;
-        if (!is_readable($filePath)) {
-            $this->printError('File "' . $filePath . '" is not readable');
+            return $this->lintInput($cssLinter, $cliArgs->input);
+        } catch (Throwable $throwable) {
+            $this->printError($throwable->getMessage());
             return self::RETURN_CODE_ERROR;
         }
-
-        return $this->lintFile($cssLinter, $filePath);
-    }
-
-    /**
-     * Retrieve the parsed Cli arguments from given arguments array
-     * @param string[] $arguments arguments to be parsed (@see $_SERVER['argv'])
-     * @return \CssLint\CliArgs an instance of Cli arguments object containing parsed arguments
-     */
-    private function parseArguments(array $arguments): \CssLint\CliArgs
-    {
-        return new \CssLint\CliArgs($arguments);
     }
 
     /**
@@ -86,7 +52,7 @@ class Cli
         $this->printLine('Usage:' . PHP_EOL .
             '------' . PHP_EOL .
             PHP_EOL .
-            '  ' . self::SCRIPT_NAME . " [--options='{ }'] css_file_or_string_to_lint" . PHP_EOL .
+            '  ' . self::SCRIPT_NAME . " [--options='{ }'] input_to_lint" . PHP_EOL .
             PHP_EOL .
             'Arguments:' . PHP_EOL .
             '----------' . PHP_EOL .
@@ -100,19 +66,22 @@ class Cli
             '    Example: --options=\'{ "constructors": {"o" : false}, "allowedIndentationChars": ["\t"] }\'' .
             PHP_EOL .
             PHP_EOL .
-            '  css_file_or_string_to_lint' . PHP_EOL .
-            '    The CSS file path (absolute or relative) or a CSS string to be linted' . PHP_EOL .
+            '  input_to_lint' . PHP_EOL .
+            '    The CSS file path (absolute or relative)' . PHP_EOL .
+            '    a glob pattern of file(s) to be linted' . PHP_EOL .
+            '    or a CSS string to be linted' . PHP_EOL .
             '    Example:' . PHP_EOL .
-            '      ./path/to/css_file_path_to_lint.css' . PHP_EOL .
+            '      "./path/to/css_file_path_to_lint.css"' . PHP_EOL .
+            '      "./path/to/css_file_path_to_lint/*.css"' . PHP_EOL .
             '      ".test { color: red; }"' . PHP_EOL .
             PHP_EOL .
             'Examples:' . PHP_EOL .
             '---------' . PHP_EOL .
             PHP_EOL .
             '  Lint a CSS file:' . PHP_EOL .
-            '    ' . self::SCRIPT_NAME . ' ./path/to/css_file_path_to_lint.css' . PHP_EOL . PHP_EOL .
+            '    ' . self::SCRIPT_NAME . ' "./path/to/css_file_path_to_lint.css"' . PHP_EOL . PHP_EOL .
             '  Lint a CSS string:' . PHP_EOL .
-            '    ' . self::SCRIPT_NAME . ' ".test { color: red; }"' . PHP_EOL .  PHP_EOL .
+            '    ' . self::SCRIPT_NAME . ' ".test { color: red; }"' . PHP_EOL . PHP_EOL .
             '  Lint with only tabulation as indentation:' . PHP_EOL .
             '    ' . self::SCRIPT_NAME .
             ' --options=\'{ "allowedIndentationChars": ["\t"] }\' ".test { color: red; }"' . PHP_EOL .
@@ -120,14 +89,119 @@ class Cli
     }
 
     /**
+     * Retrieve the parsed Cli arguments from given arguments array
+     * @param string[] $arguments arguments to be parsed (@see $_SERVER['argv'])
+     * @return CliArgs an instance of Cli arguments object containing parsed arguments
+     */
+    private function parseArguments(array $arguments): CliArgs
+    {
+        return new CliArgs($arguments);
+    }
+
+    /**
+     * Retrieve the properties from the given options
+     * @param string $options the options to be parsed
+     */
+    private function getPropertiesFromOptions(?string $options): Properties
+    {
+        $properties = new Properties();
+        if ($options === null || $options === '' || $options === '0') {
+            return $properties;
+        }
+
+        $options = json_decode($options, true);
+
+        if (json_last_error() !== 0) {
+            $errorMessage = json_last_error_msg();
+            throw new RuntimeException('Unable to parse option argument: ' . $errorMessage);
+        }
+
+        if (!$options) {
+            throw new RuntimeException('Unable to parse empty option argument');
+        }
+
+        if (!is_array($options)) {
+            throw new RuntimeException('Unable to parse option argument: must be a json object');
+        }
+
+        $properties->setOptions($options);
+
+        return $properties;
+    }
+
+    private function lintInput(Linter $cssLinter, string $input): int
+    {
+        if (file_exists($input)) {
+            return $this->lintFile($cssLinter, $input);
+        }
+
+        if ($this->isGlobPattern($input)) {
+            return $this->lintGlob($input);
+        }
+
+        return $this->lintString($cssLinter, $input);
+    }
+
+    /**
+     * Checks if a given string is a glob pattern.
+     *
+     * A glob pattern typically includes wildcard characters:
+     * - '*' matches any sequence of characters.
+     * - '?' matches any single character.
+     * - '[]' matches any one character in the specified set.
+     *
+     * Optionally, if using the GLOB_BRACE flag, brace patterns like {foo,bar} are also valid.
+     *
+     * @param string $pattern The string to evaluate.
+     * @return bool True if the string is a glob pattern, false otherwise.
+     */
+    private function isGlobPattern(string $pattern): bool
+    {
+        // Must be one line, no unscaped spaces
+        if (preg_match('/\s/', $pattern)) {
+            return false;
+        }
+
+        // Check for basic wildcard characters.
+        if (str_contains($pattern, '*') || str_contains($pattern, '?') || str_contains($pattern, '[')) {
+            return true;
+        }
+
+        // Optionally check for brace patterns, used with GLOB_BRACE.
+        return str_contains($pattern, '{') || str_contains($pattern, '}');
+    }
+
+    private function lintGlob(string $glob): int
+    {
+        $cssLinter = new Linter();
+        $files = glob($glob);
+        if ($files === [] || $files === false) {
+            $this->printError('No files found for glob "' . $glob . '"');
+            return self::RETURN_CODE_ERROR;
+        }
+
+        $returnCode = self::RETURN_CODE_SUCCESS;
+        foreach ($files as $file) {
+            $returnCode = max($returnCode, $this->lintFile($cssLinter, $file));
+        }
+
+        return $returnCode;
+    }
+
+    /**
      * Performs lint on a given file path
-     * @param \CssLint\Linter $cssLinter the instance of the linter
+     * @param Linter $cssLinter the instance of the linter
      * @param string $filePath the path of the file to be linted
      * @return int the return code related to the execution of the linter
      */
-    private function lintFile(\CssLint\Linter $cssLinter, string $filePath): int
+    private function lintFile(Linter $cssLinter, string $filePath): int
     {
         $this->printLine('# Lint CSS file "' . $filePath . '"...');
+
+        if (!is_readable($filePath)) {
+            $this->printError('File "' . $filePath . '" is not readable');
+            return self::RETURN_CODE_ERROR;
+        }
 
         if ($cssLinter->lintFile($filePath)) {
             $this->printLine("\033[32m => CSS file \"" . $filePath . "\" is valid\033[0m" . PHP_EOL);
@@ -142,11 +216,11 @@ class Cli
 
     /**
      * Performs lint on a given string
-     * @param \CssLint\Linter $cssLinter the instance of the linter
+     * @param Linter $cssLinter the instance of the linter
      * @param string $stringValue the CSS string to be linted
      * @return int the return code related to the execution of the linter
      */
-    private function lintString(\CssLint\Linter $cssLinter, string $stringValue): int
+    private function lintString(Linter $cssLinter, string $stringValue): int
     {
         $this->printLine('# Lint CSS string...');
 

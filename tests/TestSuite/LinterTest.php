@@ -5,11 +5,16 @@ namespace TestSuite;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
+use CssLint\Linter;
+use CssLint\Properties;
+use PHPUnit\Framework\TestCase;
+use InvalidArgumentException;
+use TypeError;
 
-class LinterTest extends \PHPUnit\Framework\TestCase
+class LinterTest extends TestCase
 {
     /**
-     * @var \CssLint\Linter
+     * @var Linter
      */
     protected $linter;
 
@@ -20,15 +25,15 @@ class LinterTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->linter = new \CssLint\Linter();
+        $this->linter = new Linter();
 
         $this->root = vfsStream::setup('testDir');
     }
 
     public function testConstructWithCustomCssLintProperties()
     {
-        $properties = new \CssLint\Properties();
-        $linter = new \CssLint\Linter($properties);
+        $properties = new Properties();
+        $linter = new Linter($properties);
         $this->assertSame($properties, $linter->getCssLintProperties());
     }
 
@@ -127,7 +132,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
 
     public function testLintStringWithWrongTypeParam()
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
         $this->expectExceptionMessage(
             'CssLint\Linter::lintString(): Argument #1 ($stringValue) must be of type string, array given'
         );
@@ -136,7 +141,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
 
     public function testLintFileWithWrongTypeParam()
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
         $this->expectExceptionMessage(
             'CssLint\Linter::lintFile(): Argument #1 ($sFilePath) must be of type string, array given'
         );
@@ -145,14 +150,14 @@ class LinterTest extends \PHPUnit\Framework\TestCase
 
     public function testLintFileWithUnknownFilePathParam()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument "$sFilePath" "wrong" is not an existing file path');
         $this->linter->lintFile('wrong');
     }
 
     public function testLintFileWithUnreadableFilePathParam()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument "$sFilePath" "vfs://testDir/foo.txt" is not a readable file path');
 
         $testFile = new vfsStreamFile('foo.txt', 0o000);
@@ -168,7 +173,7 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     public function testLintBootstrapCssFile()
     {
         $this->assertTrue(
-            $this->linter->lintFile(__DIR__ .  '/../_files/bootstrap.css'),
+            $this->linter->lintFile(__DIR__ . '/../_files/bootstrap.css'),
             print_r($this->linter->getErrors(), true)
         );
     }
@@ -176,14 +181,14 @@ class LinterTest extends \PHPUnit\Framework\TestCase
     public function testLintFoundationCssFile()
     {
         $this->assertTrue(
-            $this->linter->lintFile(__DIR__ .  '/../_files/foundation.css'),
+            $this->linter->lintFile(__DIR__ . '/../_files/foundation.css'),
             print_r($this->linter->getErrors(), true)
         );
     }
 
     public function testLintNotValidCssFile()
     {
-        $this->assertFalse($this->linter->lintFile(__DIR__ .  '/../_files/not_valid.css'));
+        $this->assertFalse($this->linter->lintFile(__DIR__ . '/../_files/not_valid.css'));
         $this->assertSame([
             'Unknown CSS property "bordr-top-style" (line: 8, char: 20)',
             'Unterminated "selector content" (line: 17, char: 0)',

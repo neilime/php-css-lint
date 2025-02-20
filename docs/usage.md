@@ -27,7 +27,7 @@ Result:
 Usage:
 ------
 
-  php-css-lint [--options='{ }'] css_file_or_string_to_lint
+  php-css-lint [--options='{ }'] input_to_lint
 
 Arguments:
 ----------
@@ -40,17 +40,20 @@ Arguments:
      * "nonStandards": { "property" => bool }: will merge with the current property
     Example: --options='{ "constructors": {"o" : false}, "allowedIndentationChars": ["\t"] }'
 
-  css_file_or_string_to_lint
-    The CSS file path (absolute or relative) or a CSS string to be linted
+  input_to_lint
+    The CSS file path (absolute or relative)
+    a glob pattern of file(s) to be linted
+    or a CSS string to be linted
     Example:
-      ./path/to/css_file_path_to_lint.css
+      "./path/to/css_file_path_to_lint.css"
+      "./path/to/css_file_path_to_lint/*.css"
       ".test { color: red; }"
 
 Examples:
 ---------
 
   Lint a CSS file:
-    php-css-lint ./path/to/css_file_path_to_lint.css
+    php-css-lint "./path/to/css_file_path_to_lint.css"
 
   Lint a CSS string:
     php-css-lint ".test { color: red; }"
@@ -64,7 +67,7 @@ Examples:
 In a terminal, execute:
 
 ```sh
-php vendor/bin/php-css-lint /path/to/not_valid_file.css
+php vendor/bin/php-css-lint "/path/to/not_valid_file.css"
 ```
 
 Result:
@@ -75,6 +78,29 @@ Result:
 
     - Unknown CSS property "bordr-top-style" (line: 8, char: 20)
     - Unterminated "selector content" (line: 17, char: 0)
+```
+
+### Lint file(s) matching a glob pattern
+
+See <https://www.php.net/manual/en/function.glob.php> for supported patterns.
+
+In a terminal, execute:
+
+```sh
+php vendor/bin/php-css-lint "/path/to/*.css"
+```
+
+Result:
+
+```
+# Lint CSS file "/path/to/not_valid_file.css"...
+ => CSS file "/path/to/not_valid_file" is not valid:
+
+    - Unknown CSS property "bordr-top-style" (line: 8, char: 20)
+    - Unterminated "selector content" (line: 17, char: 0)
+
+# Lint CSS file "/path/to/valid_file.css"...
+ => CSS file "/path/to/valid_file" is valid
 ```
 
 ### Lint a css string
