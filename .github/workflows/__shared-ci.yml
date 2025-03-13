@@ -11,6 +11,7 @@ jobs:
           - php-versions: "8.1"
           - php-versions: "8.2"
           - php-versions: "8.3"
+          - php-versions: "8.4"
             stable: true
 
     runs-on: ubuntu-latest
@@ -34,6 +35,8 @@ jobs:
       - name: 👕 Lint
         if: matrix.stable
         run: composer php-cs-fixer -- --format=checkstyle | tools/vendor/bin/cs2pr
+        env: 
+          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.php-versions == '8.4' && '1' || '' }}
 
       - name: 🔬 Rector
         id: rector
