@@ -23,7 +23,7 @@
     "issues": "https://github.com/neilime/php-css-lint/issues"
   },
   "require": {
-    "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+    "php": "^8.1",
     "ext-json": "*"
   },
   "require-dev": {
