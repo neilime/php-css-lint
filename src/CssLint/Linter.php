@@ -194,34 +194,39 @@ class Linter
             return true;
         }
 
-        if (is_bool($bLintCommentChar = $this->lintCommentChar($charValue))) {
+        if (is_bool($lintImportChar = $this->lintImportChar($charValue))) {
             $this->setPreviousChar($charValue);
-            return $bLintCommentChar;
+            return $lintImportChar;
         }
 
-        if (is_bool($bLintSelectorChar = $this->lintSelectorChar($charValue))) {
+        if (is_bool($lintCommentChar = $this->lintCommentChar($charValue))) {
             $this->setPreviousChar($charValue);
-            return $bLintSelectorChar;
+            return $lintCommentChar;
         }
 
-        if (is_bool($bLintSelectorContentChar = $this->lintSelectorContentChar($charValue))) {
+        if (is_bool($lintSelectorChar = $this->lintSelectorChar($charValue))) {
             $this->setPreviousChar($charValue);
-            return $bLintSelectorContentChar;
+            return $lintSelectorChar;
         }
 
-        if (is_bool($bLintPropertyNameChar = $this->lintPropertyNameChar($charValue))) {
+        if (is_bool($lintSelectorContentChar = $this->lintSelectorContentChar($charValue))) {
             $this->setPreviousChar($charValue);
-            return $bLintPropertyNameChar;
+            return $lintSelectorContentChar;
         }
 
-        if (is_bool($bLintPropertyContentChar = $this->lintPropertyContentChar($charValue))) {
+        if (is_bool($lintPropertyNameChar = $this->lintPropertyNameChar($charValue))) {
             $this->setPreviousChar($charValue);
-            return $bLintPropertyContentChar;
+            return $lintPropertyNameChar;
         }
 
-        if (is_bool($bLintNestedSelectorChar = $this->lintNestedSelectorChar($charValue))) {
+        if (is_bool($lintPropertyContentChar = $this->lintPropertyContentChar($charValue))) {
             $this->setPreviousChar($charValue);
-            return $bLintNestedSelectorChar;
+            return $lintPropertyContentChar;
+        }
+
+        if (is_bool($lintNestedSelectorChar = $this->lintNestedSelectorChar($charValue))) {
+            $this->setPreviousChar($charValue);
+            return $lintNestedSelectorChar;
         }
 
         $this->addError('Unexpected char ' . json_encode($charValue));
@@ -292,14 +297,14 @@ class Linter
             // Start of selector content
             if ($charValue === '{') {
                 // Check if selector if valid
-                $sSelector = trim($this->getContextContent());
+                $selector = trim($this->getContextContent());
 
                 // @nested is a specific selector content
                 if (
                     // @media selector
-                    preg_match('/^@media.+/', $sSelector)
+                    preg_match('/^@media.+/', $selector)
                     // Keyframes selector
-                    || preg_match('/^@.*keyframes.+/', $sSelector)
+                    || preg_match('/^@.*keyframes.+/', $selector)
                 ) {
                     $this->setNestedSelector(true);
                     $this->resetContext();
@@ -313,8 +318,8 @@ class Linter
 
             // There cannot have two following commas
             if ($charValue === ',') {
-                $sSelector = $this->getContextContent();
-                if ($sSelector === '' || $sSelector === '0' || in_array(preg_match('/, *$/', $sSelector), [0, false], true)) {
+                $selector = $this->getContextContent();
+                if ($selector === '' || $selector === '0' || in_array(preg_match('/, *$/', $selector), [0, false], true)) {
                     $this->addContextContent($charValue);
                     return true;
                 }
@@ -322,32 +327,32 @@ class Linter
                 $this->addError(sprintf(
                     'Selector token %s cannot be preceded by "%s"',
                     json_encode($charValue),
-                    $sSelector
+                    $selector
                 ));
                 return false;
             }
 
             // Wildcard and hash
             if (in_array($charValue, ['*', '#'], true)) {
-                $sSelector = $this->getContextContent();
-                if ($sSelector === '' || $sSelector === '0' || preg_match('/[a-zA-Z>,\'"] *$/', $sSelector)) {
+                $selector = $this->getContextContent();
+                if ($selector === '' || $selector === '0' || preg_match('/[a-zA-Z>,\'"] *$/', $selector)) {
                     $this->addContextContent($charValue);
                     return true;
                 }
 
-                $this->addError('Selector token "' . $charValue . '" cannot be preceded by "' . $sSelector . '"');
+                $this->addError('Selector token "' . $charValue . '" cannot be preceded by "' . $selector . '"');
                 return true;
             }
 
             // Dot
             if ($charValue === '.') {
-                $sSelector = $this->getContextContent();
-                if ($sSelector === '' || $sSelector === '0' || preg_match('/(, |[a-zA-Z]).*$/', $sSelector)) {
+                $selector = $this->getContextContent();
+                if ($selector === '' || $selector === '0' || preg_match('/(, |[a-zA-Z]).*$/', $selector)) {
                     $this->addContextContent($charValue);
                     return true;
                 }
 
-                $this->addError('Selector token "' . $charValue . '" cannot be preceded by "' . $sSelector . '"');
+                $this->addError('Selector token "' . $charValue . '" cannot be preceded by "' . $selector . '"');
                 return true;
             }
 
@@ -479,6 +484,32 @@ class Linter
         // End of nested selector
         if ($this->isNestedSelector() && $this->assertContext(null) && $charValue === '}') {
             $this->setNestedSelector(false);
+            return true;
+        }
+
+        return null;
+    }
+
+    /**
+     * Performs lint for a given char, check @import rules
+     * @return bool|null : true if the process should continue, else false, null if this char is not an @import rule
+     */
+    protected function lintImportChar(string $charValue): ?bool
+    {
+        if ($this->assertContext(null) && $charValue === '@') {
+            $this->setContext(self::CONTEXT_SELECTOR);
+            $this->addContextContent($charValue);
+            return true;
+        }
+
+        if ($this->assertContext(self::CONTEXT_SELECTOR) && str_starts_with($this->getContextContent(), '@import')) {
+            $this->addContextContent($charValue);
+
+            if ($charValue === ';') {
+                $this->resetContext();
+                return true;
+            }
+
             return true;
         }
 
