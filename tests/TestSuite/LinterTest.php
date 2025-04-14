@@ -194,4 +194,12 @@ class LinterTest extends TestCase
             'Unterminated "selector content" (line: 17, char: 0)',
         ], $this->linter->getErrors());
     }
+
+    public function testLintValidImportRule()
+    {
+        $this->assertTrue(
+            $this->linter->lintString("@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');"),
+            print_r($this->linter->getErrors(), true)
+        );
+    }
 }

@@ -9,149 +9,149 @@ class PropertiesTest extends TestCase
 {
     public function testShouldReturnTrueWhenGivenStandardPropertyExists()
     {
-        $oProperties = new Properties();
-        $this->assertTrue($oProperties->propertyExists('align-content'));
+        $properties = new Properties();
+        $this->assertTrue($properties->propertyExists('align-content'));
     }
 
     public function testShouldReturnTrueWhenGivenConstructorStandardPropertyExists()
     {
-        $oProperties = new Properties();
-        $this->assertTrue($oProperties->propertyExists('-moz-align-content'));
+        $properties = new Properties();
+        $this->assertTrue($properties->propertyExists('-moz-align-content'));
     }
 
     public function testShouldReturnTrueWhenGivenConstructorNonStandardPropertyExists()
     {
-        $oProperties = new Properties();
-        $this->assertTrue($oProperties->propertyExists('-moz-font-smoothing'));
+        $properties = new Properties();
+        $this->assertTrue($properties->propertyExists('-moz-font-smoothing'));
     }
 
     public function testShouldReturnTrueWhenGivenPropertyDoesNotExist()
     {
-        $oProperties = new Properties();
-        $this->assertFalse($oProperties->propertyExists('-wrong-font-smoothing'));
+        $properties = new Properties();
+        $this->assertFalse($properties->propertyExists('-wrong-font-smoothing'));
     }
 
     public function testGetAllowedIndentationChars()
     {
-        $oProperties = new Properties();
-        $this->assertEquals([" "], $oProperties->getAllowedIndentationChars());
+        $properties = new Properties();
+        $this->assertEquals([" "], $properties->getAllowedIndentationChars());
     }
 
     public function testSetAllowedIndentationChars()
     {
-        $oProperties = new Properties();
+        $properties = new Properties();
         $aAllowedIndentationChars = ["\t"];
-        $oProperties->setAllowedIndentationChars($aAllowedIndentationChars);
-        $this->assertEquals($aAllowedIndentationChars, $oProperties->getAllowedIndentationChars());
+        $properties->setAllowedIndentationChars($aAllowedIndentationChars);
+        $this->assertEquals($aAllowedIndentationChars, $properties->getAllowedIndentationChars());
     }
 
     public function testShouldReturnTrueWhenGivenCharIsAnAllowedIndentationChar()
     {
-        $oProperties = new Properties();
-        $this->assertTrue($oProperties->isAllowedIndentationChar(" "));
+        $properties = new Properties();
+        $this->assertTrue($properties->isAllowedIndentationChar(" "));
     }
 
     public function testShouldReturnTrueWhenGivenCharIsNotAnAllowedIndentationChar()
     {
-        $oProperties = new Properties();
-        $this->assertFalse($oProperties->isAllowedIndentationChar("\t"));
+        $properties = new Properties();
+        $this->assertFalse($properties->isAllowedIndentationChar("\t"));
     }
 
     public function testMergeConstructorsShouldDisableAContructor()
     {
-        $oProperties = new Properties();
-        $this->assertTrue($oProperties->propertyExists('-moz-font-smoothing'));
+        $properties = new Properties();
+        $this->assertTrue($properties->propertyExists('-moz-font-smoothing'));
 
-        $oProperties->mergeConstructors(['moz' => false]);
-        $this->assertFalse($oProperties->propertyExists('-moz-font-smoothing'));
+        $properties->mergeConstructors(['moz' => false]);
+        $this->assertFalse($properties->propertyExists('-moz-font-smoothing'));
     }
 
     public function testMergeConstructorsShouldAddAContructor()
     {
-        $oProperties = new Properties();
-        $this->assertFalse($oProperties->propertyExists('-new-font-smoothing'));
+        $properties = new Properties();
+        $this->assertFalse($properties->propertyExists('-new-font-smoothing'));
 
-        $oProperties->mergeConstructors(['new' => true]);
-        $this->assertTrue($oProperties->propertyExists('-new-font-smoothing'));
+        $properties->mergeConstructors(['new' => true]);
+        $this->assertTrue($properties->propertyExists('-new-font-smoothing'));
     }
 
     public function testMergeStandardsShouldDisableAContructor()
     {
-        $oProperties = new Properties();
-        $this->assertTrue($oProperties->propertyExists('align-content'));
+        $properties = new Properties();
+        $this->assertTrue($properties->propertyExists('align-content'));
 
-        $oProperties->mergeStandards(['align-content' => false]);
-        $this->assertFalse($oProperties->propertyExists('align-content'));
+        $properties->mergeStandards(['align-content' => false]);
+        $this->assertFalse($properties->propertyExists('align-content'));
     }
 
     public function testMergeStandardsShouldAddAContructor()
     {
-        $oProperties = new Properties();
-        $this->assertFalse($oProperties->propertyExists('new-content'));
+        $properties = new Properties();
+        $this->assertFalse($properties->propertyExists('new-content'));
 
-        $oProperties->mergeStandards(['new-content' => true]);
-        $this->assertTrue($oProperties->propertyExists('new-content'));
+        $properties->mergeStandards(['new-content' => true]);
+        $this->assertTrue($properties->propertyExists('new-content'));
     }
 
     public function testMergeNonStandardsShouldDisableAContructor()
     {
-        $oProperties = new Properties();
-        $this->assertTrue($oProperties->propertyExists('-moz-font-smoothing'));
+        $properties = new Properties();
+        $this->assertTrue($properties->propertyExists('-moz-font-smoothing'));
 
-        $oProperties->mergeNonStandards(['font-smoothing' => false]);
-        $this->assertFalse($oProperties->propertyExists('-moz-font-smoothing'));
+        $properties->mergeNonStandards(['font-smoothing' => false]);
+        $this->assertFalse($properties->propertyExists('-moz-font-smoothing'));
     }
 
     public function testMergeNonStandardsShouldAddAContructor()
     {
-        $oProperties = new Properties();
-        $this->assertFalse($oProperties->propertyExists('-moz-new-content'));
+        $properties = new Properties();
+        $this->assertFalse($properties->propertyExists('-moz-new-content'));
 
-        $oProperties->mergeNonStandards(['new-content' => true]);
-        $this->assertTrue($oProperties->propertyExists('-moz-new-content'));
+        $properties->mergeNonStandards(['new-content' => true]);
+        $this->assertTrue($properties->propertyExists('-moz-new-content'));
     }
 
     public function testSetOptionsAllowedIndentationChars()
     {
-        $oProperties = new Properties();
-        $this->assertFalse($oProperties->isAllowedIndentationChar("\t"));
+        $properties = new Properties();
+        $this->assertFalse($properties->isAllowedIndentationChar("\t"));
 
-        $oProperties->setOptions([
+        $properties->setOptions([
             'allowedIndentationChars' => ["\t"],
         ]);
-        $this->assertTrue($oProperties->isAllowedIndentationChar("\t"));
+        $this->assertTrue($properties->isAllowedIndentationChar("\t"));
     }
 
     public function testSetOptionsConstructors()
     {
-        $oProperties = new Properties();
-        $this->assertFalse($oProperties->propertyExists('-new-font-smoothing'));
+        $properties = new Properties();
+        $this->assertFalse($properties->propertyExists('-new-font-smoothing'));
 
-        $oProperties->setOptions([
+        $properties->setOptions([
             'constructors' => ['new' => true],
         ]);
-        $this->assertTrue($oProperties->propertyExists('-new-font-smoothing'));
+        $this->assertTrue($properties->propertyExists('-new-font-smoothing'));
     }
 
     public function testSetOptionsStandards()
     {
-        $oProperties = new Properties();
-        $this->assertFalse($oProperties->propertyExists('new-content'));
+        $properties = new Properties();
+        $this->assertFalse($properties->propertyExists('new-content'));
 
-        $oProperties->setOptions([
+        $properties->setOptions([
             'standards' => ['new-content' => true],
         ]);
-        $this->assertTrue($oProperties->propertyExists('new-content'));
+        $this->assertTrue($properties->propertyExists('new-content'));
     }
 
     public function testSetOptionsNonStandards()
     {
-        $oProperties = new Properties();
-        $this->assertFalse($oProperties->propertyExists('-moz-new-content'));
+        $properties = new Properties();
+        $this->assertFalse($properties->propertyExists('-moz-new-content'));
 
-        $oProperties->setOptions([
+        $properties->setOptions([
             'nonStandards' => ['new-content' => true],
         ]);
-        $this->assertTrue($oProperties->propertyExists('-moz-new-content'));
+        $this->assertTrue($properties->propertyExists('-moz-new-content'));
     }
 }
