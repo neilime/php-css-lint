@@ -201,5 +201,20 @@ class LinterTest extends TestCase
             $this->linter->lintString("@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');"),
             print_r($this->linter->getErrors(), true)
         );
+
+        $this->assertTrue(
+            $this->linter->lintString("@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');"),
+            print_r($this->linter->getErrors(), true)
+        );
+    }
+
+    public function testLintNotValidImportRule()
+    {
+        $this->assertFalse(
+            $this->linter->lintString("@import url('"),
+        );
+        $this->assertSame([
+            'Unterminated "selector" (line: 1, char: 13)',
+        ], $this->linter->getErrors());
     }
 }

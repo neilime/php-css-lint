@@ -505,7 +505,7 @@ class Linter
         if ($this->assertContext(self::CONTEXT_SELECTOR) && str_starts_with($this->getContextContent(), '@import')) {
             $this->addContextContent($charValue);
 
-            if ($charValue === ';') {
+            if ($charValue === ';' && $this->assertPreviousChar(')')) {
                 $this->resetContext();
                 return true;
             }
