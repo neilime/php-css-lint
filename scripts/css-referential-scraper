@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Tests\Fixtures\Downloader\CssReferentialScraper;
+
+$forceRefresh = in_array('--force-refresh', $argv);
+
+$scraper = new CssReferentialScraper($forceRefresh);
+
+echo "Fetching CSS property list...\n";
+$referentials = $scraper->fetchReferentials();
+
+echo "Fetched " . count($referentials['properties']) . " properties\n";
+$cssPropertiesFile = __DIR__ . '/../tests/fixtures/css-properties.json';
+$scraper->saveToJson($referentials['properties'], $cssPropertiesFile);
+echo "Saved to {$cssPropertiesFile}\n";
+
+echo "Done.\n";

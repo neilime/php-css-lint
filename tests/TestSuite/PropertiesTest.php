@@ -1,6 +1,6 @@
 <?php
 
-namespace TestSuite;
+namespace Tests\TestSuite;
 
 use CssLint\Properties;
 use PHPUnit\Framework\TestCase;

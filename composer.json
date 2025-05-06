@@ -27,9 +27,14 @@
     "ext-json": "*"
   },
   "require-dev": {
+    "guzzlehttp/guzzle": "^7.9",
     "mikey179/vfsstream": "^1.6",
     "pcov/clobber": "^2.0",
-    "phpunit/phpunit": "^9.5.27"
+    "phpunit/phpunit": "^9.5.27",
+    "symfony/cache": "^7.2",
+    "symfony/console": "^7.2",
+    "symfony/css-selector": "^7.2",
+    "symfony/dom-crawler": "^7.2"
   },
   "autoload": {
     "psr-4": {
@@ -38,7 +43,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "TestSuite\\": "tests/TestSuite"
+      "Tests\\Fixtures\\": "tests/Fixtures",
+      "Tests\\TestSuite\\": "tests/TestSuite"
     }
   },
   "bin": [
@@ -46,6 +52,7 @@
   ],
   "scripts": {
     "test": "phpunit --colors --configuration tests/phpunit.xml",
+    "test:load-fixtures": "php scripts/css-referential-scraper && php scripts/css-popular-downloader",
     "test:ci": "@test -d pcov.enabled=1 -d max_execution_time=0 --coverage-text --coverage-clover ./build/logs/clover.xml --coverage-html ./build/coverage/",
     "php-cs-fixer": "@php-cs-fixer:fix --dry-run",
     "php-cs-fixer:fix": "tools/vendor/bin/php-cs-fixer fix --show-progress=dots --diff --config=.php-cs-fixer.dist.php",

@@ -1,6 +1,6 @@
 <?php
 
-namespace TestSuite;
+namespace Tests\TestSuite;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
@@ -13,6 +13,8 @@ use TypeError;
 
 class LinterTest extends TestCase
 {
+    private $testFixturesDir;
+
     /**
      * @var Linter
      */
@@ -25,6 +27,8 @@ class LinterTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->testFixturesDir =  realpath(__DIR__ . '/../fixtures');
+
         $this->linter = new Linter();
 
         $this->root = vfsStream::setup('testDir');
@@ -172,23 +176,36 @@ class LinterTest extends TestCase
 
     public function testLintBootstrapCssFile()
     {
+        $fileToLint = $this->testFixturesDir . '/bootstrap.css';
         $this->assertTrue(
-            $this->linter->lintFile(__DIR__ . '/../_files/bootstrap.css'),
+            $this->linter->lintFile($fileToLint),
             print_r($this->linter->getErrors(), true)
         );
     }
 
-    public function testLintFoundationCssFile()
+    public function testLintNormalizeCssFile()
     {
+        $fileToLint = $this->testFixturesDir . '/normalize.css';
         $this->assertTrue(
-            $this->linter->lintFile(__DIR__ . '/../_files/foundation.css'),
+            $this->linter->lintFile($fileToLint),
+            print_r($this->linter->getErrors(), true)
+        );
+    }
+
+    public function testLintTailwindCssFile()
+    {
+        $fileToLint = $this->testFixturesDir . '/tailwind.css';
+        $this->assertTrue(
+            $this->linter->lintFile($fileToLint),
             print_r($this->linter->getErrors(), true)
         );
     }
 
     public function testLintNotValidCssFile()
     {
-        $this->assertFalse($this->linter->lintFile(__DIR__ . '/../_files/not_valid.css'));
+        $fileToLint = $this->testFixturesDir . '/not_valid.css';
+
+        $this->assertFalse($this->linter->lintFile($fileToLint));
         $this->assertSame([
             'Unknown CSS property "bordr-top-style" (line: 8, char: 20)',
             'Unterminated "selector content" (line: 17, char: 0)',
