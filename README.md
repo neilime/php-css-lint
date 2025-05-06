@@ -9,7 +9,8 @@
 [![License](https://poser.pugx.org/neilime/php-css-lint/license)](https://packagist.org/packages/neilime/php-css-lint)
 [![Sponsor](https://img.shields.io/badge/%E2%9D%A4-Sponsor-ff69b4)](https://github.com/sponsors/neilime)
 
-📢 **Php CSS Lint** is a php script that lint css files and strings:
+📢 **Php CSS Lint** is a php script that lint css files and strings.
+It supports [W3C](https://www.w3.org/Style/CSS/) and [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS) CSS specifications.
 
 ```
 ===========================================================

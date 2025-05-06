@@ -335,7 +335,7 @@ class Linter
             // Wildcard and hash
             if (in_array($charValue, ['*', '#'], true)) {
                 $selector = $this->getContextContent();
-                if ($selector === '' || $selector === '0' || preg_match('/[a-zA-Z>,\'"] *$/', $selector)) {
+                if ($selector === '' || $selector === '0' || preg_match('/[a-zA-Z>+,\'"] *$/', $selector)) {
                     $this->addContextContent($charValue);
                     return true;
                 }

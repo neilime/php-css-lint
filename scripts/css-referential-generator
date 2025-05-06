@@ -1,0 +1,56 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+function saveDataset(string $className, array $referential): void
+{
+    $datasetClass = new ReflectionClass($className);
+    $datasetFile = $datasetClass->getFileName();
+
+    $referentialString = var_export($referential, true);
+    $referentialString = str_replace('array (', '[', $referentialString);
+    $referentialString = str_replace(')', ']', $referentialString);
+
+    $datasetFileContent = file_get_contents($datasetFile);
+    $datasetFileContent = preg_replace(
+        '/public static array \$referential = \[.*?\];/s',
+        'public static array $referential = ' . $referentialString . ';',
+        $datasetFileContent
+    );
+
+    file_put_contents($datasetFile, $datasetFileContent);
+}
+
+$cssPropertiesFile = __DIR__ . '/../tests/fixtures/css-properties.json';
+$cssProperties = json_decode(file_get_contents($cssPropertiesFile), true);
+
+$standardsProperties = [];
+$nonStandardsProperties = [];
+
+foreach ($cssProperties as $propertyName => $property) {
+    $isStandard = $property['standard'] ?? false;
+    if ($isStandard) {
+        $standardsProperties[$propertyName] = true;
+    } else {
+        $nonStandardsProperties[$propertyName] = true;
+    }
+}
+
+// Add missing non-standard properties
+$missingNonStandardsProperties = [
+    '-webkit-overflow-scrolling',
+    '-webkit-margin-end',
+    '-moz-osx-font-smoothing',
+];
+foreach ($missingNonStandardsProperties as $propertyName) {
+    if (isset($standardsProperties[$propertyName]) || isset($nonStandardsProperties[$propertyName])) {
+        throw new Exception("Property $propertyName already exists in either standards or non-standards properties.");
+    }
+    $nonStandardsProperties[$propertyName] = true;
+}
+
+ksort($standardsProperties);
+ksort($nonStandardsProperties);
+saveDataset(CssLint\Referential\StandardPropertiesReferential::class, $standardsProperties);
+saveDataset(CssLint\Referential\NonStandardPropertiesReferential::class, $nonStandardsProperties);

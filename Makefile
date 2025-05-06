@@ -9,7 +9,7 @@ IMAGE="${PROJECT_NAME}:${PHP_VERSION}"
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-setup: build-php install ## Initialize project
+setup: build-php install test-load-fixtures ## Initialize project
 
 build-php: ## Build PHP image
 	@echo "Build php ${PHP_VERSION}"
@@ -29,6 +29,9 @@ test: ## Execute tests for given PHP version
 
 test-update: ## Execute tests and update snapshots for given PHP version
 	@$(call run-php,composer test:update-snapshot $(filter-out $@,$(MAKECMDGOALS)))
+
+test-load-fixtures: ## Execute tests and load fixtures for given PHP version
+	@$(call run-php,composer test:load-fixtures $(filter-out $@,$(MAKECMDGOALS)))
 
 lint: ## Execute lint for given PHP version
 	@$(call run-php,composer php-cs-fixer $(filter-out $@,$(MAKECMDGOALS)))

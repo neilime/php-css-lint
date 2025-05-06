@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Tests\Fixtures\Downloader\CssFileDownloader;
+
+$downloader = new CssFileDownloader();
+$downloader->downloadLatestFiles(__DIR__ . '/../tests/fixtures');
+
+echo "Done.\n";
