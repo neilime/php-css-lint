@@ -16,35 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: ⚙️ Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@v2
+        uses: ./.github/workflows/actions/setup-php
         with:
           php-version: ${{ matrix.php-versions }}
-          extensions: none,iconv,dom,curl,mbstring,tokenizer,xml,xmlwriter,simplexml,ctype
-          coverage: pcov
-
-      - name: ♻️ Get composer cache directory
-        id: composer-cache
-        shell: bash
-        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
-
-      - name: ♻️ Cache composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ matrix.php-versions }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: ⚙️ Install dependencies
-        shell: bash
-        run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
-          composer --working-dir=tools install --no-progress --prefer-dist --optimize-autoloader
 
       - name: ♻️ Tools cache
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: tools/cache
           key: ${{ runner.os }}-tools-${{ matrix.php-versions }}-${{ github.sha }}
@@ -65,18 +45,28 @@ jobs:
         run: composer phpstan -- --error-format=github
 
       - name: ♻️ Tests cache
-        uses: actions/cache@v4
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: tests/.phpunit.result.cache
           key: ${{ runner.os }}-tests-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-tests-
 
+      - name: ♻️ Fixtures cache
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: .cache
+          key: fixture-cache-${{ hashFiles('composer.lock') }}
+          restore-keys: fixture-cache-
+
+      - name: 🗂️ Load fixtures
+        run: composer test:load-fixtures
+
       - name: 🧪 Test
         run: composer test:ci
 
       - name: 📊 Upload coverage results to Codecov
         if: matrix.stable
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@ad3126e916f78f00edff4ed0317cf185271ccc2d # v5.4.2
         with:
           files: ./build/logs/clover.xml

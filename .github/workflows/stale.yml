@@ -6,4 +6,4 @@ on:
 
 jobs:
   main:
-    uses: hoverkraft-tech/ci-github-common/.github/workflows/stale.yml@0.22.3
+    uses: hoverkraft-tech/ci-github-common/.github/workflows/stale.yml@95664be4ec235bfc221c4356c7153cbab3fb8f93 # 0.22.3
