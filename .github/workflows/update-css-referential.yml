@@ -1,0 +1,43 @@
+name: Update CSS Referential
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at midnight
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-css-referential:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: ⚙️ Setup PHP, with composer and extensions
+        uses: ./.github/workflows/actions/setup-php
+        with:
+          php-version: 8.3
+
+      - name: Run CSS Referential Scraper
+        run: php bin/css-referential-scraper
+
+      - name: Run CSS Referential Generator
+        run: php bin/css-referential-generator
+
+      - name: Run PHP CS Fixer
+        run: composer php-cs-fixer:fix
+
+      - name: Push changes and create pull request
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7.0.8
+        with:
+          branch: update-css-referential
+          add-paths: |
+            src/CssLint/Referential
+          sign-commits: true
+          signoff: true
+          title: "feat: update CSS Referential"
+          body: |
+            This pull request updates the CSS referential files in the `src/CssLint/Referential` directory.
