@@ -11,7 +11,7 @@ class CachedHttpDownloader
     private Client $client;
     private FilesystemAdapter $cache;
 
-    public function __construct(string $namespace, string $cachePath = __DIR__ . '/../../.cache')
+    public function __construct(string $namespace, string $cachePath = __DIR__ . '/../../../.cache')
     {
         $this->client = new Client([
             'headers' => [
@@ -38,25 +38,22 @@ class CachedHttpDownloader
             }
         }
 
-        try {
-            $response = $this->client->get($url, ['headers' => $headers]);
-            $body = (string) $response->getBody();
+        $response = $this->client->get($url, ['headers' => $headers]);
 
-            $cachedItem->set([
-                'etag' => $response->getHeaderLine('ETag'),
-                'last_modified' => $response->getHeaderLine('Last-Modified'),
-                'body' => $body,
-            ]);
-            $this->cache->save($cachedItem);
-
-            return $body;
-        } catch (RequestException $e) {
-            if ($e->getResponse() && $e->getResponse()->getStatusCode() === 304) {
-                $cachedData = $cachedItem->get();
-                return $cachedData['body'];
-            }
-
-            throw $e;
+        if ($response->getStatusCode() === 304) {
+            $cachedData = $cachedItem->get();
+            return $cachedData['body'];
         }
+
+        $body = (string) $response->getBody();
+
+        $cachedItem->set([
+            'etag' => $response->getHeaderLine('ETag'),
+            'last_modified' => $response->getHeaderLine('Last-Modified'),
+            'body' => $body,
+        ]);
+        $this->cache->save($cachedItem);
+
+        return $body;
     }
 }

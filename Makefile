@@ -34,9 +34,18 @@ test-load-fixtures: ## Execute tests and load fixtures for given PHP version
 	@$(call run-php,composer test:load-fixtures $(filter-out $@,$(MAKECMDGOALS)))
 
 lint: ## Execute lint for given PHP version
-	@$(call run-php,composer php-cs-fixer $(filter-out $@,$(MAKECMDGOALS)))
+	$(MAKE) php-cs-fixer $(filter-out $@,$(MAKECMDGOALS))
+	$(MAKE) rector $(filter-out $@,$(MAKECMDGOALS))
+	$(MAKE) phpstan $(filter-out $@,$(MAKECMDGOALS))
 
 lint-fix: ## Execute lint fixing for given PHP version
+	$(MAKE) php-cs-fixer-fix $(filter-out $@,$(MAKECMDGOALS))
+	$(MAKE) rector-fix $(filter-out $@,$(MAKECMDGOALS))
+
+php-cs-fixer: ## Execute php-cs-fixer for given PHP version
+	@$(call run-php,composer php-cs-fixer $(filter-out $@,$(MAKECMDGOALS)))
+
+php-cs-fixer-fix: ## Execute php-cs-fixer fixing for given PHP version
 	@$(call run-php,composer php-cs-fixer:fix $(filter-out $@,$(MAKECMDGOALS)))	
 
 rector: ## Execute rector for given PHP version
@@ -50,6 +59,9 @@ phpstan: ## Execute PHPStan for given PHP version
 
 ci: ## Execute CI scripts for given PHP version
 	@$(call run-php,composer ci $(filter-out $@,$(MAKECMDGOALS)))
+
+generate-css-referentials: ## Generate referentials for given PHP version
+	@$(call run-php,composer generate-css-referentials $(filter-out $@,$(MAKECMDGOALS)))
 
 ## Run PHP for given version
 define run-php

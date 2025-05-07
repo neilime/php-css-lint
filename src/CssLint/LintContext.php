@@ -41,37 +41,32 @@ class LintContext
 
     /**
      * Current context name of parsing
-     * @var LintContextName|null
      */
-    private $currentContext;
+    private ?LintContextName $lintContextName = null;
 
     /**
      * Current content of parse. Ex: the selector name, the property name or the property content
-     * @var string
      */
-    private $currentContent;
+    private string $currentContent = '';
 
     /**
      * The previous linted char
-     * @var string|null
      */
-    private $previousChar;
+    private ?string $previousChar = null;
 
     /**
      * Tells if the linter is parsing a nested selector. Ex: @media, @keyframes...
-     * @var boolean
      */
-    private $nestedSelector = false;
+    private int $nestedSelectorLevel = 0;
 
     /**
      * Tells if the linter is parsing a comment
-     * @var boolean
      */
-    private $comment = false;
+    private bool $comment = false;
 
     public function getCurrentContext(): ?LintContextName
     {
-        return $this->currentContext;
+        return $this->lintContextName;
     }
 
     /**
@@ -85,9 +80,9 @@ class LintContext
     /**
      * Set new context
      */
-    public function setCurrentContext(?LintContextName $contextName): self
+    public function setCurrentContext(?LintContextName $lintContextName): self
     {
-        $this->currentContext = $contextName;
+        $this->lintContextName = $lintContextName;
         $this->currentContent = '';
         return $this;
     }
@@ -95,9 +90,9 @@ class LintContext
     /**
      * Assert that current context is the same as given
      */
-    public function assertCurrentContext(?LintContextName $contextName): bool
+    public function assertCurrentContext(?LintContextName $lintContextName): bool
     {
-        return $this->currentContext === $contextName;
+        return $this->lintContextName === $lintContextName;
     }
 
     /**
@@ -156,33 +151,27 @@ class LintContext
      */
     public function isNestedSelector(): bool
     {
-        return $this->nestedSelector;
+        return $this->nestedSelectorLevel > 0;
     }
 
     /**
-     * Set the nested selector flag
+     * Increase the nested selector level
      */
-    public function setNestedSelector(bool $nestedSelector): void
+    public function incrementNestedSelector(): void
     {
-        $this->nestedSelector = $nestedSelector;
-    }
-
-
-    /**
-     * Return the current char number
-     */
-    private function getCharNumber(): int
-    {
-        return $this->charNumber;
+        ++$this->nestedSelectorLevel;
     }
 
     /**
-     * Return the current line number
+     * Decrement the nested selector level
      */
-    private function getLineNumber(): int
+    public function decrementNestedSelector(): void
     {
-        return $this->lineNumber;
+        if ($this->nestedSelectorLevel > 0) {
+            --$this->nestedSelectorLevel;
+        }
     }
+
 
     /**
      * Reset current char number property
@@ -216,7 +205,7 @@ class LintContext
      */
     public function addError(string $error): self
     {
-        $this->errors[] = $error . ' (line: ' . $this->getLineNumber() . ', char: ' . $this->getCharNumber() . ')';
+        $this->errors[] = $error . ' (line: ' . $this->lineNumber . ', char: ' . $this->charNumber . ')';
         return $this;
     }
 

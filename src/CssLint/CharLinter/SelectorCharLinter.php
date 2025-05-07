@@ -6,12 +6,12 @@ namespace CssLint\CharLinter;
 
 use CssLint\LintContext;
 use CssLint\LintContextName;
-use CssLint\Properties;
+use CssLint\LintConfiguration;
 
 class SelectorCharLinter implements CharLinter
 {
     public function __construct(
-        protected readonly Properties $cssLintProperties,
+        protected readonly LintConfiguration $lintConfiguration,
     ) {}
 
     /**
@@ -41,102 +41,25 @@ class SelectorCharLinter implements CharLinter
      */
     protected function lintSelectorNameChar(string $charValue, LintContext $lintContext): ?bool
     {
-        // Selector must start by #.a-zA-Z
         if ($lintContext->assertCurrentContext(null)) {
-            if ($this->cssLintProperties->isAllowedIndentationChar($charValue)) {
-                return true;
-            }
+            return $this->lintSelectorNameStart($charValue, $lintContext);
+        }
 
-            if (preg_match('/[@#.a-zA-Z\[\*-:]+/', $charValue)) {
-                $lintContext->setCurrentContext(LintContextName::CONTEXT_SELECTOR);
-                $lintContext->appendCurrentContent($charValue);
-                return true;
-            }
-
+        if (!$lintContext->assertCurrentContext(LintContextName::CONTEXT_SELECTOR)) {
             return null;
         }
 
-        // Selector must contains
-        if ($lintContext->assertCurrentContext(LintContextName::CONTEXT_SELECTOR)) {
-            // A space is valid
-            if ($charValue === ' ') {
-                $lintContext->appendCurrentContent($charValue);
-                return true;
-            }
-
-            // Start of selector content
-            if ($charValue === '{') {
-                // Check if selector if valid
-                $selector = trim($lintContext->getCurrentContent());
-
-                // @nested is a specific selector content
-                if (
-                    // @media selector
-                    preg_match('/^@media.+/', $selector)
-                    // Keyframes selector
-                    || preg_match('/^@.*keyframes.+/', $selector)
-                ) {
-                    $lintContext->setNestedSelector(true);
-                    $lintContext->resetCurrentContext();
-                } else {
-                    $lintContext->setCurrentContext(LintContextName::CONTEXT_SELECTOR_CONTENT);
-                }
-
-                $lintContext->appendCurrentContent($charValue);
-                return true;
-            }
-
-            // There cannot have two following commas
-            if ($charValue === ',') {
-                $selector = $lintContext->getCurrentContent();
-                if ($selector === '' || $selector === '0' || in_array(preg_match('/, *$/', $selector), [0, false], true)) {
-                    $lintContext->appendCurrentContent($charValue);
-                    return true;
-                }
-
-                $lintContext->addError(sprintf(
-                    'Selector token %s cannot be preceded by "%s"',
-                    json_encode($charValue),
-                    $selector
-                ));
-                return false;
-            }
-
-            // Wildcard and hash
-            if (in_array($charValue, ['*', '#'], true)) {
-                $selector = $lintContext->getCurrentContent();
-                if ($selector === '' || $selector === '0' || preg_match('/[a-zA-Z>+,\'"] *$/', $selector)) {
-                    $lintContext->appendCurrentContent($charValue);
-                    return true;
-                }
-
-                $lintContext->addError('Selector token "' . $charValue . '" cannot be preceded by "' . $selector . '"');
-                return true;
-            }
-
-            // Dot
-            if ($charValue === '.') {
-                $selector = $lintContext->getCurrentContent();
-                if ($selector === '' || $selector === '0' || preg_match('/(, |[a-zA-Z]).*$/', $selector)) {
-                    $lintContext->appendCurrentContent($charValue);
-                    return true;
-                }
-
-                $lintContext->addError('Selector token "' . $charValue . '" cannot be preceded by "' . $selector . '"');
-                return true;
-            }
-
-            if (preg_match('/^[#*.0-9a-zA-Z,:()\[\]="\'-^~_%]+/', $charValue)) {
-                $lintContext->appendCurrentContent($charValue);
-                return true;
-            }
-
-
-            $lintContext->addError('Unexpected selector token "' . $charValue . '"');
+        // A space is valid
+        if ($charValue === ' ') {
+            $lintContext->appendCurrentContent($charValue);
             return true;
         }
 
-        return null;
+        if (is_bool($lintSelectorContentStart = $this->lintSelectorContentStart($charValue, $lintContext))) {
+            return $lintSelectorContentStart;
+        }
+
+        return $this->lintSelectorNameContent($charValue, $lintContext);
     }
 
 
@@ -153,7 +76,7 @@ class SelectorCharLinter implements CharLinter
         $contextContent = $lintContext->getCurrentContent();
         if (
             ($contextContent === '' || $contextContent === '0' || $contextContent === '{') &&
-            $this->cssLintProperties->isAllowedIndentationChar($charValue)
+            $this->lintConfiguration->isAllowedIndentationChar($charValue)
         ) {
             return true;
         }
@@ -173,7 +96,6 @@ class SelectorCharLinter implements CharLinter
         return null;
     }
 
-
     /**
      * Performs lint for a given char, check nested selector part
      * @return bool|null : true if the process should continue, else false, null if this char is not a nested selector
@@ -182,10 +104,134 @@ class SelectorCharLinter implements CharLinter
     {
         // End of nested selector
         if ($lintContext->isNestedSelector() && $lintContext->assertCurrentContext(null) && $charValue === '}') {
-            $lintContext->setNestedSelector(false);
+            $lintContext->decrementNestedSelector();
             return true;
         }
 
         return null;
+    }
+
+    protected function lintSelectorNameStart(string $charValue, LintContext $lintContext): ?bool
+    {
+        if ($this->lintConfiguration->isAllowedIndentationChar($charValue)) {
+            return true;
+        }
+
+        if (preg_match('/[@#.a-zA-Z\[\*-:]+/', $charValue)) {
+            $lintContext->setCurrentContext(LintContextName::CONTEXT_SELECTOR);
+            $lintContext->appendCurrentContent($charValue);
+            return true;
+        }
+
+        return null;
+    }
+
+    protected function lintSelectorContentStart(string $charValue, LintContext $lintContext): ?bool
+    {
+        if ($charValue === ';') {
+            $this->lintSelectorName($lintContext);
+            $lintContext->resetCurrentContext();
+            return null;
+        }
+
+        if ($charValue !== '{') {
+            return null;
+        }
+
+        $this->lintSelectorName($lintContext);
+
+        // Check if selector is a nested selector
+        $atRuleSelector = $this->getSelectorNameAtRuleIfexist($lintContext->getCurrentContent());
+        if ($atRuleSelector !== null && $atRuleSelector !== '' && $atRuleSelector !== '0') {
+            $lintContext->incrementNestedSelector();
+            $lintContext->resetCurrentContext();
+        } else {
+            $lintContext->setCurrentContext(LintContextName::CONTEXT_SELECTOR_CONTENT);
+        }
+
+        $lintContext->appendCurrentContent($charValue);
+        return true;
+    }
+
+    protected function lintSelectorNameContent(string $charValue, LintContext $lintContext): bool
+    {
+        // There cannot have two following commas
+        if ($charValue === ',') {
+            $this->lintSelectorName($lintContext);
+            $selector = $lintContext->getCurrentContent();
+
+            if ($selector === '' || $selector === '0' || in_array(preg_match('/, *$/', $selector), [0, false], true)) {
+                $lintContext->appendCurrentContent($charValue);
+                return true;
+            }
+
+            $lintContext->addError(sprintf(
+                'Selector token %s cannot be preceded by "%s"',
+                json_encode($charValue),
+                $selector
+            ));
+            return false;
+        }
+
+        // Wildcard and hash
+        if (in_array($charValue, ['*', '#'], true)) {
+            $selector = $lintContext->getCurrentContent();
+            if ($selector === '' || $selector === '0' || preg_match('/[a-zA-Z>+,\'\(\):"] *$/', $selector)) {
+                $lintContext->appendCurrentContent($charValue);
+                return true;
+            }
+
+            $lintContext->addError('Selector token "' . $charValue . '" cannot be preceded by "' . $selector . '"');
+            return true;
+        }
+
+        // Dot
+        if ($charValue === '.') {
+            $selector = $lintContext->getCurrentContent();
+            if ($selector === '' || $selector === '0' || preg_match('/(, |[a-zA-Z]).*$/', $selector)) {
+                $lintContext->appendCurrentContent($charValue);
+                return true;
+            }
+
+            $lintContext->addError('Selector token "' . $charValue . '" cannot be preceded by "' . $selector . '"');
+            return true;
+        }
+
+        if (preg_match('/^[#*.0-9a-zA-Z,:()\[\]="\'-^~_%]+/', $charValue)) {
+            $lintContext->appendCurrentContent($charValue);
+            return true;
+        }
+
+        $lintContext->addError('Unexpected selector token "' . $charValue . '"');
+        return true;
+    }
+
+    protected function lintSelectorName(LintContext $lintContext): void
+    {
+        $selector = $lintContext->getCurrentContent();
+
+        $atRuleSelector = $this->getSelectorNameAtRuleIfexist($selector);
+        if ($atRuleSelector === null) {
+            return;
+        }
+
+        if ($this->lintConfiguration->atRuleExists($atRuleSelector)) {
+            return;
+        }
+
+        $lintContext->addError(sprintf(
+            'Selector token %s is not a valid at-rule',
+            json_encode($atRuleSelector)
+        ));
+    }
+
+    protected function getSelectorNameAtRuleIfexist(string $selector): ?string
+    {
+        if (in_array(preg_match('/^@([a-z]+) .*/', trim($selector), $matches), [0, false], true)) {
+            // Not an at-rule
+            return null;
+        }
+
+        return $matches[1];
     }
 }

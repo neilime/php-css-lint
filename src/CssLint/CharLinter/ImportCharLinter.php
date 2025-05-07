@@ -9,7 +9,7 @@ use CssLint\LintContextName;
 
 class ImportCharLinter implements CharLinter
 {
-    private static $IMPORT_RULE = '@import';
+    private static string $IMPORT_RULE = '@import';
 
     /**
      * Performs lint for a given char, check @import rules

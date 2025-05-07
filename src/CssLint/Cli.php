@@ -33,7 +33,7 @@ class Cli
         }
 
         try {
-            $properties = $this->getPropertiesFromOptions($cliArgs->options);
+            $properties = $this->getLintConfigurationFromOptions($cliArgs->options);
 
             $cssLinter = new Linter($properties);
 
@@ -102,11 +102,11 @@ class Cli
      * Retrieve the properties from the given options
      * @param string $options the options to be parsed
      */
-    private function getPropertiesFromOptions(?string $options): Properties
+    private function getLintConfigurationFromOptions(?string $options): LintConfiguration
     {
-        $properties = new Properties();
+        $lintConfiguration = new LintConfiguration();
         if ($options === null || $options === '' || $options === '0') {
-            return $properties;
+            return $lintConfiguration;
         }
 
         $options = json_decode($options, true);
@@ -124,9 +124,9 @@ class Cli
             throw new RuntimeException('Unable to parse option argument: must be a json object');
         }
 
-        $properties->setOptions($options);
+        $lintConfiguration->setOptions($options);
 
-        return $properties;
+        return $lintConfiguration;
     }
 
     private function lintInput(Linter $cssLinter, string $input): int

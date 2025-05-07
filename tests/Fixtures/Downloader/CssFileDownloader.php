@@ -49,31 +49,12 @@ class CssFileDownloader
             return $cacheItem->get();
         }
 
-        try {
-            $url = $resolver();
-        } catch (Throwable $e) {
-            echo "[WARNING] Could not resolve latest version for {$key}: " . $e->getMessage() . "\n";
-            $url = $this->fallbackUrl($key);
-        }
+        $url = $resolver();
 
         $cacheItem->set($url);
         $this->resolveCache->save($cacheItem);
 
         return $url;
-    }
-
-    private function fallbackUrl(string $key): string
-    {
-        switch ($key) {
-            case 'bootstrap':
-                return "https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/css/bootstrap.min.css";
-            case 'tailwind':
-                return "https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css";
-            case 'normalize':
-                return "https://cdnjs.cloudflare.com/ajax/libs/normalize/latest/normalize.min.css";
-            default:
-                throw new RuntimeException("Unknown fallback for {$key}");
-        }
     }
 
     private function resolveLatestBootstrapUrl(): string
@@ -87,14 +68,14 @@ class CssFileDownloader
     {
         $meta = $this->fetchJson('https://data.jsdelivr.com/v1/package/npm/tailwindcss');
         $version = $meta['tags']['latest'] ?? 'latest';
-        return "https://cdn.jsdelivr.net/npm/tailwindcss@{$version}/dist/tailwind.min.css";
+        return "https://cdn.jsdelivr.net/npm/tailwindcss@{$version}/index.min.css";
     }
 
     private function resolveLatestNormalizeUrl(): string
     {
-        $meta = $this->fetchJson('https://data.jsdelivr.com/libraries/normalize');
+        $meta = $this->fetchJson('https://data.jsdelivr.com/v1/package/npm/normalize.css');
         $version = $meta['version'] ?? 'latest';
-        return "https://cdnjs.cloudflare.com/ajax/libs/normalize/{$version}/normalize.min.css";
+        return "https://cdn.jsdelivr.net/npm/normalize.css@{$version}/normalize.css";
     }
 
     private function fetchJson(string $url): array

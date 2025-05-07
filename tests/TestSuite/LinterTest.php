@@ -6,7 +6,7 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use CssLint\Linter;
-use CssLint\Properties;
+use CssLint\LintConfiguration;
 use PHPUnit\Framework\TestCase;
 use InvalidArgumentException;
 use TypeError;
@@ -36,9 +36,9 @@ class LinterTest extends TestCase
 
     public function testConstructWithCustomCssLintProperties()
     {
-        $properties = new Properties();
-        $linter = new Linter($properties);
-        $this->assertSame($properties, $linter->getCssLintProperties());
+        $lintConfiguration = new LintConfiguration();
+        $linter = new Linter($lintConfiguration);
+        $this->assertSame($lintConfiguration, $linter->getLintConfiguration());
     }
 
     public function testLintValidString()
@@ -78,7 +78,7 @@ class LinterTest extends TestCase
 
     public function testLintValidStringContainingTabs()
     {
-        $this->linter->getCssLintProperties()->setAllowedIndentationChars(["\t"]);
+        $this->linter->getLintConfiguration()->setAllowedIndentationChars(["\t"]);
         $this->assertTrue(
             $this->linter->lintString(
                 "\t\t" . '.button.dropdown::after {
@@ -88,14 +88,14 @@ class LinterTest extends TestCase
             print_r($this->linter->getErrors(), true)
         );
 
-        $this->linter->getCssLintProperties()->setAllowedIndentationChars([' ']);
+        $this->linter->getLintConfiguration()->setAllowedIndentationChars([' ']);
     }
 
     public function testLintStringWithUnterminatedContext()
     {
         $this->assertFalse($this->linter->lintString('* {'));
         $this->assertSame([
-            'Unterminated "selector content" (line: 1, char: 3)',
+            'Unterminated "selector content" - "{" (line: 1, char: 3)',
         ], $this->linter->getErrors());
     }
 
@@ -193,7 +193,7 @@ class LinterTest extends TestCase
             $this->linter->lintString("@import url('"),
         );
         $this->assertSame([
-            'Unterminated "selector" (line: 1, char: 13)',
+            'Unterminated "selector" - "@import url(\'" (line: 1, char: 13)',
         ], $this->linter->getErrors());
     }
 
@@ -205,6 +205,27 @@ class LinterTest extends TestCase
                     " * This is a comment" . PHP_EOL .
                     "*/" . PHP_EOL .
                     ".test { }"
+            ),
+            print_r($this->linter->getErrors(), true)
+        );
+    }
+
+    public function testLintAtRule()
+    {
+        $this->assertTrue(
+            $this->linter->lintString(
+                '@charset "UTF-8";' . PHP_EOL .
+                    ".test { }"
+            ),
+            print_r($this->linter->getErrors(), true)
+        );
+    }
+
+    public function testLintSpecificCss()
+    {
+        $this->assertTrue(
+            $this->linter->lintString(
+                '.row-gap-xxl-0{row-gap:0!important}'
             ),
             print_r($this->linter->getErrors(), true)
         );

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CssLint\Referential\NonStandard;
 
+use CssLint\Referential\Referential;
 use CssLint\Referential\AbstractReferential;
 
 /**
@@ -146,6 +147,7 @@ class PropertiesReferential extends AbstractReferential
         'item-wrap' => true,
         'line-fit-edge' => true,
         'line-grid' => true,
+        'line-height-step' => true,
         'line-padding' => true,
         'line-snap' => true,
         'margin-break' => true,
