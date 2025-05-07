@@ -5,37 +5,37 @@ declare(strict_types=1);
 namespace CssLint;
 
 use CssLint\Referential\ConstructorsReferential;
-use CssLint\Referential\NonStandardPropertiesReferential;
-use CssLint\Referential\StandardPropertiesReferential;
-use CssLint\Referential\PropertiesReferential;
+use CssLint\Referential\NonStandard\PropertiesReferential as NonStandardPropertiesReferential;
+use CssLint\Referential\Standard\PropertiesReferential as StandardPropertiesReferential;
+use CssLint\Referential\Referential;
 
 /**
- * @phpstan-import-type Referential from PropertiesReferential
+ * @phpstan-import-type ReferentialData from Referential
  * @phpstan-type AllowedIndentationChars array<string>
  * @phpstan-type PropertiesOptions array{
  *  allowedIndentationChars?: AllowedIndentationChars,
- *  constructors?: Referential,
- *  standards?: Referential,
- *  nonStandards?: Referential
+ *  constructors?: ReferentialData,
+ *  standards?: ReferentialData,
+ *  nonStandards?: ReferentialData
  * }
  */
 class Properties
 {
     /**
      * List of existing constructor prefix
-     * @var Referential
+     * @var ReferentialData
      */
     protected array $constructors;
 
     /**
      * List of standards properties
-     * @var Referential
+     * @var ReferentialData
      */
     protected array $standards;
 
     /**
      * List of non standards properties
-     * @var Referential
+     * @var ReferentialData
      */
     protected array $nonStandards;
 
@@ -95,9 +95,9 @@ class Properties
 
         $allowedConstrutors = array_keys(array_filter($this->constructors));
 
-        foreach ($allowedConstrutors as $constructor) {
+        foreach ($allowedConstrutors as $allowedConstrutor) {
             $propertyWithoutConstructor = preg_replace(
-                '/^(-' . preg_quote($constructor) . '-)/',
+                '/^(-' . preg_quote($allowedConstrutor) . '-)/',
                 '',
                 $property
             );
@@ -112,6 +112,7 @@ class Properties
                 }
             }
         }
+
         return false;
     }
 
@@ -145,7 +146,7 @@ class Properties
 
     /**
      * Merge the given constructors properties with the current ones
-     * @param Referential $constructors the constructors properties to be merged
+     * @param ReferentialData $constructors the constructors properties to be merged
      */
     public function mergeConstructors(array $constructors): void
     {
@@ -154,7 +155,7 @@ class Properties
 
     /**
      * Merge the given standards properties with the current ones
-     * @param Referential $standards the standards properties to be merged
+     * @param ReferentialData $standards the standards properties to be merged
      */
     public function mergeStandards(array $standards): void
     {
@@ -163,7 +164,7 @@ class Properties
 
     /**
      * Merge the given non standards properties with the current ones
-     * @param Referential $nonStandards non the standards properties to be merged
+     * @param ReferentialData $nonStandards non the standards properties to be merged
      */
     public function mergeNonStandards(array $nonStandards): void
     {

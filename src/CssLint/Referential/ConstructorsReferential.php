@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CssLint\Referential;
 
 /**
- * @phpstan-import-type Referential from PropertiesReferential
+ * @phpstan-import-type ReferentialData from Referential
  */
-class ConstructorsReferential implements PropertiesReferential
+class ConstructorsReferential extends AbstractReferential
 {
     /**
-     * @var Referential
+     * @var ReferentialData
      */
     public static array $referential = [
         'ms' => true,
@@ -18,14 +18,4 @@ class ConstructorsReferential implements PropertiesReferential
         'webkit' => true,
         'o' => true,
     ];
-
-    /**
-     * Get the dataset of constructors.
-     *
-     * @return Referential
-     */
-    public static function getReferential(): array
-    {
-        return self::$referential;
-    }
 }

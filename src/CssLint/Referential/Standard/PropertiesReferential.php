@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace CssLint\Referential;
+namespace CssLint\Referential\Standard;
+
+use CssLint\Referential\AbstractReferential;
 
 /**
- * @phpstan-import-type Referential from PropertiesReferential
+ * @phpstan-import-type ReferentialData from Referential
  */
-class StandardPropertiesReferential implements PropertiesReferential
+class PropertiesReferential extends AbstractReferential
 {
     /**
-     * @var Referential
+     * @var ReferentialData
      */
     public static array $referential = [
         '-webkit-text-fill-color' => true,
@@ -380,6 +382,7 @@ class StandardPropertiesReferential implements PropertiesReferential
         'quotes' => true,
         'r' => true,
         'reading-flow' => true,
+        'reading-order' => true,
         'resize' => true,
         'richness' => true,
         'right' => true,
@@ -521,14 +524,4 @@ class StandardPropertiesReferential implements PropertiesReferential
         'z-index' => true,
         'zoom' => true,
     ];
-
-    /**
-     * Get the dataset of standard properties.
-     *
-     * @return Referential
-     */
-    public static function getReferential(): array
-    {
-        return self::$referential;
-    }
 }
