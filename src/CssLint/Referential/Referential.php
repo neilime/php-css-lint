@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CssLint\Referential;
 
 /**
- * @phpstan-type Referential array<string, bool>
+ * @phpstan-type ReferentialData array<string, bool>
  */
-interface PropertiesReferential
+interface Referential
 {
     /**
-     * @return Referential
+     * @return ReferentialData
      */
     public static function getReferential(): array;
 }

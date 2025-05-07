@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace CssLint\Referential;
+namespace CssLint\Referential\NonStandard;
+
+use CssLint\Referential\AbstractReferential;
 
 /**
- * @phpstan-import-type Referential from PropertiesReferential
+ * @phpstan-import-type ReferentialData from Referential
  */
-class NonStandardPropertiesReferential implements PropertiesReferential
+class PropertiesReferential extends AbstractReferential
 {
     /**
-     * @var Referential
+     * @var ReferentialData
      */
     public static array $referential = [
         '--*' => true,
@@ -18,6 +20,7 @@ class NonStandardPropertiesReferential implements PropertiesReferential
         '-moz-force-broken-image-icon' => true,
         '-moz-image-region' => true,
         '-moz-orient' => true,
+        '-moz-osx-font-smoothing' => true,
         '-moz-user-focus' => true,
         '-moz-user-input' => true,
         '-webkit-app-region' => true,
@@ -124,7 +127,6 @@ class NonStandardPropertiesReferential implements PropertiesReferential
         'flow-from' => true,
         'flow-into' => true,
         'font-smooth' => true,
-        'font-smoothing' => true,
         'footnote-display' => true,
         'footnote-policy' => true,
         'hyphenate-limit-last' => true,
@@ -239,14 +241,4 @@ class NonStandardPropertiesReferential implements PropertiesReferential
         'wrap-inside' => true,
         'wrap-through' => true,
     ];
-
-    /**
-     * Get the dataset of non standard properties.
-     *
-     * @return Referential
-     */
-    public static function getReferential(): array
-    {
-        return self::$referential;
-    }
 }
