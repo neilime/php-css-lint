@@ -21,8 +21,10 @@ class EndOfLineCharLinter implements CharLinter
                     ->incrementLineNumber()
                     ->resetCharNumber();
             }
+
             return true;
         }
+
         return null;
     }
 

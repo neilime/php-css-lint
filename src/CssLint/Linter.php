@@ -4,22 +4,26 @@ declare(strict_types=1);
 
 namespace CssLint;
 
+use CssLint\CharLinter\CharLinter;
+use CssLint\CharLinter\EndOfLineCharLinter;
+use CssLint\CharLinter\CommentCharLinter;
+use CssLint\CharLinter\ImportCharLinter;
+use CssLint\CharLinter\SelectorCharLinter;
+use CssLint\CharLinter\PropertyCharLinter;
 use InvalidArgumentException;
 use RuntimeException;
 
 /**
  * @package CssLint
- * @phpstan-type Errors array<string>
- * @phpstan-type ContextEntry string|null
- * @phpstan-type Context ContextEntry|ContextEntry[]
+ * @phpstan-import-type Errors from LintContext
  */
 class Linter
 {
     /**
      * Class to provide css properties knowledge
-     * @var Properties|null
+     * @var LintConfiguration|null
      */
-    protected $cssLintProperties;
+    protected $lintConfiguration;
 
     /**
      * The list of char linters
@@ -29,39 +33,38 @@ class Linter
 
     /**
      * The current context of parsing
-     * @var LintContext|null
      */
     protected ?LintContext $lintContext = null;
 
     /**
      * Constructor
-     * @param Properties $properties (optional) an instance of the "\CssLint\Properties" helper
+     * @param LintConfiguration $lintConfiguration (optional) an instance of the "\CssLint\Properties" helper
      */
-    public function __construct(?Properties $properties = null)
+    public function __construct(?LintConfiguration $lintConfiguration = null)
     {
-        if ($properties instanceof Properties) {
-            $this->setCssLintProperties($properties);
+        if ($lintConfiguration instanceof LintConfiguration) {
+            $this->setLintConfiguration($lintConfiguration);
         }
     }
 
     /**
      * Return an instance of the "\CssLint\Properties" helper, initialize a new one if not define already
      */
-    public function getCssLintProperties(): Properties
+    public function getLintConfiguration(): LintConfiguration
     {
-        if ($this->cssLintProperties) {
-            return $this->cssLintProperties;
+        if ($this->lintConfiguration) {
+            return $this->lintConfiguration;
         }
 
-        return $this->cssLintProperties = new Properties();
+        return $this->lintConfiguration = new LintConfiguration();
     }
 
     /**
      * Set an instance of the "\CssLint\Properties" helper
      */
-    public function setCssLintProperties(Properties $cssLintProperties): self
+    public function setLintConfiguration(LintConfiguration $lintConfiguration): self
     {
-        $this->cssLintProperties = $cssLintProperties;
+        $this->lintConfiguration = $lintConfiguration;
         return $this;
     }
 
@@ -83,7 +86,7 @@ class Linter
 
         $this->assertLintContextIsClean();
 
-        return in_array($this->lintContext->getErrors(), [null, []], true);
+        return $this->getErrors() === [];
     }
 
     /**
@@ -131,12 +134,16 @@ class Linter
 
         $this->assertLintContextIsClean();
 
-        return in_array($this->lintContext->getErrors(), [null, []], true);
+        return $this->getErrors() === [];
     }
 
-    public function getErrors(): ?array
+    /**
+     * Return the errors occurred during the lint process
+     * @return Errors
+     */
+    public function getErrors(): array
     {
-        return $this->lintContext?->getErrors();
+        return $this->lintContext?->getErrors() ?? [];
     }
 
     /**
@@ -148,7 +155,7 @@ class Linter
             ->resetChartLinters()
             ->resetLintContext();
 
-        $this->lintContext->incrementLineNumber();
+        $this->lintContext?->incrementLineNumber();
         return $this;
     }
 
@@ -158,6 +165,10 @@ class Linter
      */
     protected function lintChar(string $charValue): ?bool
     {
+        if (!$this->lintContext instanceof LintContext) {
+            throw new RuntimeException('Lint context is not initialized');
+        }
+
         $this->lintContext->incrementCharNumber();
 
         foreach ($this->charLinters as $charLinter) {
@@ -174,27 +185,41 @@ class Linter
 
     protected function resetChartLinters(): self
     {
-        $cssLintProperties = $this->getCssLintProperties();
+        $lintConfiguration = $this->getLintConfiguration();
 
         $this->charLinters = [
-            new CharLinter\EndOfLineCharLinter(),
-            new CharLinter\CommentCharLinter(),
-            new CharLinter\ImportCharLinter(),
-            new CharLinter\SelectorCharLinter($cssLintProperties),
-            new CharLinter\PropertyCharLinter($cssLintProperties),
+            new EndOfLineCharLinter(),
+            new CommentCharLinter(),
+            new ImportCharLinter(),
+            new SelectorCharLinter($lintConfiguration),
+            new PropertyCharLinter($lintConfiguration),
         ];
         return $this;
     }
 
     protected function assertLintContextIsClean(): bool
     {
-        if ($this->lintContext && $this->lintContext->assertCurrentContext(null)) {
+        if (!$this->lintContext instanceof LintContext) {
             return true;
         }
 
         $currentContext = $this->lintContext->getCurrentContext();
+        if (!$currentContext instanceof LintContextName) {
+            return true;
+        }
 
-        $this->lintContext->addError('Unterminated "' . $currentContext->value . '"');
+
+        $error = sprintf(
+            'Unterminated "%s"',
+            $currentContext->value,
+        );
+
+        $currentContent = $this->lintContext->getCurrentContent();
+        if ($currentContent !== '') {
+            $error .= sprintf(' - "%s"', $currentContent);
+        }
+
+        $this->lintContext->addError($error);
         return false;
     }
 

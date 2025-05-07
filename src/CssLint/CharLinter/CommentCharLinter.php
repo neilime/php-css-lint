@@ -8,7 +8,7 @@ use CssLint\LintContext;
 
 class CommentCharLinter implements CharLinter
 {
-    private static $COMMENT_DELIMITER = '/';
+    private static string $COMMENT_DELIMITER = '/';
 
     /**
      * Performs lint for a given char, check comment part
@@ -21,6 +21,7 @@ class CommentCharLinter implements CharLinter
             if ($this->isCommentEnd($charValue, $lintContext)) {
                 $lintContext->setComment(false);
             }
+
             $lintContext->setPreviousChar($charValue);
             return true;
         }
@@ -42,8 +43,6 @@ class CommentCharLinter implements CharLinter
 
     /**
      * Check if the current char is a comment
-     * @param string $charValue
-     * @return bool
      */
     private function isCommentDelimiter(string $charValue): bool
     {
@@ -52,8 +51,6 @@ class CommentCharLinter implements CharLinter
 
     /**
      * Check if the current char is the end of a comment
-     * @param string $charValue
-     * @return bool
      */
     private function isCommentEnd(string $charValue, LintContext $lintContext): bool
     {
@@ -62,8 +59,6 @@ class CommentCharLinter implements CharLinter
 
     /**
      * Check if the current char is the start of a comment
-     * @param string $charValue
-     * @return bool
      */
     private function isCommentStart(string $charValue, LintContext $lintContext): bool
     {

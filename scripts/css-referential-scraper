@@ -9,12 +9,17 @@ $forceRefresh = in_array('--force-refresh', $argv);
 
 $scraper = new CssReferentialScraper($forceRefresh);
 
-echo "Fetching CSS property list...\n";
+echo "Fetching CSS referentials...\n";
 $referentials = $scraper->fetchReferentials();
 
-echo "Fetched " . count($referentials['properties']) . " properties\n";
+echo "Fetched " . count($referentials['properties']) . " propertie(s)\n";
 $cssPropertiesFile = __DIR__ . '/../tests/fixtures/css-properties.json';
 $scraper->saveToJson($referentials['properties'], $cssPropertiesFile);
 echo "Saved to {$cssPropertiesFile}\n";
+
+echo "Fetched " . count($referentials['at-rules']) . " at-rule(s)\n";
+$cssAtRulesFile = __DIR__ . '/../tests/fixtures/css-at-rules.json';
+$scraper->saveToJson($referentials['at-rules'], $cssAtRulesFile);
+echo "Saved to {$cssAtRulesFile}\n";
 
 echo "Done.\n";

@@ -9,6 +9,9 @@ class CssReferentialScraper
     private const MDN_URL = 'https://unpkg.com/@mdn/browser-compat-data/data.json';
     private const W3C_URL = 'https://www.w3.org/Style/CSS/all-properties.en.json';
 
+    /**
+     * @var array<string, CachedHttpDownloader>
+     */
     private $downloaders = [];
     private bool $forceRefresh;
 
@@ -25,8 +28,8 @@ class CssReferentialScraper
     {
         $w3cReferencial = $this->fetchW3CReferential();
         $mdnReferencial = $this->fetchMdnReferential();
-        $properties = $w3cReferencial['properties'] ?? [];
 
+        $properties = $w3cReferencial['properties'] ?? [];
         foreach ($mdnReferencial['properties'] as $property => $info) {
             if (!isset($properties[$property])) {
                 $properties[$property] = $info;
@@ -37,8 +40,20 @@ class CssReferentialScraper
             }
         }
 
+        $atRules = $w3cReferencial['at-rules'] ?? [];
+        foreach ($mdnReferencial['at-rules'] as $atRule => $info) {
+            if (!isset($atRules[$atRule])) {
+                $atRules[$atRule] = $info;
+                continue;
+            }
+            if (!$atRules[$atRule]['standard'] && $info['standard']) {
+                $atRules[$atRule] = $info;
+            }
+        }
+
         return [
             'properties' => $properties,
+            'at-rules' => $atRules,
         ];
     }
 
@@ -50,22 +65,35 @@ class CssReferentialScraper
     private function fetchMdnReferential(): array
     {
         $json = $this->downloaders[self::MDN_URL]->fetch(self::MDN_URL, $this->forceRefresh);
+
         if ($json === false) {
             throw new RuntimeException('Failed to fetch CSS properties from MDN.');
         }
 
         $data = json_decode($json, true);
 
+        function isStandard(array $info): bool
+        {
+            return $info['__compat']['status']['standard_track'] ?? false;
+        };
+
         $properties = [];
         foreach ($data['css']['properties'] as $property => $info) {
-            $isStandard = $info['__compat']['status']['standard_track'] ?? false;
             $properties[$property] = [
-                'standard' => $isStandard,
+                'standard' => isStandard($info),
+            ];
+        }
+
+        $atRules = [];
+        foreach ($data['css']['at-rules'] as $atRule => $info) {
+            $atRules[$atRule] = [
+                'standard' => isStandard($info),
             ];
         }
 
         return [
             'properties'  => $properties,
+            'at-rules'    => $atRules,
         ];
     }
 

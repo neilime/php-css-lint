@@ -6,12 +6,12 @@ namespace CssLint\CharLinter;
 
 use CssLint\LintContext;
 use CssLint\LintContextName;
-use CssLint\Properties;
+use CssLint\LintConfiguration;
 
 class PropertyCharLinter implements CharLinter
 {
     public function __construct(
-        protected readonly Properties $cssLintProperties,
+        protected readonly LintConfiguration $lintConfiguration,
     ) {}
 
     /**
@@ -30,6 +30,7 @@ class PropertyCharLinter implements CharLinter
 
         return null;
     }
+
     /**
      * Performs lint for a given char, check property name part
      * @return bool|null : true if the process should continue, else false, null if this char is not a property name
@@ -50,7 +51,7 @@ class PropertyCharLinter implements CharLinter
             }
 
             // Check if property name exists
-            if (!$this->cssLintProperties->propertyExists($propertyName)) {
+            if (!$this->lintConfiguration->propertyExists($propertyName)) {
                 $lintContext->addError('Unknown CSS property "' . $propertyName . '"');
             }
 
@@ -84,14 +85,18 @@ class PropertyCharLinter implements CharLinter
         $lintContext->appendCurrentContent($charValue);
 
         // End of the property content
-        if ($charValue === ';') {
-            // Check if the ";" is not quoted
+        if ($charValue === ';' || $charValue === '}') {
+            // Check if the char is not quoted
             $contextContent = $lintContext->getCurrentContent();
             if ((substr_count($contextContent, '"') & 1) === 0 && (substr_count($contextContent, "'") & 1) === 0) {
                 $lintContext->setCurrentContext(LintContextName::CONTEXT_SELECTOR_CONTENT);
             }
 
             if (trim($contextContent) !== '' && trim($contextContent) !== '0') {
+                if ($charValue === '}') {
+                    $lintContext->resetCurrentContext();
+                }
+
                 return true;
             }
 

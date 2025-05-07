@@ -7,6 +7,8 @@ namespace CssLint;
 use CssLint\Referential\ConstructorsReferential;
 use CssLint\Referential\NonStandard\PropertiesReferential as NonStandardPropertiesReferential;
 use CssLint\Referential\Standard\PropertiesReferential as StandardPropertiesReferential;
+use CssLint\Referential\NonStandard\AtRulesReferential as NonStandardAtRulesReferential;
+use CssLint\Referential\Standard\AtRulesReferential as StandardAtRulesReferential;
 use CssLint\Referential\Referential;
 
 /**
@@ -19,7 +21,7 @@ use CssLint\Referential\Referential;
  *  nonStandards?: ReferentialData
  * }
  */
-class Properties
+class LintConfiguration
 {
     /**
      * List of existing constructor prefix
@@ -31,13 +33,25 @@ class Properties
      * List of standards properties
      * @var ReferentialData
      */
-    protected array $standards;
+    protected array $propertiesStandards;
 
     /**
      * List of non standards properties
      * @var ReferentialData
      */
-    protected array $nonStandards;
+    protected array $propertiesNonStandards;
+
+    /**
+     * List of standards at-rules
+     * @var ReferentialData
+     */
+    protected array $atRulesStandards;
+
+    /**
+     * List of non standards at-rules
+     * @var ReferentialData
+     */
+    protected array $atRulesNonStandards;
 
     /**
      * List of allowed indentation chars
@@ -48,8 +62,10 @@ class Properties
     public function __construct()
     {
         $this->constructors = ConstructorsReferential::getReferential();
-        $this->standards = StandardPropertiesReferential::getReferential();
-        $this->nonStandards = NonStandardPropertiesReferential::getReferential();
+        $this->propertiesStandards = StandardPropertiesReferential::getReferential();
+        $this->propertiesNonStandards = NonStandardPropertiesReferential::getReferential();
+        $this->atRulesStandards = StandardAtRulesReferential::getReferential();
+        $this->atRulesNonStandards = NonStandardAtRulesReferential::getReferential();
     }
 
     /**
@@ -70,11 +86,11 @@ class Properties
         }
 
         if (isset($options['standards'])) {
-            $this->mergeStandards($options['standards']);
+            $this->mergePropertiesStandards($options['standards']);
         }
 
         if (isset($options['nonStandards'])) {
-            $this->mergeNonStandards($options['nonStandards']);
+            $this->mergePropertiesNonStandards($options['nonStandards']);
         }
     }
 
@@ -85,11 +101,11 @@ class Properties
      */
     public function propertyExists(string $property): bool
     {
-        if (!empty($this->standards[$property])) {
+        if (!empty($this->propertiesStandards[$property])) {
             return true;
         }
 
-        if (!empty($this->nonStandards[$property])) {
+        if (!empty($this->propertiesNonStandards[$property])) {
             return true;
         }
 
@@ -103,17 +119,26 @@ class Properties
             );
 
             if ($propertyWithoutConstructor !== $property) {
-                if (!empty($this->standards[$propertyWithoutConstructor])) {
+                if (!empty($this->propertiesStandards[$propertyWithoutConstructor])) {
                     return true;
                 }
 
-                if (!empty($this->nonStandards[$propertyWithoutConstructor])) {
+                if (!empty($this->propertiesNonStandards[$propertyWithoutConstructor])) {
                     return true;
                 }
             }
         }
 
         return false;
+    }
+
+    public function atRuleExists(string $atRule): bool
+    {
+        if (!empty($this->atRulesStandards[$atRule])) {
+            return true;
+        }
+
+        return !empty($this->atRulesNonStandards[$atRule]);
     }
 
     /**
@@ -157,17 +182,35 @@ class Properties
      * Merge the given standards properties with the current ones
      * @param ReferentialData $standards the standards properties to be merged
      */
-    public function mergeStandards(array $standards): void
+    public function mergePropertiesStandards(array $standards): void
     {
-        $this->standards = array_merge($this->standards, $standards);
+        $this->propertiesStandards = array_merge($this->propertiesStandards, $standards);
     }
 
     /**
      * Merge the given non standards properties with the current ones
      * @param ReferentialData $nonStandards non the standards properties to be merged
      */
-    public function mergeNonStandards(array $nonStandards): void
+    public function mergePropertiesNonStandards(array $nonStandards): void
     {
-        $this->nonStandards = array_merge($this->nonStandards, $nonStandards);
+        $this->propertiesNonStandards = array_merge($this->propertiesNonStandards, $nonStandards);
+    }
+
+    /**
+     * Merge the given standards at-rules with the current ones
+     * @param ReferentialData $standards the standards at-rules to be merged
+     */
+    public function mergeAtRulesStandards(array $standards): void
+    {
+        $this->atRulesStandards = array_merge($this->atRulesStandards, $standards);
+    }
+
+    /**
+     * Merge the given non standards atrules with the current ones
+     * @param ReferentialData $nonStandards non the standards atrules to be merged
+     */
+    public function mergeAtRulesNonStandards(array $nonStandards): void
+    {
+        $this->atRulesNonStandards = array_merge($this->atRulesNonStandards, $nonStandards);
     }
 }
