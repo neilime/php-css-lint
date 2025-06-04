@@ -51,9 +51,21 @@ class CssReferentialScraper
             }
         }
 
+        $atRulesProperties = $w3cReferencial['at-rules-properties'] ?? [];
+        foreach ($mdnReferencial['at-rules-properties'] as $property => $info) {
+            if (!isset($atRulesProperties[$property])) {
+                $atRulesProperties[$property] = $info;
+                continue;
+            }
+            if (!$atRulesProperties[$property]['standard'] && $info['standard']) {
+                $atRulesProperties[$property] = $info;
+            }
+        }
+
         return [
             'properties' => $properties,
             'at-rules' => $atRules,
+            'at-rules-properties' => $atRulesProperties,
         ];
     }
 
@@ -85,15 +97,28 @@ class CssReferentialScraper
         }
 
         $atRules = [];
+        $atRulesProperties = [];
         foreach ($data['css']['at-rules'] as $atRule => $info) {
             $atRules[$atRule] = [
                 'standard' => isStandard($info),
             ];
+
+            $atRulesProperties[$atRule] = [];
+
+            foreach ($info as $property => $propertyInfo) {
+                // Get kebab case properties only
+                if (preg_match('/^[a-z0-9-]+$/', $property) && !isset($atRulesProperties[$property])) {
+                    $atRulesProperties[$atRule][$property] = [
+                        'standard' => isStandard($propertyInfo),
+                    ];
+                }
+            }
         }
 
         return [
             'properties'  => $properties,
             'at-rules'    => $atRules,
+            'at-rules-properties' => $atRulesProperties,
         ];
     }
 

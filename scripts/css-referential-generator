@@ -73,6 +73,7 @@ $missingNonStandardsAtRules = [
     'theme',
     'tailwind'
 ];
+
 foreach ($missingNonStandardsAtRules as $atRuleName) {
     if (isset($standardsAtRules[$atRuleName]) || isset($nonStandardsAtRules[$atRuleName])) {
         throw new Exception("At-rules $atRuleName already exists in either standards or non-standards at-rules.");
@@ -84,3 +85,31 @@ ksort($standardsAtRules);
 saveReferentialData(CssLint\Referential\Standard\AtRulesReferential::class, $standardsAtRules);
 ksort($nonStandardsAtRules);
 saveReferentialData(CssLint\Referential\NonStandard\AtRulesReferential::class, $nonStandardsAtRules);
+
+$cssAtRulesPropertiesFile = __DIR__ . '/../tests/fixtures/css-at-rules-properties.json';
+$cssAtRulesProperties = json_decode(file_get_contents($cssAtRulesPropertiesFile), true);
+$standardsAtRulesProperties = [];
+$nonStandardsAtRulesProperties = [];
+
+foreach ($cssAtRulesProperties as $atRuleName => $atRule) {
+    foreach ($atRule as $propertyName => $property) {
+        $isStandard = $property['standard'] ?? false;
+        if ($isStandard) {
+            $standardsAtRulesProperties[$atRuleName][$propertyName] = true;
+        } else {
+            $nonStandardsAtRulesProperties[$atRuleName][$propertyName] = true;
+        }
+    }
+}
+
+ksort($standardsAtRulesProperties);
+foreach ($standardsAtRulesProperties as $atRuleName => $properties) {
+    ksort($standardsAtRulesProperties[$atRuleName]);
+}
+saveReferentialData(CssLint\Referential\Standard\AtRulesPropertiesReferential::class, $standardsAtRulesProperties);
+
+ksort($nonStandardsAtRulesProperties);
+foreach ($nonStandardsAtRulesProperties as $atRuleName => $properties) {
+    ksort($nonStandardsAtRulesProperties[$atRuleName]);
+}
+saveReferentialData(CssLint\Referential\NonStandard\AtRulesPropertiesReferential::class, $nonStandardsAtRulesProperties);

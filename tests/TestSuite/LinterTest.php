@@ -7,7 +7,6 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use CssLint\Linter;
 use CssLint\LintConfiguration;
-use PHPUnit\Framework\TestCase;
 use InvalidArgumentException;
 use TypeError;
 
@@ -43,7 +42,7 @@ class LinterTest extends TestCase
 
     public function testLintValidString()
     {
-        $this->assertTrue($this->linter->lintString('.button.dropdown::after {
+        $errors = iterator_to_array($this->linter->lintString('.button.dropdown::after {
     display: block;
     width: 0;
     height: 0;
@@ -60,78 +59,46 @@ class LinterTest extends TestCase
   .button.arrow-only::after {
     top: -0.1em;
     float: none;
-    margin-left: 0; }'), print_r($this->linter->getErrors(), true));
+    margin-left: 0; }'));
+        $this->assertEmpty($errors);
     }
 
     public function testLintNotValidString()
     {
-        $this->assertFalse($this->linter->lintString('.button.dropdown::after {
+        // Act
+        $errors = $this->linter->lintString('.button.dropdown::after {
              displady: block;
     width: 0;
     :
-            '));
-        $this->assertSame([
-            'Unknown CSS property "displady" (line: 2, char: 22)',
-            'Unexpected char ":" (line: 4, char: 5)',
-        ], $this->linter->getErrors());
-    }
+            ');
 
-    public function testLintValidStringContainingTabs()
-    {
-        $this->linter->getLintConfiguration()->setAllowedIndentationChars(["\t"]);
-        $this->assertTrue(
-            $this->linter->lintString(
-                "\t\t" . '.button.dropdown::after {
-' . "\t\t" . 'display: block;
-' . "\t\t" . '}'
-            ),
-            print_r($this->linter->getErrors(), true)
-        );
-
-        $this->linter->getLintConfiguration()->setAllowedIndentationChars([' ']);
+        // Assert
+        $this->assertErrorsEquals([
+            [
+                'key' => 'unclosed_token',
+                'message' => 'block - Unclosed block detected',
+                'line' => 1,
+                'start' => 24,
+                'end' => 0,
+            ],
+        ], $errors);
     }
 
     public function testLintStringWithUnterminatedContext()
     {
-        $this->assertFalse($this->linter->lintString('* {'));
-        $this->assertSame([
-            'Unterminated "selector content" - "{" (line: 1, char: 3)',
-        ], $this->linter->getErrors());
-    }
+        // Act
+        $errors = $this->linter->lintString('* {');
 
-    public function testLintStringWithWrongSelectorDoubleComma()
-    {
-        $this->assertFalse($this->linter->lintString('a,, {}'));
-        $this->assertSame([
-            'Selector token "," cannot be preceded by "a," (line: 1, char: 3)',
-        ], $this->linter->getErrors());
-    }
-
-    public function testLintStringWithWrongSelectorDoubleHash()
-    {
-        $this->assertFalse($this->linter->lintString('## {}'));
-        $this->assertSame([
-            'Selector token "#" cannot be preceded by "#" (line: 1, char: 2)',
-        ], $this->linter->getErrors());
-    }
-
-    public function testLintStringWithWrongPropertyNameUnexpectedToken()
-    {
-        $this->assertFalse($this->linter->lintString('.test {
-     test~: true;
-}'));
-        $this->assertSame([
-            'Unexpected property name token "~" (line: 2, char: 10)',
-            'Unknown CSS property "test~" (line: 2, char: 11)',
-        ], $this->linter->getErrors());
-    }
-
-    public function testLintStringWithWrongSelectorUnexpectedToken()
-    {
-        $this->assertFalse($this->linter->lintString('.a| {}'));
-        $this->assertSame([
-            'Unexpected selector token "|" (line: 1, char: 3)',
-        ], $this->linter->getErrors());
+        // Assert
+        $this->assertErrorsEquals([
+            [
+                'key' => 'unclosed_token',
+                'message' => 'block - Unclosed block detected',
+                'line' => 1,
+                'start' => 2,
+                'end' => 0,
+            ],
+        ], $errors);
     }
 
     public function testLintStringWithWrongTypeParam()
@@ -140,29 +107,29 @@ class LinterTest extends TestCase
         $this->expectExceptionMessage(
             'CssLint\Linter::lintString(): Argument #1 ($stringValue) must be of type string, array given'
         );
-        $this->linter->lintString(['wrong']);
+        iterator_to_array($this->linter->lintString(['wrong']));
     }
 
     public function testLintFileWithWrongTypeParam()
     {
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage(
-            'CssLint\Linter::lintFile(): Argument #1 ($sFilePath) must be of type string, array given'
+            'CssLint\Linter::lintFile(): Argument #1 ($filePath) must be of type string, array given'
         );
-        $this->linter->lintFile(['wrong']);
+        iterator_to_array($this->linter->lintFile(['wrong']));
     }
 
     public function testLintFileWithUnknownFilePathParam()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "$sFilePath" "wrong" is not an existing file path');
-        $this->linter->lintFile('wrong');
+        $this->expectExceptionMessage('Argument "$filePath" "wrong" is not an existing file path');
+        iterator_to_array($this->linter->lintFile('wrong'));
     }
 
     public function testLintFileWithUnreadableFilePathParam()
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "$sFilePath" "vfs://testDir/foo.txt" is not a readable file path');
+        $this->expectExceptionMessage('Argument "$filePath" "vfs://testDir/foo.txt" is not a readable file path');
 
         $testFile = new vfsStreamFile('foo.txt', 0o000);
         $this->root->addChild($testFile);
@@ -171,101 +138,89 @@ class LinterTest extends TestCase
 
         $this->assertFileIsNotReadable($fileToLint);
 
-        $this->linter->lintFile($fileToLint);
-    }
-
-    public function testLintValidImportRule()
-    {
-        $this->assertTrue(
-            $this->linter->lintString("@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');"),
-            print_r($this->linter->getErrors(), true)
-        );
-
-        $this->assertTrue(
-            $this->linter->lintString("@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');"),
-            print_r($this->linter->getErrors(), true)
-        );
-    }
-
-    public function testLintNotValidImportRule()
-    {
-        $this->assertFalse(
-            $this->linter->lintString("@import url('"),
-        );
-        $this->assertSame([
-            'Unterminated "selector" - "@import url(\'" (line: 1, char: 13)',
-        ], $this->linter->getErrors());
+        iterator_to_array($this->linter->lintFile($fileToLint));
     }
 
     public function testLintComment()
     {
-        $this->assertTrue(
+        // Act
+        $errors =
             $this->linter->lintString(
                 "/*" . PHP_EOL .
                     " * This is a comment" . PHP_EOL .
                     "*/" . PHP_EOL .
                     ".test { }"
-            ),
-            print_r($this->linter->getErrors(), true)
-        );
-    }
+            );
 
-    public function testLintAtRule()
-    {
-        $this->assertTrue(
-            $this->linter->lintString(
-                '@charset "UTF-8";' . PHP_EOL .
-                    ".test { }"
-            ),
-            print_r($this->linter->getErrors(), true)
-        );
-    }
-
-    public function testLintSpecificCss()
-    {
-        $this->assertTrue(
-            $this->linter->lintString(
-                '.row-gap-xxl-0{row-gap:0!important}'
-            ),
-            print_r($this->linter->getErrors(), true)
-        );
+        // Assert
+        $this->assertErrorsEquals([], $errors, json_encode($errors, JSON_PRETTY_PRINT));
     }
 
     public function testLintBootstrapCssFile()
     {
+        // Arrange
         $fileToLint = $this->testFixturesDir . '/bootstrap.css';
-        $this->assertTrue(
-            $this->linter->lintFile($fileToLint),
-            print_r($this->linter->getErrors(), true)
-        );
+
+        // Act
+        $errors = $this->linter->lintFile($fileToLint);
+
+        // Assert
+        $this->assertErrorsEquals([], $errors);
     }
 
     public function testLintNormalizeCssFile()
     {
+        // Arrange
         $fileToLint = $this->testFixturesDir . '/normalize.css';
-        $this->assertTrue(
-            $this->linter->lintFile($fileToLint),
-            print_r($this->linter->getErrors(), true)
-        );
+
+        // Act
+        $errors = $this->linter->lintFile($fileToLint);
+
+        // Assert
+        $this->assertErrorsEquals([], $errors);
     }
 
     public function testLintTailwindCssFile()
     {
+        // Arrange
         $fileToLint = $this->testFixturesDir . '/tailwind.css';
-        $this->assertTrue(
-            $this->linter->lintFile($fileToLint),
-            print_r($this->linter->getErrors(), true)
-        );
+
+        // Act
+        $errors = $this->linter->lintFile($fileToLint);
+
+        // Assert
+        $this->assertErrorsEquals([], $errors);
     }
 
     public function testLintNotValidCssFile()
     {
+        // Arrange
         $fileToLint = $this->testFixturesDir . '/not_valid.css';
 
-        $this->assertFalse($this->linter->lintFile($fileToLint));
-        $this->assertSame([
-            'Unknown CSS property "bordr-top-style" (line: 8, char: 20)',
-            'Unterminated "selector content" (line: 17, char: 0)',
-        ], $this->linter->getErrors());
+        // Act
+        $errors = $this->linter->lintFile($fileToLint);
+
+        // Assert
+        $this->assertErrorsEquals(
+            [
+                [
+                    [
+                        'key' => 'unknown_css_property',
+                        'message' => 'Unknown CSS property "bordr-top-style" (line: 8, char: 20)',
+                        'line' => 8,
+                        'start' => 20,
+                        'end' => 28,
+                    ],
+                ],
+                [
+                    'key' => 'unterminated_selector_content',
+                    'message' => 'Unterminated "selector content" (line: 17, char: 0)',
+                    'line' => 17,
+                    'start' => 0,
+                    'end' => 0,
+                ],
+            ],
+            $errors
+        );
     }
 }

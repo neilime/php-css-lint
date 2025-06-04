@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class CliTest extends TestCase
 {
-    private $testFixturesDir;
+    private string $testFixturesDir;
 
     /**
      * @var Cli
@@ -49,13 +49,17 @@ class CliTest extends TestCase
             '# Lint CSS string...' . PHP_EOL .
                 "\033[31m => CSS string is not valid:\033[0m" . PHP_EOL .
                 PHP_EOL .
-                "\033[31m    - Unknown CSS property \"displady\" (line: 1, char: 17)\033[0m" . PHP_EOL .
-                "\033[31m    - Unexpected char \":\" (line: 3, char: 13)\033[0m" . PHP_EOL .
+                "\033[31m    - [invalid_property_declaration]: property - Unknown property \"displady\" at line 1, position 8-23\033[0m" . PHP_EOL .
+                "\033[31m    - [unexpected_character_in_block_content]: block - Unexpected character: \":\" at line 1, position 6-61\033[0m" . PHP_EOL .
                 PHP_EOL
         );
-        $this->assertEquals(1, $this->cli->run(['php-css-lint', '.test { displady: block;
+
+        $this->assertEquals(1, $this->cli->run([
+            'php-css-lint',
+            '.test { displady: block;
             width: 0;
-            : }']));
+            : }'
+        ]));
     }
 
     public function testRunWithValidFileShouldReturnSuccessCode()
@@ -77,8 +81,7 @@ class CliTest extends TestCase
             "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
                 "\033[31m => CSS file \"$fileToLint\" is not valid:\033[0m" . PHP_EOL .
                 PHP_EOL .
-                "\033[31m    - Unknown CSS property \"bordr-top-style\" (line: 8, char: 20)\033[0m" . PHP_EOL .
-                "\033[31m    - Unterminated \"selector content\" (line: 17, char: 0)\033[0m" . PHP_EOL .
+                "\033[31m    - [unclosed_token]: block - Unclosed block detected at line 1, position 23-48\033[0m" . PHP_EOL .
                 PHP_EOL
         );
         $this->assertEquals(1, $this->cli->run(['php-css-lint', $fileToLint]));
@@ -106,7 +109,6 @@ class CliTest extends TestCase
         $this->assertEquals(1, $this->cli->run(['php-css-lint',  $filesToLint]));
     }
 
-
     public function testRunWithNotValidFileGlobShouldReturnErrorCode()
     {
         $fileToLint = $this->testFixturesDir . '/not_valid.css';
@@ -114,8 +116,7 @@ class CliTest extends TestCase
             "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
                 "\033[31m => CSS file \"$fileToLint\" is not valid:\033[0m" . PHP_EOL .
                 PHP_EOL .
-                "\033[31m    - Unknown CSS property \"bordr-top-style\" (line: 8, char: 20)\033[0m" . PHP_EOL .
-                "\033[31m    - Unterminated \"selector content\" (line: 17, char: 0)\033[0m" . PHP_EOL .
+                "\033[31m    - [unclosed_token]: block - Unclosed block detected at line 1, position 23-48\033[0m" . PHP_EOL .
                 PHP_EOL
         );
         $this->assertEquals(1, $this->cli->run(['php-css-lint', $this->testFixturesDir . '/not_valid*.css']));
@@ -127,13 +128,14 @@ class CliTest extends TestCase
             "# Lint CSS string..." . PHP_EOL .
                 "\033[31m => CSS string is not valid:\033[0m" . PHP_EOL .
                 PHP_EOL .
-                "\033[31m    - Unexpected char \" \" (line: 1, char: 8)\033[0m" . PHP_EOL .
+                "\033[31m    - [invalid_indentation_character]: whitespace - Unexpected char \" \" at line 2, position 8-9\033[0m" . PHP_EOL .
                 PHP_EOL
         );
+
         $this->assertEquals(1, $this->cli->run([
             'php-css-lint',
             '--options={ "allowedIndentationChars": ["\t"] }',
-            '.test { display: block; }',
+            ".test {\n display: block; }",
         ]));
     }
 
@@ -143,6 +145,7 @@ class CliTest extends TestCase
             "\033[31m/!\ Error: Unable to parse option argument: Syntax error\033[0m" . PHP_EOL .
                 PHP_EOL
         );
+
         $this->assertEquals(1, $this->cli->run([
             'php-css-lint',
             '--options={ "allowedIndentationChars":  }',

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CssLint;
 
+use Generator;
 use RuntimeException;
 use Throwable;
 
@@ -196,21 +197,16 @@ class Cli
      */
     private function lintFile(Linter $cssLinter, string $filePath): int
     {
-        $this->printLine('# Lint CSS file "' . $filePath . '"...');
+        $source = "CSS file \"" . $filePath . "\"";
+        $this->printLine('# Lint ' . $source . '...');
 
         if (!is_readable($filePath)) {
             $this->printError('File "' . $filePath . '" is not readable');
             return self::RETURN_CODE_ERROR;
         }
 
-        if ($cssLinter->lintFile($filePath)) {
-            $this->printLine("\033[32m => CSS file \"" . $filePath . "\" is valid\033[0m" . PHP_EOL);
-            return self::RETURN_CODE_SUCCESS;
-        }
-
-        $this->printLine("\033[31m => CSS file \"" . $filePath . "\" is not valid:\033[0m" . PHP_EOL);
-        $this->displayLinterErrors($cssLinter->getErrors());
-        return self::RETURN_CODE_ERROR;
+        $errors = $cssLinter->lintFile($filePath);
+        return $this->printLinterErrors($source, $errors);
     }
 
 
@@ -222,16 +218,10 @@ class Cli
      */
     private function lintString(Linter $cssLinter, string $stringValue): int
     {
-        $this->printLine('# Lint CSS string...');
-
-        if ($cssLinter->lintString($stringValue)) {
-            $this->printLine("\033[32m => CSS string is valid\033[0m" . PHP_EOL);
-            return self::RETURN_CODE_SUCCESS;
-        }
-
-        $this->printLine("\033[31m => CSS string is not valid:\033[0m" . PHP_EOL);
-        $this->displayLinterErrors($cssLinter->getErrors());
-        return self::RETURN_CODE_ERROR;
+        $source = 'CSS string';
+        $this->printLine('# Lint ' . $source . '...');
+        $errors = $cssLinter->lintString($stringValue);
+        return $this->printLinterErrors($source, $errors);
     }
 
     /**
@@ -245,15 +235,27 @@ class Cli
 
     /**
      * Display the errors returned by the linter
-     * @param Errors $errors the generated errors to be displayed
+     * @param Generator<LintError> $errors the generated errors to be displayed
+     * @return int the return code related to the execution of the linter
      */
-    private function displayLinterErrors(array $errors): void
+    private function printLinterErrors(string $source, Generator $errors): int
     {
+        $hasErrors = false;
         foreach ($errors as $error) {
+            if ($hasErrors === false) {
+                $this->printLine("\033[31m => " . $source . " is not valid:\033[0m" . PHP_EOL);
+                $hasErrors = true;
+            }
             $this->printLine("\033[31m    - " . $error . "\033[0m");
         }
 
-        $this->printLine("");
+        if ($hasErrors) {
+            $this->printLine("");
+            return self::RETURN_CODE_ERROR;
+        }
+
+        $this->printLine("\033[32m => " . $source . " is valid\033[0m" . PHP_EOL);
+        return self::RETURN_CODE_SUCCESS;
     }
 
     /**
