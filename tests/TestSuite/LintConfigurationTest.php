@@ -75,7 +75,7 @@ class LintConfigurationTest extends TestCase
         $this->assertTrue($lintConfiguration->propertyExists('-new-animation-trigger'));
     }
 
-    public function testMergePropertiesStandardsShouldDisableAContructor()
+    public function testMergePropertiesStandardsShouldDisableAProperty()
     {
         $lintConfiguration = new LintConfiguration();
         $this->assertTrue($lintConfiguration->propertyExists('align-content'));
@@ -84,7 +84,7 @@ class LintConfigurationTest extends TestCase
         $this->assertFalse($lintConfiguration->propertyExists('align-content'));
     }
 
-    public function testMergePropertiesStandardsShouldAddAContructor()
+    public function testMergePropertiesStandardsShouldAddAProperty()
     {
         $lintConfiguration = new LintConfiguration();
         $this->assertFalse($lintConfiguration->propertyExists('new-content'));
@@ -93,7 +93,7 @@ class LintConfigurationTest extends TestCase
         $this->assertTrue($lintConfiguration->propertyExists('new-content'));
     }
 
-    public function testMergePropertiesNonStandardsShouldDisableAContructor()
+    public function testMergePropertiesNonStandardsShouldDisableAProperty()
     {
         $lintConfiguration = new LintConfiguration();
         $this->assertTrue($lintConfiguration->propertyExists('-moz-animation-trigger'));
@@ -102,13 +102,85 @@ class LintConfigurationTest extends TestCase
         $this->assertFalse($lintConfiguration->propertyExists('-moz-animation-trigger'));
     }
 
-    public function testMergePropertiesNonStandardsShouldAddAContructor()
+    public function testMergePropertiesNonStandardsShouldAddAProperty()
     {
         $lintConfiguration = new LintConfiguration();
         $this->assertFalse($lintConfiguration->propertyExists('-moz-new-content'));
 
         $lintConfiguration->mergePropertiesNonStandards(['new-content' => true]);
         $this->assertTrue($lintConfiguration->propertyExists('-moz-new-content'));
+    }
+
+    public function testMergeAtRulesStandardsShouldDisableAProperty()
+    {
+        $lintConfiguration = new LintConfiguration();
+        $this->assertTrue($lintConfiguration->atRuleExists('charset'));
+
+        $lintConfiguration->mergeAtRulesStandards(['charset' => false]);
+        $this->assertFalse($lintConfiguration->atRuleExists('charset'));
+    }
+
+    public function testMergeAtRulesStandardsShouldAddAProperty()
+    {
+        $lintConfiguration = new LintConfiguration();
+        $this->assertFalse($lintConfiguration->atRuleExists('new-at-rule'));
+
+        $lintConfiguration->mergeAtRulesStandards(['new-at-rule' => true]);
+        $this->assertTrue($lintConfiguration->atRuleExists('new-at-rule'));
+    }
+
+    public function testMergeAtRulesNonStandardsShouldDisableAProperty()
+    {
+        $lintConfiguration = new LintConfiguration();
+        $this->assertTrue($lintConfiguration->atRuleExists('document'));
+
+        $lintConfiguration->mergeAtRulesNonStandards(['document' => false]);
+        $this->assertFalse($lintConfiguration->atRuleExists('document'));
+    }
+
+    public function testMergeAtRulesNonStandardsShouldAddAProperty()
+    {
+        $lintConfiguration = new LintConfiguration();
+        $this->assertFalse($lintConfiguration->atRuleExists('new-at-rule'));
+
+        $lintConfiguration->mergeAtRulesNonStandards(['new-at-rule' => true]);
+        $this->assertTrue($lintConfiguration->atRuleExists('new-at-rule'));
+    }
+
+    public function testMergeAtRulesPropertiesStandardsShouldDisableAProperty()
+    {
+        $lintConfiguration = new LintConfiguration();
+        $this->assertTrue($lintConfiguration->atRulePropertyExists('font-face', 'font-display'));
+
+        $lintConfiguration->mergeAtRulesPropertiesStandards(['font-face' => ['font-display' => false]]);
+        $this->assertFalse($lintConfiguration->atRulePropertyExists('font-face', 'font-display'));
+    }
+
+    public function testMergeAtRulesPropertiesStandardsShouldAddAProperty()
+    {
+        $lintConfiguration = new LintConfiguration();
+        $this->assertFalse($lintConfiguration->atRulePropertyExists('font-face', 'new-at-rule'));
+
+        $lintConfiguration->mergeAtRulesPropertiesStandards(['font-face' => ['new-at-rule' => true]]);
+        $this->assertTrue($lintConfiguration->atRulePropertyExists('font-face', 'new-at-rule'));
+    }
+
+    public function testMergeAtRulesPropertiesNonStandardsShouldDisableAProperty()
+    {
+        $lintConfiguration = new LintConfiguration();
+        $this->assertTrue($lintConfiguration->atRulePropertyExists('font-face', 'font-variant'));
+
+        $lintConfiguration->mergeAtRulesPropertiesNonStandards(['font-face' => ['font-variant' => false]]);
+        $this->assertFalse($lintConfiguration->atRulePropertyExists('font-face', 'font-variant'));
+    }
+
+    public function testMergeAtRulesPropertiesNonStandardsShouldAddAProperty()
+    {
+        $lintConfiguration = new LintConfiguration();
+        $this->assertFalse($lintConfiguration->atRulePropertyExists('font-face', 'new-at-rule'));
+
+        $lintConfiguration->mergeAtRulesPropertiesNonStandards(['font-face' => ['new-at-rule' => true]]);
+        $this->assertTrue($lintConfiguration->atRulePropertyExists('font-face', 'new-at-rule'));
     }
 
     public function testSetOptionsAllowedIndentationChars()

@@ -14,19 +14,7 @@ return RectorConfig::configure()
     ->withAttributesSets(
         all: true
     )
-    ->withPreparedSets(
-        deadCode: true,
-        codeQuality: true,
-        codingStyle: true,
-        typeDeclarations: true,
-        privatization: true,
-        naming: true,
-        instanceOf: true,
-        earlyReturn: true,
-        strictBooleans: true,
-        carbon: true,
-        rectorPreset: true,
-        phpunitCodeQuality: true,
+    ->withComposerBased(
         phpunit: true,
     )
     ->withCache(

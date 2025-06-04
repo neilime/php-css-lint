@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace CssLint;
 
-use CssLint\CharLinter\CharLinter;
-use CssLint\CharLinter\EndOfLineCharLinter;
-use CssLint\CharLinter\CommentCharLinter;
-use CssLint\CharLinter\ImportCharLinter;
-use CssLint\CharLinter\SelectorCharLinter;
-use CssLint\CharLinter\PropertyCharLinter;
+use CssLint\Tokenizer\Tokenizer;
+use CssLint\Token\Token;
+use CssLint\Tokenizer\TokenizerContext;
+use Generator;
 use InvalidArgumentException;
 use RuntimeException;
 
 /**
  * @package CssLint
- * @phpstan-import-type Errors from LintContext
+ * @phpstan-import-type Errors from TokenizerContext
  */
 class Linter
 {
@@ -26,24 +24,23 @@ class Linter
     protected $lintConfiguration;
 
     /**
-     * The list of char linters
-     * @var CharLinter[]
+     * Class to provide css tokenizer
+     * @var Tokenizer|null
      */
-    protected array $charLinters;
-
-    /**
-     * The current context of parsing
-     */
-    protected ?LintContext $lintContext = null;
+    protected $tokenizer;
 
     /**
      * Constructor
-     * @param LintConfiguration $lintConfiguration (optional) an instance of the "\CssLint\Properties" helper
+     * @param LintConfiguration $lintConfiguration An instance of the LintConfiguration class to provide css properties knowledge
      */
-    public function __construct(?LintConfiguration $lintConfiguration = null)
+    public function __construct(?LintConfiguration $lintConfiguration = null, ?Tokenizer $tokenizer = null)
     {
         if ($lintConfiguration instanceof LintConfiguration) {
             $this->setLintConfiguration($lintConfiguration);
+        }
+
+        if ($tokenizer instanceof Tokenizer) {
+            $this->tokenizer = $tokenizer;
         }
     }
 
@@ -69,163 +66,146 @@ class Linter
     }
 
     /**
-     * Performs lint on a given string
-     * @return boolean : true if the string is a valid css string, false else
+     * Returns an instance of a tokenizer.
+     * You may need to adjust the class name and constructor as per your project structure.
      */
-    public function lintString(string $stringValue): bool
+    public function getTokenizer(): Tokenizer
     {
-        $this->initLint();
-        $iIterator = 0;
-        while (isset($stringValue[$iIterator])) {
-            if ($this->lintChar($stringValue[$iIterator]) === false) {
-                return false;
-            }
-
-            ++$iIterator;
+        if ($this->tokenizer) {
+            return $this->tokenizer;
         }
 
-        $this->assertLintContextIsClean();
+        return $this->tokenizer = new Tokenizer();
+    }
 
-        return $this->getErrors() === [];
+    /**
+     * Sets an instance of a tokenizer.
+     * @param Tokenizer $tokenizer
+     * @return Linter
+     */
+    public function setTokenizer(Tokenizer $tokenizer): self
+    {
+        $this->tokenizer = $tokenizer;
+        return $this;
+    }
+
+    /**
+     * Performs lint on a given string
+     * @return Generator<LintError> An array of issues found during linting.
+     */
+    public function lintString(string $stringValue): Generator
+    {
+        $stream = fopen('php://memory', 'r+');
+        if ($stream === false) {
+            throw new RuntimeException('An error occurred while opening a memory stream');
+        }
+
+        if (fwrite($stream, $stringValue) === false) {
+            throw new RuntimeException('An error occurred while writing to a memory stream');
+        }
+        rewind($stream);
+
+        yield from $this->lintStream($stream);
+
+        return;
     }
 
     /**
      * Performs lint for a given file path
-     * @param string $sFilePath : a path of an existing and readable file
-     * @return boolean : true if the file is a valid css file, else false
+     * @param string $filePath A path of an existing and readable file
+     * @return Generator<LintError> An array of issues found during linting.
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    public function lintFile(string $sFilePath): bool
+    public function lintFile(string $filePath): Generator
     {
-        if (!file_exists($sFilePath)) {
+        if (!file_exists($filePath)) {
             throw new InvalidArgumentException(sprintf(
-                'Argument "$sFilePath" "%s" is not an existing file path',
-                $sFilePath
+                'Argument "$filePath" "%s" is not an existing file path',
+                $filePath
             ));
         }
 
-        if (!is_readable($sFilePath)) {
+        if (!is_readable($filePath)) {
             throw new InvalidArgumentException(sprintf(
-                'Argument "$sFilePath" "%s" is not a readable file path',
-                $sFilePath
+                'Argument "$filePath" "%s" is not a readable file path',
+                $filePath
             ));
         }
 
-        $rFileHandle = fopen($sFilePath, 'r');
-        if ($rFileHandle === false) {
-            throw new RuntimeException('An error occurred while opening file "' . $sFilePath . '"');
+        $fileHandle = fopen($filePath, 'r');
+        if ($fileHandle === false) {
+            throw new RuntimeException('An error occurred while opening file "' . $filePath . '"');
         }
 
-        $this->initLint();
+        yield from $this->lintStream($fileHandle);
 
-        while (($charValue = fgetc($rFileHandle)) !== false) {
-            if ($this->lintChar($charValue) === false) {
-                fclose($rFileHandle);
-                return false;
-            }
+        if (!feof($fileHandle)) {
+            throw new RuntimeException('An error occurred while reading file "' . $filePath . '"');
         }
 
-        if (!feof($rFileHandle)) {
-            throw new RuntimeException('An error occurred while reading file "' . $sFilePath . '"');
-        }
+        fclose($fileHandle);
 
-        fclose($rFileHandle);
-
-        $this->assertLintContextIsClean();
-
-        return $this->getErrors() === [];
+        return;
     }
 
     /**
-     * Return the errors occurred during the lint process
-     * @return Errors
+     * Lint a stream of tokens
+     * @param resource $stream A valid stream resource
+     * @return Generator<LintError> An array of issues found during linting.
+     * @throws InvalidArgumentException
      */
-    public function getErrors(): array
+    protected function lintStream($stream): Generator
     {
-        return $this->lintContext?->getErrors() ?? [];
-    }
-
-    /**
-     * Initialize linter, reset all process properties
-     */
-    protected function initLint(): static
-    {
-        $this
-            ->resetChartLinters()
-            ->resetLintContext();
-
-        $this->lintContext?->incrementLineNumber();
-        return $this;
-    }
-
-    /**
-     * Performs lint on a given char
-     * @return boolean : true if the process should continue, else false
-     */
-    protected function lintChar(string $charValue): ?bool
-    {
-        if (!$this->lintContext instanceof LintContext) {
-            throw new RuntimeException('Lint context is not initialized');
+        if (!is_resource($stream)) {
+            throw new InvalidArgumentException('Argument "$stream" must be a valid resource');
         }
 
-        $this->lintContext->incrementCharNumber();
-
-        foreach ($this->charLinters as $charLinter) {
-            if (is_bool($lintChar = $charLinter->lintChar($charValue, $this->lintContext))) {
-                $this->lintContext->setPreviousChar($charValue);
-                return $lintChar;
-            }
-        }
-
-        $this->lintContext->addError('Unexpected char ' . json_encode($charValue));
-        $this->lintContext->setPreviousChar($charValue);
-        return false;
-    }
-
-    protected function resetChartLinters(): self
-    {
-        $lintConfiguration = $this->getLintConfiguration();
-
-        $this->charLinters = [
-            new EndOfLineCharLinter(),
-            new CommentCharLinter(),
-            new ImportCharLinter(),
-            new SelectorCharLinter($lintConfiguration),
-            new PropertyCharLinter($lintConfiguration),
-        ];
-        return $this;
-    }
-
-    protected function assertLintContextIsClean(): bool
-    {
-        if (!$this->lintContext instanceof LintContext) {
-            return true;
-        }
-
-        $currentContext = $this->lintContext->getCurrentContext();
-        if (!$currentContext instanceof LintContextName) {
-            return true;
-        }
-
-
-        $error = sprintf(
-            'Unterminated "%s"',
-            $currentContext->value,
+        yield from $this->lintTokens(
+            $this->getTokenizer()->tokenize($stream)
         );
 
-        $currentContent = $this->lintContext->getCurrentContent();
-        if ($currentContent !== '') {
-            $error .= sprintf(' - "%s"', $currentContent);
-        }
-
-        $this->lintContext->addError($error);
-        return false;
+        return;
     }
 
-    protected function resetLintContext(): self
+    /**
+     * Lint a list of tokens or errors
+     * @param iterable<Token|LintError> $tokens
+     * @return Generator<LintError> An array of issues found during linting.
+     */
+    private function lintTokens(iterable $tokens): Generator
     {
-        $this->lintContext = new LintContext();
-        return $this;
+        foreach ($tokens as $tokenOrError) {
+            if ($tokenOrError instanceof LintError) {
+                yield $tokenOrError;
+                continue;
+            }
+
+            yield from $this->lintToken($tokenOrError);
+        }
+
+        return;
+    }
+
+    /**
+     * Lint a token
+     * @param Token $token
+     * @return Generator<LintError> An array of issues found during linting.
+     */
+    private function lintToken(Token $token): Generator
+    {
+        $linters = $this->getLintConfiguration()->getLinters();
+        foreach ($linters as $tokenLinter) {
+            if (!$tokenLinter->supports($token)) {
+                continue;
+            }
+
+            yield from $tokenLinter->lint($token);
+        }
+
+        $tokenValue = $token->getValue();
+        if (is_iterable($tokenValue)) {
+            yield from $this->lintTokens($tokenValue);
+        }
     }
 }

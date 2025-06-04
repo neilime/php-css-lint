@@ -22,4 +22,9 @@ $cssAtRulesFile = __DIR__ . '/../tests/fixtures/css-at-rules.json';
 $scraper->saveToJson($referentials['at-rules'], $cssAtRulesFile);
 echo "Saved to {$cssAtRulesFile}\n";
 
+echo "Fetched " . count($referentials['at-rules-properties']) . " at-rule property(s)\n";
+$cssAtRulesPropertiesFile = __DIR__ . '/../tests/fixtures/css-at-rules-properties.json';
+$scraper->saveToJson($referentials['at-rules-properties'], $cssAtRulesPropertiesFile);
+echo "Saved to {$cssAtRulesPropertiesFile}\n";
+
 echo "Done.\n";
