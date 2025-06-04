@@ -9,12 +9,19 @@ use CssLint\Referential\NonStandard\PropertiesReferential as NonStandardProperti
 use CssLint\Referential\Standard\PropertiesReferential as StandardPropertiesReferential;
 use CssLint\Referential\NonStandard\AtRulesReferential as NonStandardAtRulesReferential;
 use CssLint\Referential\Standard\AtRulesReferential as StandardAtRulesReferential;
+use CssLint\Referential\NonStandard\AtRulesPropertiesReferential as NonStandardAtRulesPropertiesReferential;
+use CssLint\Referential\Standard\AtRulesPropertiesReferential as StandardAtRulesPropertiesReferential;
 use CssLint\Referential\Referential;
+use CssLint\TokenLinter\TokenLinter;
+use CssLint\TokenLinter\AtRuleTokenLinter;
+use CssLint\TokenLinter\IndentationTokenLinter;
+use CssLint\TokenLinter\PropertyTokenLinter;
+use CssLint\TokenLinter\SelectorTokenLinter;
 
 /**
  * @phpstan-import-type ReferentialData from Referential
  * @phpstan-type AllowedIndentationChars array<string>
- * @phpstan-type PropertiesOptions array{
+ * @phpstan-type LintConfigurationOptions array{
  *  allowedIndentationChars?: AllowedIndentationChars,
  *  constructors?: ReferentialData,
  *  standards?: ReferentialData,
@@ -54,6 +61,18 @@ class LintConfiguration
     protected array $atRulesNonStandards;
 
     /**
+     * List of standards at-rules properties
+     * @var ReferentialData
+     */
+    protected array $atRulesPropertiesStandards;
+
+    /**
+     * List of non standards at-rules properties
+     * @var ReferentialData
+     */
+    protected array $atRulesPropertiesNonStandards;
+
+    /**
      * List of allowed indentation chars
      * @var AllowedIndentationChars
      */
@@ -66,14 +85,16 @@ class LintConfiguration
         $this->propertiesNonStandards = NonStandardPropertiesReferential::getReferential();
         $this->atRulesStandards = StandardAtRulesReferential::getReferential();
         $this->atRulesNonStandards = NonStandardAtRulesReferential::getReferential();
+        $this->atRulesPropertiesStandards = StandardAtRulesPropertiesReferential::getReferential();
+        $this->atRulesPropertiesNonStandards = NonStandardAtRulesPropertiesReferential::getReferential();
     }
 
     /**
-     * @param PropertiesOptions $options Override default properties
-     * "allowedIndentationChars" => [" "] or ["\t"]: will override current property
-     * "constructors": ["property" => bool]: will merge with current property
-     * "standards": ["property" => bool]: will merge with current property
-     * "nonStandards": ["property" => bool]: will merge with current property
+     * @param LintConfigurationOptions $options Override default options
+     * "allowedIndentationChars" => [" "] or ["\t"]
+     * "constructors": ["property" => bool]
+     * "standards": ["property" => bool]
+     * "nonStandards": ["property" => bool]
      */
     public function setOptions(array $options = []): void
     {
@@ -113,7 +134,7 @@ class LintConfiguration
 
         foreach ($allowedConstrutors as $allowedConstrutor) {
             $propertyWithoutConstructor = preg_replace(
-                '/^(-' . preg_quote($allowedConstrutor) . '-)/',
+                '/^(-' . preg_quote($allowedConstrutor, '/') . '-)/',
                 '',
                 $property
             );
@@ -139,6 +160,24 @@ class LintConfiguration
         }
 
         return !empty($this->atRulesNonStandards[$atRule]);
+    }
+
+    public function atRuleHasProperties(string $atRule): bool
+    {
+        return !empty($this->atRulesPropertiesStandards[$atRule]) || !empty($this->atRulesPropertiesNonStandards[$atRule]);
+    }
+
+    public function atRulePropertyExists(string $atRule, string $property): bool
+    {
+        if (!empty($this->atRulesPropertiesStandards[$atRule][$property])) {
+            return true;
+        }
+
+        if (!empty($this->atRulesPropertiesNonStandards[$atRule][$property])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -212,5 +251,41 @@ class LintConfiguration
     public function mergeAtRulesNonStandards(array $nonStandards): void
     {
         $this->atRulesNonStandards = array_merge($this->atRulesNonStandards, $nonStandards);
+    }
+
+    /**
+     * Merge the given standards at-rules properties with the current ones
+     * @param ReferentialData $standards the standards at-rules properties to be merged
+     */
+    public function mergeAtRulesPropertiesStandards(array $standards): void
+    {
+        /** @var ReferentialData $atRulesPropertiesStandards */
+        $atRulesPropertiesStandards = array_merge($this->atRulesPropertiesStandards, $standards);
+        $this->atRulesPropertiesStandards = $atRulesPropertiesStandards;
+    }
+
+    /**
+     * Merge the given non standards at-rules properties with the current ones
+     * @param ReferentialData $nonStandards non the standards at-rules properties to be merged
+     */
+    public function mergeAtRulesPropertiesNonStandards(array $nonStandards): void
+    {
+        /** @var ReferentialData $atRulesPropertiesNonStandards */
+        $atRulesPropertiesNonStandards = array_merge($this->atRulesPropertiesNonStandards, $nonStandards);
+        $this->atRulesPropertiesNonStandards = $atRulesPropertiesNonStandards;
+    }
+
+    /**
+     * Get the list of linters
+     * @return TokenLinter[]
+     */
+    public function getLinters(): array
+    {
+        return [
+            new AtRuleTokenLinter($this),
+            new IndentationTokenLinter($this),
+            new PropertyTokenLinter($this),
+            new SelectorTokenLinter(),
+        ];
     }
 }
