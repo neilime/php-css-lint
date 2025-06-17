@@ -27,7 +27,7 @@ Result:
 Usage:
 ------
 
-  php-css-lint [--options='{ }'] input_to_lint
+  php-css-lint [--options='{ }'] [--formatter=plain|json] input_to_lint
 
 Arguments:
 ----------
@@ -39,6 +39,13 @@ Arguments:
      * "standards": { "property" => bool }: will merge with the current property
      * "nonStandards": { "property" => bool }: will merge with the current property
     Example: --options='{ "constructors": {"o" : false}, "allowedIndentationChars": ["\t"] }'
+
+  --formatter
+    The formatter(s) to be used
+    If not specified, the first available formatter will be used.
+    Multiple formatters can be specified as a comma-separated list.
+    Available formatters: plain, json
+    Example: --formatter=plain
 
   input_to_lint
     The CSS file path (absolute or relative)

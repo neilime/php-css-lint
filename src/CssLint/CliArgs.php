@@ -16,6 +16,11 @@ class CliArgs
     public ?string $options = null;
 
     /**
+     * Output formatter type
+     */
+    public ?string $formatter = null;
+
+    /**
      * Constructor
      * @param Arguments $arguments arguments to be parsed (@see $_SERVER['argv'])
      *              Accepts "-o", "--options" '{}'
@@ -36,6 +41,9 @@ class CliArgs
 
             if (!empty($parsedArguments['options'])) {
                 $this->options = $parsedArguments['options'];
+            }
+            if (!empty($parsedArguments['formatter'])) {
+                $this->formatter = $parsedArguments['formatter'];
             }
         }
     }
