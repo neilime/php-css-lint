@@ -74,4 +74,44 @@ class LintError implements JsonSerializable, Stringable
             'end' => $this->end->jsonSerialize(),
         ];
     }
+
+    /**
+     * Get the key of the lint error.
+     *
+     * @return LintErrorKey
+     */
+    public function getKey(): LintErrorKey
+    {
+        return $this->key;
+    }
+
+    /**
+     * Get the message of the lint error.
+     *
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    /**
+     * Get the start position of the lint error.
+     *
+     * @return Position
+     */
+    public function getStart(): Position
+    {
+        return $this->start;
+    }
+
+    /**
+     * Get the end position of the lint error.
+     *
+     * @return Position
+     */
+    public function getEnd(): Position
+    {
+        return $this->end;
+    }
 }

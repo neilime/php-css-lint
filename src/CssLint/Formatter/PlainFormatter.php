@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CssLint\Formatter;
 
+use CssLint\LintError;
 use Generator;
 use Throwable;
 
@@ -30,9 +31,9 @@ class PlainFormatter implements FormatterInterface
         echo "\033[31m/!\ Error: " . $error . "\033[0m" . PHP_EOL;
     }
 
-    public function printLintError(string $source, mixed $error): void
+    public function printLintError(string $source, LintError $lintError): void
     {
-        echo "\033[31m    - " . $error . "\033[0m" . PHP_EOL;
+        echo "\033[31m    - " . $lintError . "\033[0m" . PHP_EOL;
     }
 
     public function endLinting(string $source, bool $isValid): void

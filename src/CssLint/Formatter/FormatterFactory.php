@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CssLint\Formatter;
 
 use RuntimeException;
+use CssLint\Formatter\GithubActionsFormatter;
 
 /**
  * Factory to create FormatterManager based on requested names.
@@ -16,7 +17,7 @@ class FormatterFactory
 
     public function __construct()
     {
-        $availableFormatters = [new PlainFormatter()];
+        $availableFormatters = [new PlainFormatter(), new GithubActionsFormatter()];
         foreach ($availableFormatters as $formatter) {
             $this->available[$formatter->getName()] = $formatter;
         }
