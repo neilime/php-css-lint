@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace CssLint;
 
-use Generator;
 use RuntimeException;
 use Throwable;
+use CssLint\Formatter\FormatterInterface;
+use CssLint\Formatter\FormatterFactory;
+use Generator;
 
 /**
  * @phpstan-import-type Errors from \CssLint\Linter
@@ -21,6 +23,10 @@ class Cli
 
     private const RETURN_CODE_SUCCESS = 0;
 
+    private ?FormatterFactory $formatterFactory = null;
+
+    private FormatterInterface $formatterManager;
+
     /**
      * Entrypoint of the cli, will execute the linter according to the given arguments
      * @param string[] $arguments arguments to be parsed (@see $_SERVER['argv'])
@@ -29,6 +35,15 @@ class Cli
     public function run(array $arguments): int
     {
         $cliArgs = $this->parseArguments($arguments);
+
+        try {
+            $this->formatterManager = $this->getFormatterFactory()->create($cliArgs->formatter);
+        } catch (RuntimeException $error) {
+            // report invalid formatter names via default (plain) formatter
+            $this->getFormatterFactory()->create(null)->printFatalError(null, $error);
+            return self::RETURN_CODE_ERROR;
+        }
+
         if ($cliArgs->input === null || $cliArgs->input === '' || $cliArgs->input === '0') {
             $this->printUsage();
             return self::RETURN_CODE_SUCCESS;
@@ -41,7 +56,7 @@ class Cli
 
             return $this->lintInput($cssLinter, $cliArgs->input);
         } catch (Throwable $throwable) {
-            $this->printError($throwable->getMessage());
+            $this->formatterManager->printFatalError(null, $throwable);
             return self::RETURN_CODE_ERROR;
         }
     }
@@ -51,10 +66,13 @@ class Cli
      */
     private function printUsage(): void
     {
+        $availableFormatters = $this->getFormatterFactory()->getAvailableFormatters();
+        $defaultFormatter = $availableFormatters[0];
+
         $this->printLine('Usage:' . PHP_EOL .
             '------' . PHP_EOL .
             PHP_EOL .
-            '  ' . self::SCRIPT_NAME . " [--options='{ }'] input_to_lint" . PHP_EOL .
+            '  ' . self::SCRIPT_NAME . " [--options='{ }'] [--formatter=plain|json] input_to_lint" . PHP_EOL .
             PHP_EOL .
             'Arguments:' . PHP_EOL .
             '----------' . PHP_EOL .
@@ -67,6 +85,13 @@ class Cli
             '     * "nonStandards": { "property" => bool }: will merge with the current property' . PHP_EOL .
             '    Example: --options=\'{ "constructors": {"o" : false}, "allowedIndentationChars": ["\t"] }\'' .
             PHP_EOL .
+            PHP_EOL .
+            '  --formatter' . PHP_EOL .
+            '    The formatter(s) to be used' . PHP_EOL .
+            '    If not specified, the first available formatter will be used.' . PHP_EOL .
+            '    Multiple formatters can be specified as a comma-separated list.' . PHP_EOL .
+            '    Available formatters: ' . implode(', ', $availableFormatters) . PHP_EOL .
+            '    Example: --formatter=' . $defaultFormatter . PHP_EOL .
             PHP_EOL .
             '  input_to_lint' . PHP_EOL .
             '    The CSS file path (absolute or relative)' . PHP_EOL .
@@ -98,6 +123,15 @@ class Cli
     private function parseArguments(array $arguments): CliArgs
     {
         return new CliArgs($arguments);
+    }
+
+    private function getFormatterFactory(): FormatterFactory
+    {
+        if ($this->formatterFactory === null) {
+            $this->formatterFactory = new FormatterFactory();
+        }
+
+        return $this->formatterFactory;
     }
 
     /**
@@ -207,7 +241,7 @@ class Cli
         $cssLinter = new Linter();
         $files = glob($glob);
         if ($files === [] || $files === false) {
-            $this->printError('No files found for glob "' . $glob . '"');
+            $this->formatterManager->printFatalError($glob, 'No files found for given glob pattern');
             return self::RETURN_CODE_ERROR;
         }
 
@@ -227,18 +261,16 @@ class Cli
      */
     private function lintFile(Linter $cssLinter, string $filePath): int
     {
-        $source = "CSS file \"" . $filePath . "\"";
-        $this->printLine('# Lint ' . $source . '...');
-
+        $source = "CSS file \"{$filePath}\"";
+        $this->formatterManager->startLinting($source);
         if (!is_readable($filePath)) {
-            $this->printError('File "' . $filePath . '" is not readable');
+            $this->formatterManager->printFatalError($source, 'File is not readable');
             return self::RETURN_CODE_ERROR;
         }
 
         $errors = $cssLinter->lintFile($filePath);
         return $this->printLinterErrors($source, $errors);
     }
-
 
     /**
      * Performs lint on a given string
@@ -249,18 +281,9 @@ class Cli
     private function lintString(Linter $cssLinter, string $stringValue): int
     {
         $source = 'CSS string';
-        $this->printLine('# Lint ' . $source . '...');
+        $this->formatterManager->startLinting($source);
         $errors = $cssLinter->lintString($stringValue);
         return $this->printLinterErrors($source, $errors);
-    }
-
-    /**
-     * Display an error message
-     * @param string $error the message to be displayed
-     */
-    private function printError(string $error): void
-    {
-        $this->printLine("\033[31m/!\ Error: " . $error . "\033[0m" . PHP_EOL);
     }
 
     /**
@@ -270,22 +293,17 @@ class Cli
      */
     private function printLinterErrors(string $source, Generator $errors): int
     {
-        $hasErrors = false;
+        $isValid = true;
         foreach ($errors as $error) {
-            if ($hasErrors === false) {
-                $this->printLine("\033[31m => " . $source . " is not valid:\033[0m" . PHP_EOL);
-                $hasErrors = true;
+            if ($isValid === true) {
+                $isValid = false;
             }
-            $this->printLine("\033[31m    - " . $error . "\033[0m");
+            $this->formatterManager->printLintError($source, $error);
         }
 
-        if ($hasErrors) {
-            $this->printLine("");
-            return self::RETURN_CODE_ERROR;
-        }
+        $this->formatterManager->endLinting($source, $isValid);
 
-        $this->printLine("\033[32m => " . $source . " is valid\033[0m" . PHP_EOL);
-        return self::RETURN_CODE_SUCCESS;
+        return $isValid ? self::RETURN_CODE_SUCCESS : self::RETURN_CODE_ERROR;
     }
 
     /**
