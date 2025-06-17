@@ -129,7 +129,6 @@ class CliTest extends TestCase
             'non array options' => ['true', 'Unable to parse option argument: must be a json object'],
             'not allowed option' => ['{ "unknownOption": true }', 'Invalid option key: "unknownOption"'],
             'invalid option "allowedIndentationChars" value' => ['{ "allowedIndentationChars": "invalid" }', 'Option "allowedIndentationChars" must be an array'],
-
         ];
     }
 
@@ -147,6 +146,17 @@ class CliTest extends TestCase
             '--options=' . $options,
             '.test { display: block; }',
         ]));
+    }
+
+    public function testRunWithFormatterArgumentShouldReturnSuccessCode()
+    {
+        $fileToLint = $this->testFixturesDir . '/valid.css';
+        $this->expectOutputString(
+            "::group::Lint CSS file \"$fileToLint\"" . PHP_EOL .
+                "::notice ::Success: CSS file \"$fileToLint\" is valid." . PHP_EOL .
+                "::endgroup::" . PHP_EOL
+        );
+        $this->assertEquals(0, $this->cli->run(['php-css-lint', '--formatter=github-actions', $fileToLint]), $this->getActualOutput());
     }
 
     public function validCssFilesProvider(): array
