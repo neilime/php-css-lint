@@ -27,7 +27,7 @@ Result:
 Usage:
 ------
 
-  php-css-lint [--options='{ }'] [--formatter=plain|json] input_to_lint
+  php-css-lint [--options='{ }'] [--formatter=name] [--formatter=name:path] input_to_lint
 
 Arguments:
 ----------
@@ -41,11 +41,14 @@ Arguments:
     Example: --options='{ "constructors": {"o" : false}, "allowedIndentationChars": ["\t"] }'
 
   --formatter
-    The formatter(s) to be used
-    If not specified, the first available formatter will be used.
-    Multiple formatters can be specified as a comma-separated list.
-    Available formatters: plain, json
-    Example: --formatter=plain
+    The formatter(s) to be used. Can be specified multiple times.
+    Format: --formatter=name (output to stdout) or --formatter=name:path (output to file)
+    If not specified, the default formatter will output to stdout.
+    Available formatters: plain, gitlab-ci, github-actions
+    Examples:
+      output to stdout: --formatter=plain
+      output to file: --formatter=plain:report.txt
+      multiple outputs: --formatter=plain --formatter=gitlab-ci:report.json
 
   input_to_lint
     The CSS file path (absolute or relative)
@@ -67,6 +70,15 @@ Examples:
 
   Lint with only tabulation as indentation:
     php-css-lint --options='{ "allowedIndentationChars": ["\t"] }' ".test { color: red; }"
+
+  Output to a file:
+    php-css-lint --formatter=plain:output.txt ".test { color: red; }"
+
+  Generate GitLab CI report:
+    php-css-lint --formatter=gitlab-ci:report.json "./path/to/css_file.css"
+
+  Multiple outputs (console and file):
+    php-css-lint --formatter=plain --formatter=gitlab-ci:ci-report.json ".test { color: red; }"
 ```
 
 ### Lint a file

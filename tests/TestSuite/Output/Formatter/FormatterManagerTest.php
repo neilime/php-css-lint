@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\TestSuite\Formatter;
+namespace Tests\TestSuite\Output\Formatter;
 
-use CssLint\Formatter\FormatterManager;
-use CssLint\Formatter\FormatterInterface;
+use CssLint\Output\Formatter\FormatterManager;
+use CssLint\Output\Formatter\FormatterInterface;
 use CssLint\LintError;
+use CssLint\Output\OutputInterface;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Exception;
@@ -15,6 +16,9 @@ class FormatterManagerTest extends TestCase
 {
     public function testStartLintingPropagatesToAllFormatters(): void
     {
+        // Aarrange
+        $output = $this->createMock(OutputInterface::class);
+
         $formatter1 = $this->createMock(FormatterInterface::class);
         $formatter1->expects($this->once())
             ->method('startLinting')
@@ -25,13 +29,20 @@ class FormatterManagerTest extends TestCase
             ->method('startLinting')
             ->with('source.css');
 
-        $manager = new FormatterManager([$formatter1, $formatter2]);
+        // Act
+        $manager = new FormatterManager([
+            [$output, $formatter1],
+            [$output, $formatter2],
+        ]);
         $manager->startLinting('source.css');
     }
 
     public function testPrintFatalErrorPropagatesToAllFormatters(): void
     {
+        // Arrange
         $error = new Exception('fatal error');
+
+        $output = $this->createMock(OutputInterface::class);
 
         $formatter1 = $this->createMock(FormatterInterface::class);
         $formatter1->expects($this->once())
@@ -43,13 +54,18 @@ class FormatterManagerTest extends TestCase
             ->method('printFatalError')
             ->with('file.css', $error);
 
-        $manager = new FormatterManager([$formatter1, $formatter2]);
+        $manager = new FormatterManager([[$output, $formatter1], [$output, $formatter2]]);
+
+        // Act
         $manager->printFatalError('file.css', $error);
     }
 
     public function testPrintLintErrorPropagatesToAllFormatters(): void
     {
+        // Arrange
         $lintError = $this->createMock(LintError::class);
+
+        $output = $this->createMock(OutputInterface::class);
 
         $formatter1 = $this->createMock(FormatterInterface::class);
         $formatter1->expects($this->once())
@@ -61,12 +77,21 @@ class FormatterManagerTest extends TestCase
             ->method('printLintError')
             ->with('file.css', $lintError);
 
-        $manager = new FormatterManager([$formatter1, $formatter2]);
+
+        $manager = new FormatterManager([
+            [$output, $formatter1],
+            [$output, $formatter2],
+        ]);
+
+        // Act
         $manager->printLintError('file.css', $lintError);
     }
 
     public function testEndLintingPropagatesToAllFormatters(): void
     {
+        // Arrange
+        $output = $this->createMock(OutputInterface::class);
+
         $formatter1 = $this->createMock(FormatterInterface::class);
         $formatter1->expects($this->once())
             ->method('endLinting')
@@ -77,16 +102,12 @@ class FormatterManagerTest extends TestCase
             ->method('endLinting')
             ->with('file.css', true);
 
-        $manager = new FormatterManager([$formatter1, $formatter2]);
+        $manager = new FormatterManager([
+            [$output, $formatter1],
+            [$output, $formatter2],
+        ]);
+
+        // Act
         $manager->endLinting('file.css', true);
-    }
-
-    public function testGetNameThrowsRuntimeException(): void
-    {
-        $formatter = $this->createMock(FormatterInterface::class);
-
-        $manager = new FormatterManager([$formatter]);
-        $this->expectException(RuntimeException::class);
-        $manager->getName();
     }
 }
