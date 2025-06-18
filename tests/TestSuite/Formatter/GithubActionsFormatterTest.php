@@ -54,7 +54,7 @@ class GithubActionsFormatterTest extends TestCase
         );
 
         $formatter = new GithubActionsFormatter();
-        $this->expectOutputString("::error file=file.css,line=10,col=5::issue found" . PHP_EOL);
+        $this->expectOutputString("::error file=file.css,line=10,col=5::invalid_at_rule_declaration - issue found" . PHP_EOL);
         $formatter->printLintError('file.css', $lintError);
     }
 
