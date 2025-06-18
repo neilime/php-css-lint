@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class CliTest extends TestCase
 {
+    private string $tempDir;
     private string $testFixturesDir;
 
     /**
@@ -16,10 +17,25 @@ class CliTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->testFixturesDir =  realpath(__DIR__ . '/../fixtures');
+        $this->tempDir = sys_get_temp_dir();
 
         $this->cli = new Cli();
     }
+
+    protected function tearDown(): void
+    {
+        // Clean up any test files
+        $pattern = $this->tempDir . '/test_file_output_*.txt';
+        foreach (glob($pattern) as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+        parent::tearDown();
+    }
+
 
     public function testRunWithoutArgumentMustReturnsErrorCode()
     {
@@ -157,6 +173,18 @@ class CliTest extends TestCase
                 "::endgroup::" . PHP_EOL
         );
         $this->assertEquals(0, $this->cli->run(['php-css-lint', '--formatter=github-actions', $fileToLint]), $this->getActualOutput());
+    }
+
+    public function testRunWithFormatterAndPathArgumentShouldReturnSuccessCode()
+    {
+        $fileToLint = $this->testFixturesDir . '/valid.css';
+        $outputFile = $this->tempDir . '/test_file_output_' . uniqid() . '.txt';
+
+        $this->expectOutputString("");
+        $this->assertEquals(0, $this->cli->run(['php-css-lint', '--formatter=gitlab-ci:' . $outputFile, $fileToLint]));
+
+        $this->assertFileExists($outputFile);
+        $this->assertStringContainsString("[]", file_get_contents($outputFile));
     }
 
     public function validCssFilesProvider(): array

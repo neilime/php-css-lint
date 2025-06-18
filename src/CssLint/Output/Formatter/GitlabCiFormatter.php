@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CssLint\Formatter;
+namespace CssLint\Output\Formatter;
 
 use CssLint\LintError;
 use CssLint\Position;
@@ -33,19 +33,19 @@ class GitlabCiFormatter implements FormatterInterface
         return 'gitlab-ci';
     }
 
-    public function startLinting(string $source): void
+    public function startLinting(string $source): string
     {
         // Initialize fingerprints to track issues
         $this->fingerprints = [];
-        echo "[";
+        return "[";
     }
 
-    public function printFatalError(?string $source, mixed $error): void
+    public function printFatalError(?string $source, mixed $error): string
     {
         $checkName = $error instanceof Throwable ? $error::class : 'CssLint';
         $message = $error instanceof Throwable ? $error->getMessage() : (string) $error;
 
-        $this->printIssue(
+        return $this->printIssue(
             $source ?? '',
             IssueSeverity::CRITICAL,
             $checkName,
@@ -54,9 +54,9 @@ class GitlabCiFormatter implements FormatterInterface
         );
     }
 
-    public function printLintError(string $source, LintError $lintError): void
+    public function printLintError(string $source, LintError $lintError): string
     {
-        $this->printIssue(
+        return $this->printIssue(
             $source,
             IssueSeverity::MAJOR,
             $lintError->getKey()->value,
@@ -66,14 +66,14 @@ class GitlabCiFormatter implements FormatterInterface
         );
     }
 
-    public function endLinting(string $source, bool $isValid): void
+    public function endLinting(string $source, bool $isValid): string
     {
-        echo ']';
+        return ']';
     }
 
-    private function printIssue(string $path, IssueSeverity $severity, string $checkName, string $message, Position $begin, ?Position $end = null): void
+    private function printIssue(string $path, IssueSeverity $severity, string $checkName, string $message, Position $begin, ?Position $end = null): string
     {
-        $this->printCommaIfNeeded();
+        $content = $this->printCommaIfNeeded();
 
         $fingerprint = $this->generateFingerprint(
             $path,
@@ -104,14 +104,16 @@ class GitlabCiFormatter implements FormatterInterface
             ];
         }
 
-        echo json_encode($issue);
+        $content .= json_encode($issue);
+        return $content;
     }
 
-    private function printCommaIfNeeded(): void
+    private function printCommaIfNeeded(): string
     {
         if ($this->fingerprints) {
-            echo ',';
+            return ',';
         }
+        return '';
     }
 
     private function generateFingerprint(string $path, IssueSeverity $severity, string $checkName, string $message, Position $begin, ?Position $end = null): string

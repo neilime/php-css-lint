@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\TestSuite\Formatter;
+namespace Tests\TestSuite\Output\Formatter;
 
-use CssLint\Formatter\FormatterFactory;
-use CssLint\Formatter\FormatterManager;
+use CssLint\Output\Formatter\FormatterFactory;
+use CssLint\Output\Formatter\FormatterManager;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -22,7 +22,7 @@ class FormatterFactoryTest extends TestCase
     {
         $factory = new FormatterFactory();
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Invalid formatter(s): invalid');
-        $factory->create('invalid');
+        $this->expectExceptionMessage('Invalid formatter: invalid');
+        $factory->create(['invalid' => null]);
     }
 }

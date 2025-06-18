@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CssLint\Formatter;
+namespace CssLint\Output\Formatter;
 
 use CssLint\LintError;
 use Throwable;
@@ -21,7 +21,7 @@ interface FormatterInterface
      *
      * @param string $source The source being linted (e.g., "CSS file \"...\"").
      */
-    public function startLinting(string $source): void;
+    public function startLinting(string $source): string;
 
     /**
      * Output a fatal error message.
@@ -29,7 +29,7 @@ interface FormatterInterface
      * @param string|null $source The source being linted (e.g., "CSS file \"...\"").
      * @param Throwable|string $error The exception or error that occurred, which may include a message and stack trace.
      */
-    public function printFatalError(?string $source, mixed $error): void;
+    public function printFatalError(?string $source, mixed $error): string;
 
     /**
      * Output a parsing or runtime error message.
@@ -37,7 +37,7 @@ interface FormatterInterface
      * @param string $source The source being linted (e.g., "CSS file \"...\"").
      * @param LintError $error The error to be printed, which may include details like line number, column, and message.
      */
-    public function printLintError(string $source, LintError $error): void;
+    public function printLintError(string $source, LintError $error): string;
 
 
     /**
@@ -46,5 +46,5 @@ interface FormatterInterface
      * @param string $source The source being linted (e.g., "CSS file \"...\"").
      * @param bool $isValid Whether the source is valid CSS.
      */
-    public function endLinting(string $source, bool $isValid): void;
+    public function endLinting(string $source, bool $isValid): string;
 }

@@ -2,36 +2,44 @@
 
 declare(strict_types=1);
 
-namespace Tests\TestSuite\Formatter;
+namespace Tests\TestSuite\Output\Formatter;
 
 use PHPUnit\Framework\TestCase;
-use CssLint\Formatter\GitlabCiFormatter;
+use CssLint\Output\Formatter\GitlabCiFormatter;
 use CssLint\Position;
 use CssLint\LintError;
 use CssLint\LintErrorKey;
 use Exception;
-use RuntimeException;
 
 class GitlabCiFormatterTest extends TestCase
 {
+    private readonly GitlabCiFormatter $formatter;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->formatter = new GitlabCiFormatter();
+    }
+
     public function testGetNameReturnsGitlabCi(): void
     {
-        $formatter = new GitlabCiFormatter();
-        $this->assertSame('gitlab-ci', $formatter->getName());
+        $this->assertSame('gitlab-ci', $this->formatter->getName());
     }
 
     public function testStartAndEndLintingOutputsEmptyArray(): void
     {
-        $formatter = new GitlabCiFormatter();
+        // Act
+        $content = '';
+        $content .= $this->formatter->startLinting('file.css');
+        $content .= $this->formatter->endLinting('file.css', false);
 
-        $this->expectOutputString('[]');
-        $formatter->startLinting('file.css');
-        $formatter->endLinting('file.css', false);
+        // Assert
+        $this->assertSame('[]', $content);
     }
 
     public function testPrintFatalErrorFormatsIssueCorrectly(): void
     {
-        $formatter = new GitlabCiFormatter();
+        // Arrange
         $error = new Exception('fatal error');
 
         // Prepare expected issue
@@ -56,18 +64,21 @@ class GitlabCiFormatterTest extends TestCase
             ],
         ];
 
+        // Act
+        $content = '';
+
+        $content .= $this->formatter->startLinting($path);
+        $content .= $this->formatter->printFatalError($path, $error);
+        $content .= $this->formatter->endLinting($path, false);
+
+        // Assert
         $expected = '[' . json_encode($issue) . ']';
-
-        $this->expectOutputString($expected);
-
-        $formatter->startLinting($path);
-        $formatter->printFatalError($path, $error);
-        $formatter->endLinting($path, false);
+        $this->assertSame($expected, $content);
     }
 
     public function testPrintLintErrorFormatsIssueCorrectly(): void
     {
-        $formatter = new GitlabCiFormatter();
+        // Arrange
         $path = 'file.css';
         $line = 10;
         $col = 5;
@@ -79,6 +90,15 @@ class GitlabCiFormatterTest extends TestCase
             start: new Position($line, $col),
             end: new Position($line, $col)
         );
+
+        // Act
+        $content = '';
+        $content .= $this->formatter->startLinting($path);
+        $content .= $this->formatter->printLintError($path, $lintError);
+        $content .= $this->formatter->endLinting($path, false);
+
+        // Assert
+        $this->assertJson($content, 'Output is not valid JSON');
 
         // Compute payload and fingerprint
         $severity = 'major';
@@ -100,30 +120,26 @@ class GitlabCiFormatterTest extends TestCase
         ];
 
         $expected = '[' . json_encode($issue) . ']';
-
-        $this->expectOutputString($expected);
-
-        $formatter->startLinting($path);
-        $formatter->printLintError($path, $lintError);
-        $formatter->endLinting($path, false);
+        $this->assertSame($expected, $content);
     }
 
     public function testDuplicateIssues(): void
     {
-        $formatter = new GitlabCiFormatter();
+        // Arrange
         $path = 'file.css';
         $error = new Exception('dup');
 
 
-        $formatter->startLinting($path);
-        // Print the same fatal error twice
-        $formatter->printFatalError($path, $error);
-        $formatter->printFatalError($path, $error);
-        $formatter->endLinting($path, false);
+        $content = '';
 
-        $output = $this->getActualOutputForAssertion();
-        $this->assertJson($output, 'Output is not valid JSON');
-        $issues = json_decode($output, true);
+        $content .= $this->formatter->startLinting($path);
+        // Print the same fatal error twice
+        $content .= $this->formatter->printFatalError($path, $error);
+        $content .= $this->formatter->printFatalError($path, $error);
+        $content .= $this->formatter->endLinting($path, false);
+
+        $this->assertJson($content, 'Output is not valid JSON');
+        $issues = json_decode($content, true);
         $this->assertCount(2, $issues);
 
         // Ensure fingerprints are different
