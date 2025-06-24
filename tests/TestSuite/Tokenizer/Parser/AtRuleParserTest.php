@@ -29,9 +29,12 @@ class AtRuleParserTest extends TestCase
             'import rule' => ['@import url("styles.css");', 'import', 'url("styles.css")'],
             'keyframes rule' => ['@keyframes slide-in {', 'keyframes', 'slide-in'],
             'font-face rule' => ['@font-face {', 'font-face', null],
+            'font-face rule without space' => ['@font-face{', 'font-face', null],
             'supports rule' => ['@supports (display: grid) {', 'supports', '(display: grid)'],
             'page rule' => ['@page :first {', 'page', ':first'],
             'namespace rule' => ['@namespace svg url("http://www.w3.org/2000/svg");', 'namespace', 'svg url("http://www.w3.org/2000/svg")'],
+            'media rule without space' => ['@media screen{', 'media', 'screen'],
+            'keyframes rule without space' => ['@keyframes slide-in{', 'keyframes', 'slide-in'],
         ];
     }
 

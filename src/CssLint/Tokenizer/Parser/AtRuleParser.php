@@ -106,12 +106,15 @@ class AtRuleParser extends AbstractParser
     {
         $content = trim($tokenizerContext->getCurrentContent());
         $parts = explode(' ', trim($content), 2);
-        return trim(
-            $this->removeStartingString(
-                $parts[0],
-                self::$AT_RULE_START
-            )
+        $atRuleName = $this->removeStartingString(
+            $parts[0],
+            self::$AT_RULE_START
         );
+        
+        // Remove trailing block start character if present
+        $atRuleName = self::removeEndingString($atRuleName, BlockParser::$BLOCK_START);
+        
+        return trim($atRuleName);
     }
 
     private function getAtRuleValue(TokenizerContext $tokenizerContext): ?string
