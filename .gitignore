@@ -2,6 +2,7 @@
 /nbproject/
 /vendor
 /tools/vendor
+/tools/*.phar
 composer.lock
 .cache
 tests/.phpunit.result.cache

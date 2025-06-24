@@ -257,6 +257,81 @@ class TokenizerTest extends TestCase
         $this->assertTokensOrErrorsEquals($expectedTokensOrErrors, $tokensOrErrors);
     }
 
+    public function testTokenizeWithAtRuleProperties()
+    {
+        // Arrange
+        $stream = $this->getStream("@font-face{font-family:'Open Sans';src: url('open-sans.woff2');}");
+
+        // Act
+        $tokensOrErrors = iterator_to_array($this->tokenizer->tokenize($stream), false);
+
+        // Assert
+        $expectedTokensOrErrors = [
+            [
+                'type' => 'at-rule',
+                'value' => [
+                    'name' => 'font-face',
+                    'value' => null,
+                    'isBlock' => true,
+                ],
+                'start' => [
+                    'line' => 1,
+                    'column' => 1,
+                ],
+                'end' => [
+                    'line' => 1,
+                    'column' => 10,
+                ],
+            ],
+            [
+                'type' => 'block',
+                'value' => [
+                    [
+                        'type' => 'property',
+                        'value' => [
+                            'name' => 'font-family',
+                            'value' => "'Open Sans'",
+
+                        ],
+                        'start' => [
+                            'line' => 1,
+                            'column' => 11,
+                        ],
+                        'end' => [
+                            'line' => 1,
+                            'column' => 34,
+                        ],
+                    ],
+                    [
+                        'type' => 'property',
+                        'value' => [
+                            'name' => 'src',
+                            'value' => "url('open-sans.woff2')",
+                        ],
+                        'start' => [
+                            'line' => 1,
+                            'column' => 35,
+                        ],
+                        'end' => [
+                            'line' => 1,
+                            'column' => 62,
+                        ],
+                    ],
+                ],
+                'start' => [
+                    'line' => 1,
+                    'column' => 10,
+                ],
+                'end' => [
+                    'line' => 1,
+                    'column' => 64,
+                ],
+            ],
+        ];
+
+        $this->assertTokensOrErrorsEquals($expectedTokensOrErrors, $tokensOrErrors);
+    }
+
     public function testTokenizeWithAtRuleInBlock()
     {
         // Arrange
