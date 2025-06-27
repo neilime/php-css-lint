@@ -13,6 +13,10 @@ on:
         description: "By default, the commit entered above is compared to the one directly before it; to go back further, enter an earlier SHA here"
         required: false
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   main:
     uses: hoverkraft-tech/ci-github-common/.github/workflows/need-fix-to-issue.yml@9a3d71ca9f68bc1061db8ea1442084ac31a0f8bf # 0.23.0

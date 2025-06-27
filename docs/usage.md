@@ -166,6 +166,13 @@ if (false === (include $sComposerAutoloadPath)) {
 
 ### Initialize Css Linter
 
+Linter is returning a [`Generator`](https://www.php.net/manual/en/class.generator.php) object for performance reasons, so you can iterate over it to get errors.
+It is recommended to use a `foreach` loop to iterate over the errors. If no errors are found, the generator will be empty, and the CSS is valid.
+
+It is possible to use `iterator_to_array()` to convert the generator to an array,
+but it is counterproductive as it will parse the full content and load all errors in memory at once,
+which is not recommended for large CSS files.
+
 ```php
 $cssLinter = new \CssLint\Linter();
 ```
@@ -173,28 +180,43 @@ $cssLinter = new \CssLint\Linter();
 ### Lint string
 
 ```php
-if($cssLinter->lintString('
-.button.drodown::after {
+
+/** @var Generator $errors **/
+$errors = $cssLinter->lintString('.button.dropdown::after {
     display: block;
     width: 0;
-}') === true){
-   echo 'Valid!';
+}');
+
+$hasError = $false;
+foreach ($errors as $error) {
+    $hasError = true;
+    echo $error->__toString() . PHP_EOL;
 }
-else {
-     echo 'Not Valid :(';
-     var_dump($cssLinter->getErrors());
+
+if (!$hasError) {
+    echo 'Valid!';
+} else {
+    echo 'Not Valid :(';
 }
 ```
 
 ### Lint file
 
 ```php
-if($cssLinter->lintFile('path/to/css/file.css') === true){
-   echo 'Valid!';
+
+/** @var Generator $errors **/
+$errors = $cssLinter->lintFile('path/to/css/file.css');
+
+$hasError = $false;
+foreach ($errors as $error) {
+    $hasError = true;
+    echo $error->__toString() . PHP_EOL;
 }
-else {
-     echo 'Not Valid :(';
-     var_dump($cssLinter->getErrors());
+
+if (!$hasError) {
+    echo 'Valid!';
+} else {
+    echo 'Not Valid :(';
 }
 ```
 
@@ -210,11 +232,15 @@ $cssLinter = new \CssLint\Linter();
 // Set linter must accept only tabulation as indentation
 $cssLinter->getCssLintProperties()->setAllowedIndentationChars(["\t"]);
 
-$cssLinter->lintString('.button.dropdown::after {
+$errors = $cssLinter->lintString('.button.dropdown::after {
 ' . "\t" . 'display: block;
-}'); // true
+}');
 
-$cssLinter->lintString('.button.dropdown::after {
+var_dump(iterator_to_array($errors)); // Empty array, no errors
+
+$errors = $cssLinter->lintString('.button.dropdown::after {
   display: block;
-}'); // false
+}');
+
+var_dump(iterator_to_array($errors)); // Array with errors
 ```
