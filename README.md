@@ -24,11 +24,10 @@ It supports [W3C](https://www.w3.org/Style/CSS/) and [MDN](https://developer.moz
 
 ===========================================================
 
-# Lint file "/path/to/css/file.css"...
- => File "/path/to/css/file.css" is not valid :
-
-    - Unknown CSS property "bordr-top-style" (line: 8, char: 20)
-    - Unexpected char ":" (line: 15, char: 5)
+# Lint CSS file "/path/to/css/file.css"...
+    - [invalid_property_declaration]: property - Unknown property "bordr-top-style" (line 3, column 5 to line 3, column 27)
+    - [unclosed_token]: block - Unclosed "block" detected (line 1, column 23 to line 6, column 2)
+ => Failure: CSS file "/path/to/css/file.css" is invalid CSS.
 ```
 
 # Helping Project
