@@ -19,7 +19,7 @@ jobs:
       - name: ⚙️ Setup PHP, with composer and extensions
         uses: ./.github/workflows/actions/setup-php
         with:
-          php-version: 8.3
+          php-version: 8.4
 
       - name: Generate CSS Referential
         run: composer run-script generate-css-referentials

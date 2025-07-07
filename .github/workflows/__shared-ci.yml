@@ -35,9 +35,6 @@ jobs:
       - name: 👕 Lint
         if: matrix.stable
         run: composer php-cs-fixer -- --format=checkstyle | tools/vendor/bin/cs2pr
-        env:
-          # FIXME: Remove this when PHP CS Fixer will support PHP 8.4
-          PHP_CS_FIXER_IGNORE_ENV: ${{ matrix.php-versions == '8.4' && '1' || '' }}
 
       - name: 🔬 Rector
         id: rector
