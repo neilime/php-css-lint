@@ -58,6 +58,8 @@ class PropertiesReferential extends AbstractReferential
         'background-position-x' => true,
         'background-position-y' => true,
         'background-repeat' => true,
+        'background-repeat-x' => true,
+        'background-repeat-y' => true,
         'background-size' => true,
         'baseline-shift' => true,
         'baseline-source' => true,
