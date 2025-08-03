@@ -19,7 +19,6 @@ class PropertiesReferential extends AbstractReferential
         '--*' => true,
         '-moz-float-edge' => true,
         '-moz-force-broken-image-icon' => true,
-        '-moz-image-region' => true,
         '-moz-orient' => true,
         '-moz-osx-font-smoothing' => true,
         '-moz-user-focus' => true,
