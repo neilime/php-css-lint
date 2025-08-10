@@ -214,6 +214,7 @@ class PropertiesReferential extends AbstractReferential
         'rule-break' => true,
         'rule-color' => true,
         'rule-outset' => true,
+        'rule-overlap' => true,
         'rule-paint-order' => true,
         'rule-style' => true,
         'rule-width' => true,
