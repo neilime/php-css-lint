@@ -16,8 +16,8 @@ class AtRulesPropertiesReferential extends AbstractReferential
      * @var ReferentialData
      */
     public static array $referential = [
-        'counter-style' =>
-        [
+        'counter-style'
+        => [
             'additive-symbols' => true,
             'fallback' => true,
             'negative' => true,
@@ -29,8 +29,8 @@ class AtRulesPropertiesReferential extends AbstractReferential
             'symbols' => true,
             'system' => true,
         ],
-        'font-face' =>
-        [
+        'font-face'
+        => [
             'ascent-override' => true,
             'descent-override' => true,
             'font-display' => true,
@@ -46,8 +46,8 @@ class AtRulesPropertiesReferential extends AbstractReferential
             'src' => true,
             'unicode-range' => true,
         ],
-        'font-feature-values' =>
-        [
+        'font-feature-values'
+        => [
             'annotation' => true,
             'character-variant' => true,
             'historical-forms' => true,
@@ -56,19 +56,23 @@ class AtRulesPropertiesReferential extends AbstractReferential
             'stylistic' => true,
             'swash' => true,
         ],
-        'font-palette-values' =>
-        [
+        'font-palette-values'
+        => [
             'base-palette' => true,
             'font-family' => true,
             'override-colors' => true,
         ],
-        'import' =>
-        [
+        'function'
+        => [
+            'result' => true,
+        ],
+        'import'
+        => [
             'layer' => true,
             'supports' => true,
         ],
-        'media' =>
-        [
+        'media'
+        => [
             '-webkit-device-pixel-ratio' => true,
             '-webkit-max-device-pixel-ratio' => true,
             '-webkit-min-device-pixel-ratio' => true,
@@ -110,8 +114,8 @@ class AtRulesPropertiesReferential extends AbstractReferential
             'video-dynamic-range' => true,
             'width' => true,
         ],
-        'page' =>
-        [
+        'page'
+        => [
             'bottom-center' => true,
             'bottom-left' => true,
             'bottom-left-corner' => true,
@@ -131,14 +135,14 @@ class AtRulesPropertiesReferential extends AbstractReferential
             'top-right' => true,
             'top-right-corner' => true,
         ],
-        'property' =>
-        [
+        'property'
+        => [
             'inherits' => true,
             'initial-value' => true,
             'syntax' => true,
         ],
-        'supports' =>
-        [
+        'supports'
+        => [
             'font-format' => true,
             'font-tech' => true,
             'selector' => true,
