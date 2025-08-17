@@ -22,6 +22,7 @@ class AtRulesReferential extends AbstractReferential
         'font-face' => true,
         'font-feature-values' => true,
         'font-palette-values' => true,
+        'function' => true,
         'import' => true,
         'keyframes' => true,
         'layer' => true,

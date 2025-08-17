@@ -16,12 +16,12 @@ class AtRulesPropertiesReferential extends AbstractReferential
      * @var ReferentialData
      */
     public static array $referential = [
-        'font-face' =>
-        [
+        'font-face'
+        => [
             'font-variant' => true,
         ],
-        'media' =>
-        [
+        'media'
+        => [
             '-moz-device-pixel-ratio' => true,
             '-webkit-animation' => true,
             '-webkit-transform-2d' => true,
