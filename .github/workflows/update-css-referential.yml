@@ -35,3 +35,4 @@ jobs:
           title: "feat: update CSS Referential"
           body: |
             This pull request updates the CSS referential files in the `src/CssLint/Referential` directory.
+          commit-message: "feat: update CSS Referential"
