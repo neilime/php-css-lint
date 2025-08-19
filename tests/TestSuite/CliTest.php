@@ -48,9 +48,9 @@ class CliTest extends TestCase
     public function testRunWithValidStringShouldReturnSuccessCode()
     {
         $this->expectOutputString(
-            '# Lint CSS string...' . PHP_EOL .
-                "\033[32m => Success: CSS string is valid.\033[0m" . PHP_EOL .
-                PHP_EOL
+            '# Lint CSS string...' . PHP_EOL
+                . "\033[32m => Success: CSS string is valid.\033[0m" . PHP_EOL
+                . PHP_EOL
         );
         $this->assertEquals(
             0,
@@ -62,10 +62,10 @@ class CliTest extends TestCase
     public function testRunWithNotValidStringShouldReturnErrorCode()
     {
         $this->expectOutputString(
-            '# Lint CSS string...' . PHP_EOL .
-                "\033[31m    - [unexpected_character_in_block_content]: block - Unexpected character: \":\" (line 1, column 6 to line 3, column 16)\033[0m" . PHP_EOL .
-                "\033[31m    - [invalid_property_declaration]: property - Unknown property \"displady\" (line 1, column 7 to line 1, column 23)\033[0m" . PHP_EOL .
-                "\033[31m => Failure: CSS string is invalid CSS.\033[0m" . PHP_EOL
+            '# Lint CSS string...' . PHP_EOL
+                . "\033[31m    - [unexpected_character_in_block_content]: block - Unexpected character: \":\" (line 1, column 6 to line 3, column 16)\033[0m" . PHP_EOL
+                . "\033[31m    - [invalid_property_declaration]: property - Unknown property \"displady\" (line 1, column 7 to line 1, column 23)\033[0m" . PHP_EOL
+                . "\033[31m => Failure: CSS string is invalid CSS.\033[0m" . PHP_EOL
         );
 
         $this->assertEquals(1, $this->cli->run([
@@ -81,10 +81,10 @@ class CliTest extends TestCase
         $fileToLint = $this->testFixturesDir . '/not_valid.css';
 
         $this->expectOutputString(
-            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
-                "\033[31m    - [invalid_property_declaration]: property - Unknown property \"bordr-top-style\" (line 3, column 5 to line 3, column 27)\033[0m" . PHP_EOL .
-                "\033[31m    - [unclosed_token]: block - Unclosed \"block\" detected (line 1, column 23 to line 6, column 2)\033[0m" . PHP_EOL .
-                "\033[31m => Failure: CSS file \"$fileToLint\" is invalid CSS.\033[0m" . PHP_EOL
+            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL
+                . "\033[31m    - [invalid_property_declaration]: property - Unknown property \"bordr-top-style\" (line 3, column 5 to line 3, column 27)\033[0m" . PHP_EOL
+                . "\033[31m    - [unclosed_token]: block - Unclosed \"block\" detected (line 1, column 23 to line 6, column 2)\033[0m" . PHP_EOL
+                . "\033[31m => Failure: CSS file \"$fileToLint\" is invalid CSS.\033[0m" . PHP_EOL
         );
         $this->assertEquals(1, $this->cli->run(['php-css-lint', $fileToLint]));
     }
@@ -93,9 +93,9 @@ class CliTest extends TestCase
     {
         $fileToLint = $this->testFixturesDir . '/valid.css';
         $this->expectOutputString(
-            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
-                "\033[32m => Success: CSS file \"$fileToLint\" is valid.\033[0m" . PHP_EOL .
-                PHP_EOL
+            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL
+                . "\033[32m => Success: CSS file \"$fileToLint\" is valid.\033[0m" . PHP_EOL
+                . PHP_EOL
         );
         $this->assertEquals(0, $this->cli->run(['php-css-lint', $this->testFixturesDir . '/valid*.css']), $this->getActualOutput());
     }
@@ -114,10 +114,10 @@ class CliTest extends TestCase
     {
         $fileToLint = $this->testFixturesDir . '/not_valid.css';
         $this->expectOutputString(
-            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
-                "\033[31m    - [invalid_property_declaration]: property - Unknown property \"bordr-top-style\" (line 3, column 5 to line 3, column 27)\033[0m" . PHP_EOL .
-                "\033[31m    - [unclosed_token]: block - Unclosed \"block\" detected (line 1, column 23 to line 6, column 2)\033[0m" . PHP_EOL .
-                "\033[31m => Failure: CSS file \"$fileToLint\" is invalid CSS.\033[0m" . PHP_EOL
+            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL
+                . "\033[31m    - [invalid_property_declaration]: property - Unknown property \"bordr-top-style\" (line 3, column 5 to line 3, column 27)\033[0m" . PHP_EOL
+                . "\033[31m    - [unclosed_token]: block - Unclosed \"block\" detected (line 1, column 23 to line 6, column 2)\033[0m" . PHP_EOL
+                . "\033[31m => Failure: CSS file \"$fileToLint\" is invalid CSS.\033[0m" . PHP_EOL
         );
         $this->assertEquals(1, $this->cli->run(['php-css-lint', $this->testFixturesDir . '/not_valid*.css']));
     }
@@ -125,9 +125,9 @@ class CliTest extends TestCase
     public function testRunWithOptionsMustBeUsedByTheLinter()
     {
         $this->expectOutputString(
-            "# Lint CSS string..." . PHP_EOL .
-                "\033[31m    - [invalid_indentation_character]: whitespace - Unexpected char \" \" (line 2, column 1 to line 2, column 2)\033[0m" . PHP_EOL .
-                "\033[31m => Failure: CSS string is invalid CSS.\033[0m" . PHP_EOL
+            "# Lint CSS string..." . PHP_EOL
+                . "\033[31m    - [invalid_indentation_character]: whitespace - Unexpected char \" \" (line 2, column 1 to line 2, column 2)\033[0m" . PHP_EOL
+                . "\033[31m => Failure: CSS string is invalid CSS.\033[0m" . PHP_EOL
         );
 
         $this->assertEquals(1, $this->cli->run([
@@ -168,9 +168,9 @@ class CliTest extends TestCase
     {
         $fileToLint = $this->testFixturesDir . '/valid.css';
         $this->expectOutputString(
-            "::group::Lint CSS file \"$fileToLint\"" . PHP_EOL .
-                "::notice ::Success: CSS file \"$fileToLint\" is valid." . PHP_EOL .
-                "::endgroup::" . PHP_EOL
+            "::group::Lint CSS file \"$fileToLint\"" . PHP_EOL
+                . "::notice ::Success: CSS file \"$fileToLint\" is valid." . PHP_EOL
+                . "::endgroup::" . PHP_EOL
         );
         $this->assertEquals(0, $this->cli->run(['php-css-lint', '--formatter=github-actions', $fileToLint]), $this->getActualOutput());
     }
@@ -203,9 +203,9 @@ class CliTest extends TestCase
     {
         $fileToLint = $this->testFixturesDir . '/' . $fileToLint;
         $this->expectOutputString(
-            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL .
-                "\033[32m => Success: CSS file \"$fileToLint\" is valid.\033[0m" . PHP_EOL .
-                PHP_EOL
+            "# Lint CSS file \"$fileToLint\"..." . PHP_EOL
+                . "\033[32m => Success: CSS file \"$fileToLint\" is valid.\033[0m" . PHP_EOL
+                . PHP_EOL
         );
         $this->assertEquals(0, $this->cli->run(['php-css-lint', $fileToLint]), $this->getActualOutput());
     }

@@ -88,8 +88,8 @@ class GithubActionsFormatterTest extends TestCase
 
         // Assert
         $this->assertSame(
-            "::notice ::Success: file.css is valid." . PHP_EOL .
-                "::endgroup::" . PHP_EOL,
+            "::notice ::Success: file.css is valid." . PHP_EOL
+                . "::endgroup::" . PHP_EOL,
             $content
         );
     }
