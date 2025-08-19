@@ -8,6 +8,8 @@
     "rector/rector": "^2.1"
   },
   "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
     "allow-plugins": {
       "phpstan/extension-installer": true
     }

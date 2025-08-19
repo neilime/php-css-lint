@@ -196,12 +196,12 @@ class LinterTest extends TestCase
     public function testLintComment()
     {
         // Act
-        $errors =
-            $this->linter->lintString(
-                "/*" . PHP_EOL .
-                    " * This is a comment" . PHP_EOL .
-                    "*/" . PHP_EOL .
-                    ".test { }"
+        $errors
+            = $this->linter->lintString(
+                "/*" . PHP_EOL
+                    . " * This is a comment" . PHP_EOL
+                    . "*/" . PHP_EOL
+                    . ".test { }"
             );
 
         // Assert

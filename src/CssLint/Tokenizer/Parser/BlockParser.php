@@ -66,7 +66,7 @@ class BlockParser extends AbstractParser
     /**
      * Performs parsing tokenizer current context, check block part
      */
-    public function parseCurrentContext(TokenizerContext $tokenizerContext): BlockToken|null
+    public function parseCurrentContext(TokenizerContext $tokenizerContext): ?BlockToken
     {
         if ($this->lastCharIsSpace($tokenizerContext)) {
             return null;
@@ -76,7 +76,7 @@ class BlockParser extends AbstractParser
         return $this->handleBlockToken($tokenizerContext, $currentBlockToken);
     }
 
-    private function handleBlockToken(TokenizerContext $tokenizerContext, ?BlockToken $currentBlockToken): BlockToken|null
+    private function handleBlockToken(TokenizerContext $tokenizerContext, ?BlockToken $currentBlockToken): ?BlockToken
     {
         if (static::isBlockStart($tokenizerContext)) {
             $blockToken = $this->createBlockToken($tokenizerContext);

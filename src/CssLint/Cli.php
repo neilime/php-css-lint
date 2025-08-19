@@ -70,58 +70,58 @@ class Cli
         $defaultFormatter = $availableFormatters[0];
 
         $this->printLine(
-            'Usage:' . PHP_EOL .
-                '------' . PHP_EOL .
-                PHP_EOL .
-                '  ' . self::SCRIPT_NAME . " [--options='{ }'] [--formatter=name] [--formatter=name:path] input_to_lint" . PHP_EOL .
-                PHP_EOL .
-                'Arguments:' . PHP_EOL .
-                '----------' . PHP_EOL .
-                PHP_EOL .
-                '  --options' . PHP_EOL .
-                '    Options (optional), must be a json object:' . PHP_EOL .
-                '     * "allowedIndentationChars" => [" "] or ["\t"]: will override the current property' . PHP_EOL .
-                '     * "constructors": { "property" => bool }: will merge with the current property' . PHP_EOL .
-                '     * "standards": { "property" => bool }: will merge with the current property' . PHP_EOL .
-                '     * "nonStandards": { "property" => bool }: will merge with the current property' . PHP_EOL .
-                '    Example: --options=\'{ "constructors": {"o" : false}, "allowedIndentationChars": ["\t"] }\'' .
-                PHP_EOL .
-                PHP_EOL .
-                '  --formatter' . PHP_EOL .
-                '    The formatter(s) to be used. Can be specified multiple times.' . PHP_EOL .
-                '    Format: --formatter=name (output to stdout) or --formatter=name:path (output to file)' . PHP_EOL .
-                '    If not specified, the default formatter will output to stdout.' . PHP_EOL .
-                '    Available formatters: ' . implode(', ', $availableFormatters) . PHP_EOL .
-                '    Examples:' . PHP_EOL .
-                '      output to stdout: --formatter=' . $defaultFormatter . PHP_EOL .
-                '      output to file: --formatter=' . $defaultFormatter . ':report.txt' . PHP_EOL .
-                '      multiple outputs: --formatter=' . $defaultFormatter . ' --formatter=' . $availableFormatters[1] . ':report.json' . PHP_EOL .
-                PHP_EOL .
-                '  input_to_lint' . PHP_EOL .
-                '    The CSS file path (absolute or relative)' . PHP_EOL .
-                '    a glob pattern of file(s) to be linted' . PHP_EOL .
-                '    or a CSS string to be linted' . PHP_EOL .
-                '    Example:' . PHP_EOL .
-                '      "./path/to/css_file_path_to_lint.css"' . PHP_EOL .
-                '      "./path/to/css_file_path_to_lint/*.css"' . PHP_EOL .
-                '      ".test { color: red; }"' . PHP_EOL .
-                PHP_EOL .
-                'Examples:' . PHP_EOL .
-                '---------' . PHP_EOL .
-                PHP_EOL .
-                '  Lint a CSS file:' . PHP_EOL .
-                '    ' . self::SCRIPT_NAME . ' "./path/to/css_file_path_to_lint.css"' . PHP_EOL . PHP_EOL .
-                '  Lint a CSS string:' . PHP_EOL .
-                '    ' . self::SCRIPT_NAME . ' ".test { color: red; }"' . PHP_EOL . PHP_EOL .
-                '  Lint with only tabulation as indentation:' . PHP_EOL .
-                '    ' . self::SCRIPT_NAME .
-                ' --options=\'{ "allowedIndentationChars": ["\t"] }\' ".test { color: red; }"' . PHP_EOL . PHP_EOL .
-                '  Output to a file:' . PHP_EOL .
-                '    ' . self::SCRIPT_NAME . ' --formatter=plain:output.txt ".test { color: red; }"' . PHP_EOL . PHP_EOL .
-                '  Generate GitLab CI report:' . PHP_EOL .
-                '    ' . self::SCRIPT_NAME . ' --formatter=gitlab-ci:report.json "./path/to/css_file.css"' . PHP_EOL . PHP_EOL .
-                '  Multiple outputs (console and file):' . PHP_EOL .
-                '    ' . self::SCRIPT_NAME . ' --formatter=plain --formatter=gitlab-ci:ci-report.json ".test { color: red; }"' . PHP_EOL . PHP_EOL
+            'Usage:' . PHP_EOL
+                . '------' . PHP_EOL
+                . PHP_EOL
+                . '  ' . self::SCRIPT_NAME . " [--options='{ }'] [--formatter=name] [--formatter=name:path] input_to_lint" . PHP_EOL
+                . PHP_EOL
+                . 'Arguments:' . PHP_EOL
+                . '----------' . PHP_EOL
+                . PHP_EOL
+                . '  --options' . PHP_EOL
+                . '    Options (optional), must be a json object:' . PHP_EOL
+                . '     * "allowedIndentationChars" => [" "] or ["\t"]: will override the current property' . PHP_EOL
+                . '     * "constructors": { "property" => bool }: will merge with the current property' . PHP_EOL
+                . '     * "standards": { "property" => bool }: will merge with the current property' . PHP_EOL
+                . '     * "nonStandards": { "property" => bool }: will merge with the current property' . PHP_EOL
+                . '    Example: --options=\'{ "constructors": {"o" : false}, "allowedIndentationChars": ["\t"] }\''
+                . PHP_EOL
+                . PHP_EOL
+                . '  --formatter' . PHP_EOL
+                . '    The formatter(s) to be used. Can be specified multiple times.' . PHP_EOL
+                . '    Format: --formatter=name (output to stdout) or --formatter=name:path (output to file)' . PHP_EOL
+                . '    If not specified, the default formatter will output to stdout.' . PHP_EOL
+                . '    Available formatters: ' . implode(', ', $availableFormatters) . PHP_EOL
+                . '    Examples:' . PHP_EOL
+                . '      output to stdout: --formatter=' . $defaultFormatter . PHP_EOL
+                . '      output to file: --formatter=' . $defaultFormatter . ':report.txt' . PHP_EOL
+                . '      multiple outputs: --formatter=' . $defaultFormatter . ' --formatter=' . $availableFormatters[1] . ':report.json' . PHP_EOL
+                . PHP_EOL
+                . '  input_to_lint' . PHP_EOL
+                . '    The CSS file path (absolute or relative)' . PHP_EOL
+                . '    a glob pattern of file(s) to be linted' . PHP_EOL
+                . '    or a CSS string to be linted' . PHP_EOL
+                . '    Example:' . PHP_EOL
+                . '      "./path/to/css_file_path_to_lint.css"' . PHP_EOL
+                . '      "./path/to/css_file_path_to_lint/*.css"' . PHP_EOL
+                . '      ".test { color: red; }"' . PHP_EOL
+                . PHP_EOL
+                . 'Examples:' . PHP_EOL
+                . '---------' . PHP_EOL
+                . PHP_EOL
+                . '  Lint a CSS file:' . PHP_EOL
+                . '    ' . self::SCRIPT_NAME . ' "./path/to/css_file_path_to_lint.css"' . PHP_EOL . PHP_EOL
+                . '  Lint a CSS string:' . PHP_EOL
+                . '    ' . self::SCRIPT_NAME . ' ".test { color: red; }"' . PHP_EOL . PHP_EOL
+                . '  Lint with only tabulation as indentation:' . PHP_EOL
+                . '    ' . self::SCRIPT_NAME
+                . ' --options=\'{ "allowedIndentationChars": ["\t"] }\' ".test { color: red; }"' . PHP_EOL . PHP_EOL
+                . '  Output to a file:' . PHP_EOL
+                . '    ' . self::SCRIPT_NAME . ' --formatter=plain:output.txt ".test { color: red; }"' . PHP_EOL . PHP_EOL
+                . '  Generate GitLab CI report:' . PHP_EOL
+                . '    ' . self::SCRIPT_NAME . ' --formatter=gitlab-ci:report.json "./path/to/css_file.css"' . PHP_EOL . PHP_EOL
+                . '  Multiple outputs (console and file):' . PHP_EOL
+                . '    ' . self::SCRIPT_NAME . ' --formatter=plain --formatter=gitlab-ci:ci-report.json ".test { color: red; }"' . PHP_EOL . PHP_EOL
         );
     }
 
