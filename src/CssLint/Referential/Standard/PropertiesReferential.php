@@ -135,6 +135,7 @@ class PropertiesReferential extends AbstractReferential
         'caption-side' => true,
         'caret-animation' => true,
         'caret-color' => true,
+        'caret-shape' => true,
         'chains' => true,
         'clear' => true,
         'clip' => true,
