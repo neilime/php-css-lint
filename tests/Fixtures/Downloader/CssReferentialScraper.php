@@ -18,8 +18,8 @@ class CssReferentialScraper
     public function __construct(bool $forceRefresh = false)
     {
         $this->downloaders = [
-            self::MDN_URL => new CachedHttpDownloader('css_referential_mdn'),
-            self::W3C_URL => new CachedHttpDownloader('css_referential_w3c'),
+            self::MDN_URL => new CachedHttpDownloader('css_referential_mdn', __DIR__ . '/../../../.cache', 1000, 3),
+            self::W3C_URL => new CachedHttpDownloader('css_referential_w3c', __DIR__ . '/../../../.cache', 1000, 3),
         ];
         $this->forceRefresh = $forceRefresh;
     }
@@ -27,6 +27,10 @@ class CssReferentialScraper
     public function fetchReferentials(): array
     {
         $w3cReferencial = $this->fetchW3CReferential();
+        
+        // Add delay between different API calls to be respectful to servers
+        usleep(2000000); // 2 seconds
+        
         $mdnReferencial = $this->fetchMdnReferential();
 
         $properties = $w3cReferencial['properties'] ?? [];
