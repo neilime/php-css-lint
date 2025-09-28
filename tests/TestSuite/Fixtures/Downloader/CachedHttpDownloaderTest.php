@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\TestSuite;
+namespace Tests\TestSuite\Fixtures\Downloader;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -10,6 +10,9 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\TestCase;
 use Tests\Fixtures\Downloader\CachedHttpDownloader;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ReflectionClass;
 
 class CachedHttpDownloaderTest extends TestCase
 {
@@ -18,7 +21,7 @@ class CachedHttpDownloaderTest extends TestCase
     protected function setUp(): void
     {
         $this->tempCacheDir = sys_get_temp_dir() . '/test_cache_' . uniqid();
-        mkdir($this->tempCacheDir, 0777, true);
+        mkdir($this->tempCacheDir, 0o777, true);
     }
 
     protected function tearDown(): void
@@ -39,15 +42,15 @@ class CachedHttpDownloaderTest extends TestCase
         $client = new Client(['handler' => $handlerStack]);
 
         $downloader = new CachedHttpDownloader('test', $this->tempCacheDir, 10, 3); // 10ms delay, 3 max retries
-        
+
         // Use reflection to replace the client
-        $reflection = new \ReflectionClass($downloader);
+        $reflection = new ReflectionClass($downloader);
         $clientProperty = $reflection->getProperty('client');
         $clientProperty->setAccessible(true);
         $clientProperty->setValue($downloader, $client);
 
         $result = $downloader->fetch('http://test.com', true);
-        
+
         $this->assertEquals('success content', $result);
     }
 
@@ -65,9 +68,9 @@ class CachedHttpDownloaderTest extends TestCase
         $client = new Client(['handler' => $handlerStack]);
 
         $downloader = new CachedHttpDownloader('test', $this->tempCacheDir, 10, 3); // 10ms delay, 3 max retries
-        
+
         // Use reflection to replace the client
-        $reflection = new \ReflectionClass($downloader);
+        $reflection = new ReflectionClass($downloader);
         $clientProperty = $reflection->getProperty('client');
         $clientProperty->setAccessible(true);
         $clientProperty->setValue($downloader, $client);
@@ -87,15 +90,15 @@ class CachedHttpDownloaderTest extends TestCase
         $client = new Client(['handler' => $handlerStack]);
 
         $downloader = new CachedHttpDownloader('test', $this->tempCacheDir, 10, 3);
-        
+
         // Use reflection to replace the client
-        $reflection = new \ReflectionClass($downloader);
+        $reflection = new ReflectionClass($downloader);
         $clientProperty = $reflection->getProperty('client');
         $clientProperty->setAccessible(true);
         $clientProperty->setValue($downloader, $client);
 
         $result = $downloader->fetch('http://test.com', true);
-        
+
         $this->assertEquals('success content', $result);
     }
 
@@ -109,8 +112,8 @@ class CachedHttpDownloaderTest extends TestCase
         $client1 = new Client(['handler' => $handlerStack1]);
 
         $downloader = new CachedHttpDownloader('test', $this->tempCacheDir, 10, 3);
-        
-        $reflection = new \ReflectionClass($downloader);
+
+        $reflection = new ReflectionClass($downloader);
         $clientProperty = $reflection->getProperty('client');
         $clientProperty->setAccessible(true);
         $clientProperty->setValue($downloader, $client1);
@@ -135,10 +138,10 @@ class CachedHttpDownloaderTest extends TestCase
         if (!is_dir($dir)) {
             return;
         }
-        
-        $files = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
+
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
         );
 
         foreach ($files as $fileinfo) {

@@ -6,6 +6,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Psr\Http\Message\ResponseInterface;
+use RuntimeException;
 
 class CachedHttpDownloader
 {
@@ -62,7 +64,7 @@ class CachedHttpDownloader
         return $body;
     }
 
-    private function fetchWithRetry(string $url, array $options = []): \Psr\Http\Message\ResponseInterface
+    private function fetchWithRetry(string $url, array $options = []): ResponseInterface
     {
         $attempt = 0;
         $maxRetries = $this->maxRetries;
@@ -79,7 +81,7 @@ class CachedHttpDownloader
 
                 $response = $this->client->get($url, $options);
                 return $response;
-                
+
             } catch (ClientException $e) {
                 // Check if it's a 429 (Too Many Requests) or other retryable client error
                 if ($e->getResponse() && in_array($e->getResponse()->getStatusCode(), [429, 503, 502, 504])) {
@@ -98,7 +100,7 @@ class CachedHttpDownloader
                 throw $e;
             }
         }
-        
-        throw new \RuntimeException("Max retries ({$maxRetries}) exceeded for URL: {$url}");
+
+        throw new RuntimeException("Max retries ({$maxRetries}) exceeded for URL: {$url}");
     }
 }
