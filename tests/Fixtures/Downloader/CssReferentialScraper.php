@@ -27,10 +27,10 @@ class CssReferentialScraper
     public function fetchReferentials(): array
     {
         $w3cReferencial = $this->fetchW3CReferential();
-        
+
         // Add delay between different API calls to be respectful to servers
         usleep(2000000); // 2 seconds
-        
+
         $mdnReferencial = $this->fetchMdnReferential();
 
         $properties = $w3cReferencial['properties'] ?? [];
