@@ -58,6 +58,8 @@ phpstan: ## Execute PHPStan for given PHP version
 	@$(call run-php,composer phpstan -- $(filter-out $@,$(MAKECMDGOALS)))
 
 ci: ## Execute CI scripts for given PHP version
+	$(MAKE) build-php
+	$(MAKE) install
 	@$(call run-php,composer ci -- $(filter-out $@,$(MAKECMDGOALS)))
 
 generate-css-referentials: ## Generate referentials for given PHP version

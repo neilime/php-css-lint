@@ -113,7 +113,7 @@ class PropertyParser extends AbstractParser
         }
 
         $parts = array_map(
-            'trim',
+            trim(...),
             explode(
                 self::$PROPERTY_SEPARATOR,
                 $currentContent,
