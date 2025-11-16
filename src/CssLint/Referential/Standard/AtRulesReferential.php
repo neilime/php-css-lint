@@ -19,6 +19,7 @@ class AtRulesReferential extends AbstractReferential
         'charset' => true,
         'container' => true,
         'counter-style' => true,
+        'custom-media' => true,
         'font-face' => true,
         'font-feature-values' => true,
         'font-palette-values' => true,
