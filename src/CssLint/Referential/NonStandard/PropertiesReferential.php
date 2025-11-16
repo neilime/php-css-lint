@@ -258,7 +258,6 @@ class PropertiesReferential extends AbstractReferential
         'text-decoration-skip-inset' => true,
         'text-decoration-skip-self' => true,
         'text-decoration-skip-spaces' => true,
-        'text-decoration-trim' => true,
         'text-emphasis-skip' => true,
         'text-group-align' => true,
         'text-spacing' => true,

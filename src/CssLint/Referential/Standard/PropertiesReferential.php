@@ -487,6 +487,7 @@ class PropertiesReferential extends AbstractReferential
         'text-combine-upright' => true,
         'text-decoration' => true,
         'text-decoration-color' => true,
+        'text-decoration-inset' => true,
         'text-decoration-line' => true,
         'text-decoration-skip' => true,
         'text-decoration-skip-ink' => true,
