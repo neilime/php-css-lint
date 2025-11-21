@@ -10,8 +10,13 @@ on:
       - main
   merge_group:
 
+permissions: {}
+
 jobs:
   ci:
     name: Continuous Integration
     uses: ./.github/workflows/__shared-ci.yml
+    permissions:
+      contents: read
+      id-token: write
     secrets: inherit
