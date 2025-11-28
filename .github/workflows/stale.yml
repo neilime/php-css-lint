@@ -8,7 +8,7 @@ permissions: {}
 
 jobs:
   main:
-    uses: hoverkraft-tech/ci-github-common/.github/workflows/stale.yml@1127e708e4072515056a4b0d26bcb0653646cedc # 0.30.0
+    uses: hoverkraft-tech/ci-github-common/.github/workflows/stale.yml@a55670b58d3e064526201acde6c720ede638420c # 0.31.0
     permissions:
       issues: write
       pull-requests: write
