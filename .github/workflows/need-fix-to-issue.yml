@@ -13,10 +13,6 @@ on:
         description: "By default, the commit entered above is compared to the one directly before it; to go back further, enter an earlier SHA here"
         required: false
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 permissions: {}
 
 jobs:
