@@ -12,7 +12,7 @@
 📢 **Php CSS Lint** is a php script that lint css files and strings.
 It supports [W3C](https://www.w3.org/Style/CSS/) and [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS) CSS specifications.
 
-```
+```txt
 ===========================================================
 
   ____  _              ____ ____ ____    _     _       _
@@ -40,8 +40,8 @@ It supports [W3C](https://www.w3.org/Style/CSS/) and [MDN](https://developer.moz
 
 # Documentation
 
-1. [Installation](https://neilime.github.io/php-css-lint/installation)
-2. [Usage](https://neilime.github.io/php-css-lint/usage)
-3. [Code Coverage](https://codecov.io/gh/neilime/php-css-lint)
-4. [PHP Doc](https://neilime.github.io/php-css-lint/phpdoc)
-5. [Development](https://neilime.github.io/php-css-lint/development)
+1. [Installation](./docs/installation.md)
+2. [Usage](./docs/usage.md)
+3. [Development](./docs/development.md)
+4. [Code Coverage](https://codecov.io/gh/neilime/php-css-lint)
+5. [PHP Doc](https://neilime.github.io/php-css-lint/phpdoc)

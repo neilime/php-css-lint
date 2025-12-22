@@ -1,4 +1,4 @@
-PHP_VERSION=8.4
+PHP_VERSION=8.5
 PROJECT_NAME=$(shell basename $(CURDIR))
 UID=$(shell id -u)
 GID=$(shell id -g)
@@ -58,8 +58,7 @@ phpstan: ## Execute PHPStan for given PHP version
 	@$(call run-php,composer phpstan -- $(filter-out $@,$(MAKECMDGOALS)))
 
 ci: ## Execute CI scripts for given PHP version
-	$(MAKE) build-php
-	$(MAKE) install
+	$(MAKE) setup
 	@$(call run-php,composer ci -- $(filter-out $@,$(MAKECMDGOALS)))
 
 generate-css-referentials: ## Generate referentials for given PHP version
