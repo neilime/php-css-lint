@@ -139,7 +139,7 @@ class LintConfiguration
                 $property
             );
 
-            if ($propertyWithoutConstructor !== $property) {
+            if ($propertyWithoutConstructor && $propertyWithoutConstructor !== $property) {
                 if (!empty($this->propertiesStandards[$propertyWithoutConstructor])) {
                     return true;
                 }
