@@ -11,6 +11,8 @@
     "optimize-autoloader": true,
     "sort-packages": true,
     "allow-plugins": {
+      "optimize-autoloader": true,
+      "sort-packages": true,
       "phpstan/extension-installer": true
     }
   }
