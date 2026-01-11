@@ -176,6 +176,7 @@ class PropertiesReferential extends AbstractReferential
         'float-reference' => true,
         'flow-from' => true,
         'flow-into' => true,
+        'flow-tolerance' => true,
         'font-smooth' => true,
         'footnote-display' => true,
         'footnote-policy' => true,
