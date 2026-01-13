@@ -36,10 +36,10 @@
     "mikey179/vfsstream": "^1.6",
     "pcov/clobber": "^2.0",
     "phpunit/phpunit": "^9.5.27",
-    "symfony/cache": "^6.4",
-    "symfony/console": "^6.4",
-    "symfony/css-selector": "^6.4",
-    "symfony/dom-crawler": "^6.4"
+    "symfony/cache": "^6.4 || ^7.2",
+    "symfony/console": "^6.4 || ^7.2",
+    "symfony/css-selector": "^6.4 || ^7.2",
+    "symfony/dom-crawler": "^6.4 || ^7.2"
   },
   "autoload": {
     "psr-4": {
