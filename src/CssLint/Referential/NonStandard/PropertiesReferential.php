@@ -192,7 +192,6 @@ class PropertiesReferential extends AbstractReferential
         'item-direction' => true,
         'item-flow' => true,
         'item-pack' => true,
-        'item-tolerance' => true,
         'item-track' => true,
         'item-wrap' => true,
         'line-fit-edge' => true,
