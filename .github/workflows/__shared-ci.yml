@@ -31,7 +31,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
 
       - name: ♻️ Tools cache
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: tools/cache
           key: ${{ runner.os }}-tools-${{ matrix.php-versions }}-${{ github.sha }}
@@ -52,7 +52,7 @@ jobs:
         run: composer phpstan -- --error-format=github
 
       - name: ♻️ Tests cache
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: tests/.phpunit.result.cache
           key: ${{ runner.os }}-tests-${{ github.sha }}
@@ -60,7 +60,7 @@ jobs:
             ${{ runner.os }}-tests-
 
       - name: ♻️ Fixtures cache
-        uses: actions/cache@8b402f58fbc84540c8b491a91e594a4576fec3d7 # v5.0.2
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: .cache
           key: fixture-cache-${{ hashFiles('composer.lock') }}
