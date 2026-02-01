@@ -298,6 +298,7 @@ class PropertiesReferential extends AbstractReferential
         'timeline-trigger-source' => true,
         'trigger-scope' => true,
         'user-modify' => true,
+        'view-transition-scope' => true,
         'voice-balance' => true,
         'voice-duration' => true,
         'voice-family' => true,
