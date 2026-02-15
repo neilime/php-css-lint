@@ -108,6 +108,7 @@ class AtRulesPropertiesReferential extends AbstractReferential
             'prefers-reduced-motion' => true,
             'prefers-reduced-transparency' => true,
             'resolution' => true,
+            'scan' => true,
             'scripting' => true,
             'update' => true,
             'vertical-viewport-segments' => true,
