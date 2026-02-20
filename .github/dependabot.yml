@@ -10,8 +10,14 @@ updates:
       day: friday
       time: "04:00"
     groups:
-      dev-dependencies:
+      composer-development-dependencies:
         dependency-type: development
+        patterns:
+          - "*"
+      composer-production-dependencies:
+        dependency-type: production
+        patterns:
+          - "*"
 
   - package-ecosystem: "docker"
     open-pull-requests-limit: 20
