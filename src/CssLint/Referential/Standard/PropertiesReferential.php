@@ -217,6 +217,7 @@ class PropertiesReferential extends AbstractReferential
         'flood-color' => true,
         'flood-opacity' => true,
         'flow' => true,
+        'flow-tolerance' => true,
         'font' => true,
         'font-family' => true,
         'font-feature-settings' => true,
