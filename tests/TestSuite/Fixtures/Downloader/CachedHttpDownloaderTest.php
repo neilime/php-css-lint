@@ -43,11 +43,7 @@ class CachedHttpDownloaderTest extends TestCase
 
         $downloader = new CachedHttpDownloader('test', $this->tempCacheDir, 10, 3); // 10ms delay, 3 max retries
 
-        // Use reflection to replace the client
-        $reflection = new ReflectionClass($downloader);
-        $clientProperty = $reflection->getProperty('client');
-        $clientProperty->setAccessible(true);
-        $clientProperty->setValue($downloader, $client);
+        $this->replaceClient($downloader, $client);
 
         $result = $downloader->fetch('http://test.com', true);
 
@@ -69,11 +65,7 @@ class CachedHttpDownloaderTest extends TestCase
 
         $downloader = new CachedHttpDownloader('test', $this->tempCacheDir, 10, 3); // 10ms delay, 3 max retries
 
-        // Use reflection to replace the client
-        $reflection = new ReflectionClass($downloader);
-        $clientProperty = $reflection->getProperty('client');
-        $clientProperty->setAccessible(true);
-        $clientProperty->setValue($downloader, $client);
+        $this->replaceClient($downloader, $client);
 
         $this->expectException(ClientException::class);
         $downloader->fetch('http://test.com', true);
@@ -91,11 +83,7 @@ class CachedHttpDownloaderTest extends TestCase
 
         $downloader = new CachedHttpDownloader('test', $this->tempCacheDir, 10, 3);
 
-        // Use reflection to replace the client
-        $reflection = new ReflectionClass($downloader);
-        $clientProperty = $reflection->getProperty('client');
-        $clientProperty->setAccessible(true);
-        $clientProperty->setValue($downloader, $client);
+        $this->replaceClient($downloader, $client);
 
         $result = $downloader->fetch('http://test.com', true);
 
@@ -113,10 +101,7 @@ class CachedHttpDownloaderTest extends TestCase
 
         $downloader = new CachedHttpDownloader('test', $this->tempCacheDir, 10, 3);
 
-        $reflection = new ReflectionClass($downloader);
-        $clientProperty = $reflection->getProperty('client');
-        $clientProperty->setAccessible(true);
-        $clientProperty->setValue($downloader, $client1);
+        $this->replaceClient($downloader, $client1);
 
         $result1 = $downloader->fetch('http://test.com', true);
         $this->assertEquals('cached content', $result1);
@@ -127,7 +112,7 @@ class CachedHttpDownloaderTest extends TestCase
         ]);
         $handlerStack2 = HandlerStack::create($mock2);
         $client2 = new Client(['handler' => $handlerStack2]);
-        $clientProperty->setValue($downloader, $client2);
+        $this->replaceClient($downloader, $client2);
 
         $result2 = $downloader->fetch('http://test.com', false);
         $this->assertEquals('cached content', $result2);
@@ -150,5 +135,11 @@ class CachedHttpDownloaderTest extends TestCase
         }
 
         rmdir($dir);
+    }
+
+    private function replaceClient(CachedHttpDownloader $downloader, Client $client): void
+    {
+        $reflection = new ReflectionClass($downloader);
+        $reflection->getProperty('client')->setValue($downloader, $client);
     }
 }
