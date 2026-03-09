@@ -96,10 +96,10 @@ class LintConfigurationTest extends TestCase
     public function testMergePropertiesNonStandardsShouldDisableAProperty()
     {
         $lintConfiguration = new LintConfiguration();
-        $this->assertTrue($lintConfiguration->propertyExists('-moz-event-trigger'));
+        $this->assertTrue($lintConfiguration->propertyExists('-moz-box-align'));
 
-        $lintConfiguration->mergePropertiesNonStandards(['event-trigger' => false]);
-        $this->assertFalse($lintConfiguration->propertyExists('-moz-event-trigger'));
+        $lintConfiguration->mergePropertiesNonStandards(['box-align' => false]);
+        $this->assertFalse($lintConfiguration->propertyExists('-moz-box-align'));
     }
 
     public function testMergePropertiesNonStandardsShouldAddAProperty()
