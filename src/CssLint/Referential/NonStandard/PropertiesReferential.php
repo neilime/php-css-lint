@@ -176,6 +176,7 @@ class PropertiesReferential extends AbstractReferential
         'hyphenate-limit-last' => true,
         'hyphenate-limit-lines' => true,
         'hyphenate-limit-zone' => true,
+        'image-animation' => true,
         'image-resolution' => true,
         'initial-letter-align' => true,
         'initial-letter-wrap' => true,
