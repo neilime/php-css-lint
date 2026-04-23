@@ -76,18 +76,61 @@ class PropertyParser extends AbstractParser
 
     private function isPropertyEnd(TokenizerContext $tokenizerContext): bool
     {
-        foreach (
-            [
-                self::$PROPERTY_END,
-                BlockParser::$BLOCK_END,
-            ] as $endChar
+        $lastChar = $tokenizerContext->getLastChar();
+
+        if (
+            $lastChar !== self::$PROPERTY_END
+            && $lastChar !== BlockParser::$BLOCK_END
         ) {
-            if ($tokenizerContext->currentContentEndsWith($endChar)) {
-                return true;
+            return false;
+        }
+
+        return !$this->isInsidePropertyValueContext($tokenizerContext->getCurrentContent());
+    }
+
+    private function isInsidePropertyValueContext(string $content): bool
+    {
+        $stringDelimiter = null;
+        $parenthesisLevel = 0;
+        $isEscaped = false;
+
+        $contentLength = strlen($content);
+        for ($index = 0; $index < $contentLength; ++$index) {
+            $char = $content[$index];
+            if ($stringDelimiter !== null) {
+                if ($isEscaped) {
+                    $isEscaped = false;
+                    continue;
+                }
+
+                if ($char === '\\') {
+                    $isEscaped = true;
+                    continue;
+                }
+
+                if ($char === $stringDelimiter) {
+                    $stringDelimiter = null;
+                }
+
+                continue;
+            }
+
+            if ($char === '"' || $char === "'") {
+                $stringDelimiter = $char;
+                continue;
+            }
+
+            if ($char === '(') {
+                ++$parenthesisLevel;
+                continue;
+            }
+
+            if ($char === ')' && $parenthesisLevel > 0) {
+                --$parenthesisLevel;
             }
         }
 
-        return false;
+        return $stringDelimiter !== null || $parenthesisLevel > 0;
     }
 
     private function createPropertyToken(TokenizerContext $tokenizerContext): PropertyToken

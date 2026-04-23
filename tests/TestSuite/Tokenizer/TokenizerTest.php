@@ -484,6 +484,61 @@ class TokenizerTest extends TestCase
         $this->assertTokensOrErrorsEquals($expectedTokensOrErrors, $tokensOrErrors);
     }
 
+    public function testTokenizeWithQuotedDataUrlProperty()
+    {
+        // Arrange
+        $stream = $this->getStream('ul{list-style-image: url("data:image/gif;base64,AAAA");}');
+
+        // Act
+        $tokensOrErrors = iterator_to_array($this->tokenizer->tokenize($stream), false);
+
+        // Assert
+        $expectedTokensOrErrors = [
+            [
+                'type' => 'selector',
+                'value' => 'ul',
+                'start' => [
+                    'line' => 1,
+                    'column' => 1,
+                ],
+                'end' => [
+                    'line' => 1,
+                    'column' => 2,
+                ],
+            ],
+            [
+                'type' => 'block',
+                'value' => [
+                    [
+                        'type' => 'property',
+                        'value' => [
+                            'name' => 'list-style-image',
+                            'value' => 'url("data:image/gif;base64,AAAA")',
+                        ],
+                        'start' => [
+                            'line' => 1,
+                            'column' => 3,
+                        ],
+                        'end' => [
+                            'line' => 1,
+                            'column' => 54,
+                        ],
+                    ],
+                ],
+                'start' => [
+                    'line' => 1,
+                    'column' => 2,
+                ],
+                'end' => [
+                    'line' => 1,
+                    'column' => 56,
+                ],
+            ],
+        ];
+
+        $this->assertTokensOrErrorsEquals($expectedTokensOrErrors, $tokensOrErrors);
+    }
+
     private function getStream(string $css): mixed
     {
         $stream = fopen('php://memory', 'r+');

@@ -35,6 +35,12 @@ class PropertyParserTest extends TestCase
             'property with important' => ['color: blue !important;', 'color', 'blue !important'],
             'custom property' => ['--custom-prop: value;', '--custom-prop', 'value'],
             'vendor prefix property' => ['-webkit-transform: rotate(45deg);', '-webkit-transform', 'rotate(45deg)'],
+            'property with quoted data url' => ['list-style-image: url("data:image/gif;base64,AAAA");', 'list-style-image', 'url("data:image/gif;base64,AAAA")'],
+            'property with single quoted data url' => ["list-style-image: url('data:image/gif;base64,AAAA');", 'list-style-image', "url('data:image/gif;base64,AAAA')"],
+            'property with unquoted data url' => ['list-style-image: url(data:image/gif;base64,AAAA);', 'list-style-image', 'url(data:image/gif;base64,AAAA)'],
+            'property with escaped quote and semicolon in string' => ['content: "a\";b";', 'content', '"a\";b"'],
+            'property with closing brace inside quoted url' => ['background-image: url("data:image/svg+xml,<svg>}</svg>");', 'background-image', 'url("data:image/svg+xml,<svg>}</svg>")'],
+            'property with data url ending with block end' => ['list-style-image: url("data:image/gif;base64,AAAA")}', 'list-style-image', 'url("data:image/gif;base64,AAAA")'],
         ];
     }
 
