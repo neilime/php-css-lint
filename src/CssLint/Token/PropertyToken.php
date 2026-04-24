@@ -7,6 +7,7 @@ namespace CssLint\Token;
 use CssLint\Position;
 use CssLint\Tokenizer\Parser\BlockParser;
 use CssLint\Tokenizer\TokenizerContext;
+use CssLint\Tokenizer\TokenizerContextInspector;
 
 /**
  * @phpstan-extends AbstractToken<array{name: string, value: string|null}, string|null>
@@ -28,8 +29,9 @@ class PropertyToken extends AbstractToken implements TokenBoundary
 
     public function canTransitionTo(string $tokenClass, TokenizerContext $tokenizerContext): bool
     {
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
         return $tokenClass === BlockToken::class
-            && $tokenizerContext->currentContentEndsWith(BlockParser::$BLOCK_END);
+            && $tokenizerContextInspector->currentContentEndsWith(BlockParser::$BLOCK_END);
     }
 
     /**

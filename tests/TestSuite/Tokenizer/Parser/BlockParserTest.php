@@ -33,6 +33,7 @@ class BlockParserTest extends TestCase
             'block start with escaped quotes' => ['"test\" {', true],
             'block start with single quotes' => ["'test' {", true],
             'block start with escaped single quotes' => ["'test\\' {", true],
+            'invalid block start inside open parenthesis' => [':not(.test {', false],
             'invalid block start' => ['test', false],
             'invalid block start with quotes' => ['"test {', false],
             'invalid block start with single quotes' => ["'test {", false],

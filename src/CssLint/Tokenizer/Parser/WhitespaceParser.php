@@ -8,6 +8,8 @@ use CssLint\LintError;
 use CssLint\Token\Token;
 use CssLint\Token\WhitespaceToken;
 use CssLint\Tokenizer\TokenizerContext;
+use CssLint\Tokenizer\TokenizerContextInspector;
+use CssLint\Tokenizer\TokenizerStringInspector;
 use LogicException;
 
 /**
@@ -28,18 +30,20 @@ class WhitespaceParser extends AbstractParser
      */
     public function parseCurrentContext(TokenizerContext $tokenizerContext): WhitespaceToken|LintError|null
     {
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
+
         return $this->handleTokenForCurrentContext(
             $tokenizerContext,
-            fn(?WhitespaceToken $currentWhitespaceToken = null) => $this->handleWhitespaceToken($tokenizerContext, $currentWhitespaceToken)
+            fn(?WhitespaceToken $currentWhitespaceToken = null) => $this->handleWhitespaceToken($tokenizerContext, $tokenizerContextInspector, $currentWhitespaceToken)
         );
     }
 
-    private function handleWhitespaceToken(TokenizerContext $tokenizerContext, ?WhitespaceToken $currentWhitespaceToken): ?WhitespaceToken
+    private function handleWhitespaceToken(TokenizerContext $tokenizerContext, TokenizerContextInspector $tokenizerContextInspector, ?WhitespaceToken $currentWhitespaceToken): ?WhitespaceToken
     {
         if ($currentWhitespaceToken) {
-            $currentWhitespaceToken = $this->updateWhitespaceToken($tokenizerContext, $currentWhitespaceToken);
+            $currentWhitespaceToken = $this->updateWhitespaceToken($tokenizerContext, $tokenizerContextInspector, $currentWhitespaceToken);
             // If we encounter an another char than a space, we finalize the current whitespace token
-            if (!$this->lastCharIsSpace($tokenizerContext)) {
+            if (!$tokenizerContextInspector->lastCharIsSpace()) {
                 return $currentWhitespaceToken;
             }
             return null;
@@ -47,7 +51,7 @@ class WhitespaceParser extends AbstractParser
 
         // If we're starting a new whitespace sequence
         if ($this->isNewLineWhitespace($tokenizerContext)) {
-            return $this->createWhitespaceToken($tokenizerContext);
+            return $this->createWhitespaceToken($tokenizerContext, $tokenizerContextInspector);
         }
 
         return null;
@@ -63,7 +67,7 @@ class WhitespaceParser extends AbstractParser
                 if ($content === '') {
                     return false;
                 }
-                if ($this->stringIsSpace($content)) {
+                if (TokenizerStringInspector::isWhitespace($content)) {
                     return true;
                 }
             }
@@ -72,9 +76,9 @@ class WhitespaceParser extends AbstractParser
         return false;
     }
 
-    private function createWhitespaceToken(TokenizerContext $tokenizerContext): WhitespaceToken
+    private function createWhitespaceToken(TokenizerContext $tokenizerContext, TokenizerContextInspector $tokenizerContextInspector): WhitespaceToken
     {
-        $lastChar = $tokenizerContext->getLastChar();
+        $lastChar = $tokenizerContextInspector->lastChar();
         if ($lastChar === null) {
             throw new LogicException('Last char is null');
         }
@@ -85,13 +89,13 @@ class WhitespaceParser extends AbstractParser
         );
     }
 
-    private function updateWhitespaceToken(TokenizerContext $tokenizerContext, WhitespaceToken $currentWhitespaceToken): WhitespaceToken
+    private function updateWhitespaceToken(TokenizerContext $tokenizerContext, TokenizerContextInspector $tokenizerContextInspector, WhitespaceToken $currentWhitespaceToken): WhitespaceToken
     {
         $content = $tokenizerContext->getCurrentContent();
         $content = str_replace(self::$END_OF_LINE_CHARS, '', $content);
 
-        if (!$this->lastCharIsSpace($tokenizerContext)) {
-            $lastChar = $tokenizerContext->getLastChar();
+        if (!$tokenizerContextInspector->lastCharIsSpace()) {
+            $lastChar = $tokenizerContextInspector->lastChar();
             if ($lastChar !== null) {
                 $content = $this->removeEndingString($content, $lastChar);
             }

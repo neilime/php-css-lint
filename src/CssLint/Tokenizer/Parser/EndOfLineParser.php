@@ -8,6 +8,7 @@ use CssLint\LintError;
 use CssLint\Token\Token;
 use CssLint\Token\WhitespaceToken;
 use CssLint\Tokenizer\TokenizerContext;
+use CssLint\Tokenizer\TokenizerContextInspector;
 
 /**
  * @extends AbstractParser<Token>
@@ -27,7 +28,9 @@ class EndOfLineParser extends AbstractParser
      */
     public function parseCurrentContext(TokenizerContext $tokenizerContext): Token|LintError|null
     {
-        if ($this->isEndOfLineChar($tokenizerContext)) {
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
+
+        if ($this->isEndOfLineChar($tokenizerContextInspector)) {
             $tokenizerContext->incrementLine();
         }
 
@@ -38,10 +41,10 @@ class EndOfLineParser extends AbstractParser
      * Check if a given char is an end of line token
      * @return boolean : true if the char is an end of line token, else false
      */
-    private function isEndOfLineChar(TokenizerContext $tokenizerContext): bool
+    private function isEndOfLineChar(TokenizerContextInspector $tokenizerContextInspector): bool
     {
         foreach (self::$END_OF_LINE_CHARS as $endOfLineChar) {
-            if ($tokenizerContext->currentContentEndsWith($endOfLineChar)) {
+            if ($tokenizerContextInspector->currentContentEndsWith($endOfLineChar)) {
                 return true;
             }
         }

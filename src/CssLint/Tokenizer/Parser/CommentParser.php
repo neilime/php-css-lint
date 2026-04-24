@@ -8,6 +8,7 @@ use CssLint\LintError;
 use CssLint\Token\CommentToken;
 use CssLint\Token\Token;
 use CssLint\Tokenizer\TokenizerContext;
+use CssLint\Tokenizer\TokenizerContextInspector;
 
 /**
  * @extends AbstractParser<CommentToken>
@@ -34,27 +35,29 @@ class CommentParser extends AbstractParser
      */
     public function parseCurrentContext(TokenizerContext $tokenizerContext): Token|LintError|null
     {
-        if ($this->lastCharIsSpace($tokenizerContext)) {
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
+
+        if ($tokenizerContextInspector->lastCharIsSpace()) {
             return null;
         }
 
         return $this->handleTokenForCurrentContext(
             $tokenizerContext,
-            fn(?CommentToken $currentToken = null) => $this->handleCommentToken($tokenizerContext, $currentToken)
+            fn(?CommentToken $currentToken = null) => $this->handleCommentToken($tokenizerContext, $tokenizerContextInspector, $currentToken)
         );
     }
 
-    private function handleCommentToken(TokenizerContext $tokenizerContext, ?CommentToken $currentToken): ?CommentToken
+    private function handleCommentToken(TokenizerContext $tokenizerContext, TokenizerContextInspector $tokenizerContextInspector, ?CommentToken $currentToken): ?CommentToken
     {
         if ($currentToken) {
             $currentToken = $this->updateCommentToken($tokenizerContext, $currentToken);
-            if ($this->isCommentEnd($tokenizerContext)) {
+            if ($this->isCommentEnd($tokenizerContextInspector)) {
                 return $currentToken;
             }
             return null;
         }
 
-        if ($this->isCommentStart($tokenizerContext)) {
+        if ($this->isCommentStart($tokenizerContextInspector)) {
             return $this->createCommentToken($tokenizerContext);
         }
 
@@ -64,17 +67,17 @@ class CommentParser extends AbstractParser
     /**
      * Check if the current char is the end of a comment
      */
-    private function isCommentEnd(TokenizerContext $lintContext): bool
+    private function isCommentEnd(TokenizerContextInspector $tokenizerContextInspector): bool
     {
-        return $lintContext->currentContentEndsWith(self::$COMMENT_DELIMITER_END);
+        return $tokenizerContextInspector->currentContentEndsWith(self::$COMMENT_DELIMITER_END);
     }
 
     /**
      * Check if the current char is the start of a comment
      */
-    private function isCommentStart(TokenizerContext $tokenizerContext): bool
+    private function isCommentStart(TokenizerContextInspector $tokenizerContextInspector): bool
     {
-        return $tokenizerContext->currentContentEndsWith(self::$COMMENT_DELIMITER_START);
+        return $tokenizerContextInspector->currentContentEndsWith(self::$COMMENT_DELIMITER_START);
     }
 
     private function createCommentToken(TokenizerContext $tokenizerContext): CommentToken

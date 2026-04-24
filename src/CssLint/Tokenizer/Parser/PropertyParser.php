@@ -8,6 +8,7 @@ use CssLint\LintError;
 use CssLint\LintErrorKey;
 use CssLint\Token\PropertyToken;
 use CssLint\Tokenizer\TokenizerContext;
+use CssLint\Tokenizer\TokenizerContextInspector;
 use CssLint\Token\Token;
 use CssLint\TokenLinter\TokenError;
 
@@ -38,7 +39,9 @@ class PropertyParser extends AbstractParser
 
     public function parseCurrentContext(TokenizerContext $tokenizerContext): Token|LintError|null
     {
-        if ($this->lastCharIsSpace($tokenizerContext)) {
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
+
+        if ($tokenizerContextInspector->lastCharIsSpace()) {
             return null;
         }
 
@@ -49,7 +52,7 @@ class PropertyParser extends AbstractParser
 
         return $this->handleTokenForCurrentContext(
             $tokenizerContext,
-            function (?PropertyToken $currentPropertyToken = null) use ($tokenizerContext) {
+            function (?PropertyToken $currentPropertyToken = null) use ($tokenizerContext, $tokenizerContextInspector) {
                 if ($currentPropertyToken === null) {
                     if (!$this->isPropertyName($tokenizerContext)) {
                         return null;
@@ -58,7 +61,7 @@ class PropertyParser extends AbstractParser
                     return $this->createPropertyToken($tokenizerContext);
                 }
 
-                if ($this->isPropertyEnd($tokenizerContext)) {
+                if ($this->isPropertyEnd($tokenizerContextInspector)) {
                     $currentPropertyToken = $this->updatePropertyToken($tokenizerContext, $currentPropertyToken);
                     return $currentPropertyToken;
                 }
@@ -74,9 +77,9 @@ class PropertyParser extends AbstractParser
         return preg_match(self::$PROPERTY_NAME_PATTERN, $currentContent) === 1;
     }
 
-    private function isPropertyEnd(TokenizerContext $tokenizerContext): bool
+    private function isPropertyEnd(TokenizerContextInspector $tokenizerContextInspector): bool
     {
-        $lastChar = $tokenizerContext->getLastChar();
+        $lastChar = $tokenizerContextInspector->lastChar();
 
         if (
             $lastChar !== self::$PROPERTY_END
@@ -85,52 +88,7 @@ class PropertyParser extends AbstractParser
             return false;
         }
 
-        return !$this->isInsidePropertyValueContext($tokenizerContext->getCurrentContent());
-    }
-
-    private function isInsidePropertyValueContext(string $content): bool
-    {
-        $stringDelimiter = null;
-        $parenthesisLevel = 0;
-        $isEscaped = false;
-
-        $contentLength = strlen($content);
-        for ($index = 0; $index < $contentLength; ++$index) {
-            $char = $content[$index];
-            if ($stringDelimiter !== null) {
-                if ($isEscaped) {
-                    $isEscaped = false;
-                    continue;
-                }
-
-                if ($char === '\\') {
-                    $isEscaped = true;
-                    continue;
-                }
-
-                if ($char === $stringDelimiter) {
-                    $stringDelimiter = null;
-                }
-
-                continue;
-            }
-
-            if ($char === '"' || $char === "'") {
-                $stringDelimiter = $char;
-                continue;
-            }
-
-            if ($char === '(') {
-                ++$parenthesisLevel;
-                continue;
-            }
-
-            if ($char === ')' && $parenthesisLevel > 0) {
-                --$parenthesisLevel;
-            }
-        }
-
-        return $stringDelimiter !== null || $parenthesisLevel > 0;
+        return !$tokenizerContextInspector->hasOpenStringOrParenthesisContext();
     }
 
     private function createPropertyToken(TokenizerContext $tokenizerContext): PropertyToken

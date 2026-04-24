@@ -74,41 +74,6 @@ class TokenizerContext
         return $this;
     }
 
-    /**
-     * Get the last char of the current content
-     */
-    public function getLastChar(): ?string
-    {
-        return $this->getNthLastChars(1);
-    }
-
-    /**
-     * Get the nth last char of the current content
-     * @param int<1, max> $length
-     * @param int<0, max> $offset
-     */
-    public function getNthLastChars(int $length, int $offset = 0): ?string
-    {
-        if (!$this->currentContent) {
-            return null;
-        }
-
-        $contentLength = strlen($this->currentContent);
-
-        $offset = $contentLength - $offset - $length;
-
-        if ($offset < 0) {
-            return null;
-        }
-
-        return substr($this->currentContent, $offset, $length);
-    }
-
-    public function currentContentEndsWith(string $string): bool
-    {
-        return str_ends_with($this->currentContent, $string);
-    }
-
     public function getCurrentPosition(): Position
     {
         if ($this->currentPosition === null) {
@@ -163,25 +128,6 @@ class TokenizerContext
         $this->previousToken = $this->currentToken;
         $this->currentToken = $currentToken;
         return $this;
-    }
-
-    /**
-     * Assert that current token is the same type as given token
-     * @param class-string<Token>|null $token
-     * @phpstan-assert-if-true Token $this->currentToken
-     * @return bool
-     */
-    public function assertCurrentToken(?string $token): bool
-    {
-        if ($token === null) {
-            return $this->currentToken === null;
-        }
-
-        if ($this->currentToken === null) {
-            return false;
-        }
-
-        return $this->currentToken::class === $token;
     }
 
     public function getPreviousToken(): ?Token

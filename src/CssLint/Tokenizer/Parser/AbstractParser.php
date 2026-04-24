@@ -37,17 +37,6 @@ abstract class AbstractParser implements Parser
         return $content;
     }
 
-    protected function lastCharIsSpace(TokenizerContext $tokenizerContext): bool
-    {
-        $lastChar = $tokenizerContext->getLastChar();
-        return $lastChar !== null && $this->stringIsSpace($lastChar);
-    }
-
-    protected function stringIsSpace(string $char): bool
-    {
-        return ctype_space($char);
-    }
-
     /**
      * @param callable(?TToken): (TToken|LintError|null) $generateToken
      * @return TToken|LintError|null
