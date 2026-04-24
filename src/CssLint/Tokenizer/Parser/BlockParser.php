@@ -7,6 +7,8 @@ namespace CssLint\Tokenizer\Parser;
 use CssLint\LintError;
 use CssLint\Token\BlockToken;
 use CssLint\Tokenizer\TokenizerContext;
+use CssLint\Tokenizer\TokenizerContextInspector;
+use CssLint\Tokenizer\TokenizerStringInspector;
 
 /**
  * @extends AbstractParser<BlockToken>
@@ -28,17 +30,22 @@ class BlockParser extends AbstractParser
      */
     public static function isBlockStart(TokenizerContext $tokenizerContext): bool
     {
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
         $currentContent = $tokenizerContext->getCurrentContent();
 
         // Ensure we have a valid block start
-        if (!$tokenizerContext->currentContentEndsWith(self::$BLOCK_START)) {
+        if (!$tokenizerContextInspector->currentContentEndsWith(self::$BLOCK_START)) {
             return false;
         }
 
-        // Make sure we're not inside a string or comment
+        // Preserve existing quote behavior while rejecting unfinished function-like contexts.
         $contentBeforeBlock = substr($currentContent, 0, -1);
         $openQuotes = substr_count($contentBeforeBlock, '"') + substr_count($contentBeforeBlock, "'");
         if ($openQuotes % 2 !== 0) {
+            return false;
+        }
+
+        if (TokenizerStringInspector::hasOpenParenthesisContext($contentBeforeBlock)) {
             return false;
         }
 
@@ -50,7 +57,8 @@ class BlockParser extends AbstractParser
      */
     public static function isBlockEnd(TokenizerContext $tokenizerContext, bool $fullContent = false): bool
     {
-        $value = $fullContent ? trim($tokenizerContext->getCurrentContent()) : $tokenizerContext->getNthLastChars(strlen(self::$BLOCK_END));
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
+        $value = $fullContent ? trim($tokenizerContext->getCurrentContent()) : $tokenizerContextInspector->nthLastChars(strlen(self::$BLOCK_END));
 
         return $value === self::$BLOCK_END;
     }
@@ -68,7 +76,9 @@ class BlockParser extends AbstractParser
      */
     public function parseCurrentContext(TokenizerContext $tokenizerContext): ?BlockToken
     {
-        if ($this->lastCharIsSpace($tokenizerContext)) {
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
+
+        if ($tokenizerContextInspector->lastCharIsSpace()) {
             return null;
         }
 

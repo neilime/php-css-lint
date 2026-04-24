@@ -8,6 +8,7 @@ use CssLint\LintError;
 use CssLint\Token\AtRuleToken;
 use CssLint\Token\Token;
 use CssLint\Tokenizer\TokenizerContext;
+use CssLint\Tokenizer\TokenizerContextInspector;
 
 /**
  * @extends AbstractParser<AtRuleToken>
@@ -40,13 +41,15 @@ class AtRuleParser extends AbstractParser
      */
     public function parseCurrentContext(TokenizerContext $tokenizerContext): Token|LintError|null
     {
-        if ($this->lastCharIsSpace($tokenizerContext)) {
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
+
+        if ($tokenizerContextInspector->lastCharIsSpace()) {
             return null;
         }
 
         return $this->handleTokenForCurrentContext(
             $tokenizerContext,
-            function (?AtRuleToken $currentAtRuleToken = null) use ($tokenizerContext) {
+            function (?AtRuleToken $currentAtRuleToken = null) use ($tokenizerContext, $tokenizerContextInspector) {
                 if (!$currentAtRuleToken) {
                     if ($this->isAtRule($tokenizerContext)) {
                         return $this->createAtRuleToken($tokenizerContext);
@@ -55,7 +58,7 @@ class AtRuleParser extends AbstractParser
                 }
 
                 $currentAtRuleToken = $this->updateAtRuleToken($tokenizerContext, $currentAtRuleToken);
-                if ($this->isAtRuleEnd($tokenizerContext) || $this->isAtRuleBlockStart($tokenizerContext)) {
+                if ($this->isAtRuleEnd($tokenizerContextInspector) || $this->isAtRuleBlockStart($tokenizerContext)) {
                     return $currentAtRuleToken;
                 }
                 return null;
@@ -69,9 +72,9 @@ class AtRuleParser extends AbstractParser
         return preg_match(self::$AT_RULE_PATTERN, $currentContent) === 1;
     }
 
-    private function isAtRuleEnd(TokenizerContext $tokenizerContext): bool
+    private function isAtRuleEnd(TokenizerContextInspector $tokenizerContextInspector): bool
     {
-        return $tokenizerContext->currentContentEndsWith(self::$AT_RULE_END);
+        return $tokenizerContextInspector->currentContentEndsWith(self::$AT_RULE_END);
     }
 
     private function isAtRuleBlockStart(TokenizerContext $tokenizerContext): bool

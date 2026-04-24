@@ -8,6 +8,7 @@ use CssLint\LintError;
 use CssLint\Token\SelectorToken;
 use CssLint\Token\Token;
 use CssLint\Tokenizer\TokenizerContext;
+use CssLint\Tokenizer\TokenizerContextInspector;
 use CssLint\TokenLinter\SelectorTokenLinter;
 
 /**
@@ -20,26 +21,28 @@ class SelectorParser extends AbstractParser
      */
     public function parseCurrentContext(TokenizerContext $tokenizerContext): Token|LintError|null
     {
-        if ($this->lastCharIsSpace($tokenizerContext)) {
+        $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
+
+        if ($tokenizerContextInspector->lastCharIsSpace()) {
             return null;
         }
 
         $token = $this->handleTokenForCurrentContext(
             $tokenizerContext,
-            fn(?SelectorToken $currentToken = null) => $this->handleSelectorToken($tokenizerContext, $currentToken)
+            fn(?SelectorToken $currentToken = null) => $this->handleSelectorToken($tokenizerContext, $tokenizerContextInspector, $currentToken)
         );
 
         if (BlockParser::isBlockStart($tokenizerContext)) {
             $token = $this->handleTokenForCurrentContext(
                 $tokenizerContext,
-                fn(?SelectorToken $currentToken = null) => $this->handleSelectorToken($tokenizerContext, $currentToken)
+                fn(?SelectorToken $currentToken = null) => $this->handleSelectorToken($tokenizerContext, $tokenizerContextInspector, $currentToken)
             );
         }
 
         return $token;
     }
 
-    private function handleSelectorToken(TokenizerContext $tokenizerContext, ?SelectorToken $currentToken): ?SelectorToken
+    private function handleSelectorToken(TokenizerContext $tokenizerContext, TokenizerContextInspector $tokenizerContextInspector, ?SelectorToken $currentToken): ?SelectorToken
     {
         if ($currentToken) {
             $currentToken = $this->updateSelectorToken($tokenizerContext, $currentToken);
@@ -51,16 +54,16 @@ class SelectorParser extends AbstractParser
             return null;
         }
 
-        if ($this->isSelector($tokenizerContext)) {
+        if ($this->isSelector($tokenizerContext, $tokenizerContextInspector)) {
             return $this->createSelectorToken($tokenizerContext);
         }
 
         return null;
     }
 
-    private function isSelector(TokenizerContext $tokenizerContext): bool
+    private function isSelector(TokenizerContext $tokenizerContext, TokenizerContextInspector $tokenizerContextInspector): bool
     {
-        if (!$tokenizerContext->currentContentEndsWith(BlockParser::$BLOCK_START)) {
+        if (!$tokenizerContextInspector->currentContentEndsWith(BlockParser::$BLOCK_START)) {
             return false;
         }
 
