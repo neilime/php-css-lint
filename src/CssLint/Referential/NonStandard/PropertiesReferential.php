@@ -278,6 +278,7 @@ class PropertiesReferential extends AbstractReferential
         'text-decoration-skip-self' => true,
         'text-decoration-skip-spaces' => true,
         'text-emphasis-skip' => true,
+        'text-fit' => true,
         'text-group-align' => true,
         'text-spacing' => true,
         'user-modify' => true,
