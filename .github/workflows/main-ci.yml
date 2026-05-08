@@ -63,14 +63,14 @@ jobs:
           artifact-ids: ${{ needs.docs-generate-phpdoc.outputs.artifact-id }}
           path: ${{ needs.docs-generate-phpdoc.outputs.artifact-path }}
 
-      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/jekyll@48e0c54489152b98d9e18f0454ccce120e9d0fd1 # 0.23.0
+      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/jekyll@2c8e24b416226074aea1e240468f043edefc5760 # 0.23.2
         id: build
         with:
           site-path: ${{ needs.docs-generate-phpdoc.outputs.artifact-path }}
           pages: |
             ./docs/*.md
 
-      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/github-pages@48e0c54489152b98d9e18f0454ccce120e9d0fd1 # 0.23.0
+      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/github-pages@2c8e24b416226074aea1e240468f043edefc5760 # 0.23.2
         id: deployment
         with:
           build-path: ${{ steps.build.outputs.build-path }}
