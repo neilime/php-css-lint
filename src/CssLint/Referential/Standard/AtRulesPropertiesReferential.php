@@ -144,6 +144,7 @@ class AtRulesPropertiesReferential extends AbstractReferential
         ],
         'supports'
         => [
+            'at-rule' => true,
             'font-format' => true,
             'font-tech' => true,
             'selector' => true,
