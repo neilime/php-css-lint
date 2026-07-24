@@ -32,7 +32,7 @@
     "ext-json": "*"
   },
   "require-dev": {
-    "guzzlehttp/guzzle": "^7.10",
+    "guzzlehttp/guzzle": "^7.10 || ^8.0",
     "mikey179/vfsstream": "^1.6",
     "pcov/clobber": "^2.0",
     "phpunit/phpunit": "^9.5.27",
