@@ -30,7 +30,7 @@ jobs:
       artifact-id: ${{ steps.upload-artifact.outputs.artifact-id }}
       artifact-path: ${{ env.ARTIFACT_PATH }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -54,7 +54,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -63,14 +63,14 @@ jobs:
           artifact-ids: ${{ needs.docs-generate-phpdoc.outputs.artifact-id }}
           path: ${{ needs.docs-generate-phpdoc.outputs.artifact-path }}
 
-      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/jekyll@48e0c54489152b98d9e18f0454ccce120e9d0fd1 # 0.23.0
+      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/jekyll@ed354ada70b9f518c2bb663e18a80041c2cf5156 # 0.27.1
         id: build
         with:
           site-path: ${{ needs.docs-generate-phpdoc.outputs.artifact-path }}
           pages: |
             ./docs/*.md
 
-      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/github-pages@48e0c54489152b98d9e18f0454ccce120e9d0fd1 # 0.23.0
+      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/github-pages@ed354ada70b9f518c2bb663e18a80041c2cf5156 # 0.27.1
         id: deployment
         with:
           build-path: ${{ steps.build.outputs.build-path }}
