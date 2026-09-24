@@ -6,6 +6,7 @@ namespace CssLint\Tokenizer\Parser;
 
 use CssLint\LintError;
 use CssLint\Token\BlockToken;
+use CssLint\Token\CommentToken;
 use CssLint\Tokenizer\TokenizerContext;
 use CssLint\Tokenizer\TokenizerContextInspector;
 use CssLint\Tokenizer\TokenizerStringInspector;
@@ -77,6 +78,10 @@ class BlockParser extends AbstractParser
     public function parseCurrentContext(TokenizerContext $tokenizerContext): ?BlockToken
     {
         $tokenizerContextInspector = new TokenizerContextInspector($tokenizerContext);
+
+        if ($tokenizerContext->getCurrentToken() instanceof CommentToken) {
+            return null;
+        }
 
         if ($tokenizerContextInspector->lastCharIsSpace()) {
             return null;

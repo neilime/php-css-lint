@@ -208,6 +208,33 @@ class LinterTest extends TestCase
         $this->assertErrorsEquals([], $errors, json_encode($errors, JSON_PRETTY_PRINT));
     }
 
+    public function validCommentContainingCssSyntaxProvider(): array
+    {
+        return [
+            'single line comment with css syntax' => ['/* previously * { color: inherit; } */'],
+            'multi line comment with css syntax' => ["/*\n * previously * {\n *   color: inherit;\n * }\n */"],
+        ];
+    }
+
+    /**
+     * @dataProvider validCommentContainingCssSyntaxProvider
+     */
+    public function testLintCommentContainingCssSyntax(string $comment): void
+    {
+        // Act
+        $errors
+            = $this->linter->lintString(
+                $comment . PHP_EOL
+                    . 'a[href] {' . PHP_EOL
+                    . '    color: #0000EE;' . PHP_EOL
+                    . '    text-decoration: underline;' . PHP_EOL
+                    . '}'
+            );
+
+        // Assert
+        $this->assertErrorsEquals([], $errors, json_encode($errors, JSON_PRETTY_PRINT));
+    }
+
     public function testLintNotValidCssFile()
     {
         // Arrange
