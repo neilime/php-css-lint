@@ -76,9 +76,7 @@ class TokenizerContext
 
     public function getCurrentPosition(): Position
     {
-        if ($this->currentPosition === null) {
-            $this->currentPosition = new Position();
-        }
+        $this->currentPosition ??= new Position();
 
         return $this->currentPosition;
     }
