@@ -137,9 +137,7 @@ class Cli
 
     private function getFormatterFactory(): FormatterFactory
     {
-        if ($this->formatterFactory === null) {
-            $this->formatterFactory = new FormatterFactory();
-        }
+        $this->formatterFactory ??= new FormatterFactory();
 
         return $this->formatterFactory;
     }
