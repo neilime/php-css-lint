@@ -3,6 +3,8 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+$referentialOverrides = require __DIR__ . '/../css-referential-overrides.php';
+
 function saveReferentialData(string $className, array $referential): void
 {
     $datasetClass = new ReflectionClass($className);
@@ -36,17 +38,11 @@ foreach ($cssProperties as $atRuleName => $property) {
     }
 }
 
-// Add missing non-standard properties
-$missingNonStandardsProperties = [
-    '-webkit-overflow-scrolling',
-    '-webkit-margin-end',
-    '-moz-osx-font-smoothing',
-];
-foreach ($missingNonStandardsProperties as $atRuleName) {
-    if (isset($standardsProperties[$atRuleName]) || isset($nonStandardsProperties[$atRuleName])) {
-        throw new Exception("Property $atRuleName already exists in either standards or non-standards properties.");
+foreach ($referentialOverrides['properties'] as $propertyName) {
+    if (isset($standardsProperties[$propertyName]) || isset($nonStandardsProperties[$propertyName])) {
+        throw new Exception("Property $propertyName already exists in either standards or non-standards properties.");
     }
-    $nonStandardsProperties[$atRuleName] = true;
+    $nonStandardsProperties[$propertyName] = true;
 }
 
 ksort($standardsProperties);
@@ -68,13 +64,7 @@ foreach ($cssAtRules as $atRuleName => $atRule) {
     }
 }
 
-// Add missing non-standard at-rules
-$missingNonStandardsAtRules = [
-    'theme',
-    'tailwind'
-];
-
-foreach ($missingNonStandardsAtRules as $atRuleName) {
+foreach ($referentialOverrides['at-rules'] as $atRuleName) {
     if (isset($standardsAtRules[$atRuleName]) || isset($nonStandardsAtRules[$atRuleName])) {
         throw new Exception("At-rules $atRuleName already exists in either standards or non-standards at-rules.");
     }

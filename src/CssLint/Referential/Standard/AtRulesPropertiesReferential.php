@@ -117,24 +117,9 @@ class AtRulesPropertiesReferential extends AbstractReferential
         ],
         'page'
         => [
-            'bottom-center' => true,
-            'bottom-left' => true,
-            'bottom-left-corner' => true,
-            'bottom-right' => true,
-            'bottom-right-corner' => true,
-            'left-bottom' => true,
-            'left-middle' => true,
-            'left-top' => true,
+            'page-margin-safety' => true,
             'page-orientation' => true,
-            'right-bottom' => true,
-            'right-middle' => true,
-            'right-top' => true,
             'size' => true,
-            'top-center' => true,
-            'top-left' => true,
-            'top-left-corner' => true,
-            'top-right' => true,
-            'top-right-corner' => true,
         ],
         'property'
         => [
@@ -147,6 +132,7 @@ class AtRulesPropertiesReferential extends AbstractReferential
             'at-rule' => true,
             'font-format' => true,
             'font-tech' => true,
+            'named-feature' => true,
             'selector' => true,
         ],
     ];

@@ -50,6 +50,7 @@ class PropertyTokenLinterTest extends TestCase
             'property with multiple values' => ['margin', '10px 20px'],
             'property with important' => ['color', 'blue !important'],
             'font family' => ['font-family', 'Arial, sans-serif'],
+            'word-wrap alias' => ['word-wrap', 'break-word'],
         ];
     }
 
