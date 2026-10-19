@@ -93,12 +93,8 @@ class CssReferentialScraper
             return $info['__compat']['status']['standard_track'] ?? false;
         };
 
-        $properties = [];
-        foreach ($data['css']['properties'] as $property => $info) {
-            $properties[$property] = [
-                'standard' => isStandard($info),
-            ];
-        }
+        $propertiesParser = new MdnPropertiesParser();
+        $properties = $propertiesParser->parse($data['css']['properties']);
 
         $atRules = [];
         $atRulesProperties = [];
