@@ -61,7 +61,10 @@
       "php scripts/css-referential-scraper",
       "php scripts/css-popular-downloader"
     ],
-    "test:ci": "@test -d pcov.enabled=1 -d max_execution_time=0 --coverage-text --coverage-clover ./build/logs/clover.xml --coverage-html ./build/coverage/",
+    "test:ci": [
+      "@test:load-fixtures",
+      "@test --log-junit=junit.xml --coverage-clover=clover.xml"
+    ],
     "php-cs-fixer": "@php-cs-fixer:fix --dry-run",
     "php-cs-fixer:fix": "tools/vendor/bin/php-cs-fixer fix --show-progress=dots --diff --config=.php-cs-fixer.dist.php",
     "rector": "@rector:fix --dry-run",
@@ -78,6 +81,11 @@
       "@rector",
       "@phpstan",
       "@test:ci"
+    ],
+    "lint:ci": [
+      "@php-cs-fixer",
+      "@rector",
+      "@phpstan --error-format=github"
     ]
   },
   "config": {

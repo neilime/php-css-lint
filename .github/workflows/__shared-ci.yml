@@ -1,79 +1,26 @@
 name: Shared - Continuous Integration for common tasks
-
 on:
   workflow_call:
-
+    outputs:
+      documentation-artifact-id:
+        description: Generated PHP API documentation.
+        value: ${{ jobs.documentation.outputs.artifact-id }}
 permissions: {}
-
 jobs:
   checks:
-    runs-on: ubuntu-latest
+    uses: hoverkraft-tech/ci-github-php/.github/workflows/continuous-integration.yml@5d4c9035deb6daac5456825c90294439510fdf0c # 1.0.0
     permissions:
       contents: read
       id-token: write
-    strategy:
-      matrix:
-        include:
-          - php-versions: "8.2"
-          - php-versions: "8.3"
-          - php-versions: "8.4"
-          - php-versions: "8.5"
-            stable: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: ⚙️ Setup PHP, with composer and extensions
-        uses: ./.github/workflows/actions/setup-php
-        with:
-          php-version: ${{ matrix.php-versions }}
-
-      - name: ♻️ Tools cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: tools/cache
-          key: ${{ runner.os }}-tools-${{ matrix.php-versions }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-tools-
-
-      - name: 👕 Lint
-        if: matrix.stable
-        run: composer php-cs-fixer -- --format=checkstyle | tools/vendor/bin/cs2pr
-
-      - name: 🔬 Rector
-        id: rector
-        if: matrix.stable
-        run: composer rector
-
-      - name: 🔬 Static analysis
-        if: matrix.stable
-        run: composer phpstan -- --error-format=github
-
-      - name: ♻️ Tests cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: tests/.phpunit.result.cache
-          key: ${{ runner.os }}-tests-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-tests-
-
-      - name: ♻️ Fixtures cache
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: .cache
-          key: fixture-cache-${{ hashFiles('composer.lock') }}
-          restore-keys: fixture-cache-
-
-      - name: 🗂️ Load fixtures
-        run: composer test:load-fixtures
-
-      - name: 🧪 Test
-        run: composer test:ci
-
-      - name: 📊 Upload coverage results to Codecov
-        if: matrix.stable
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
-        with:
-          files: ./build/logs/clover.xml
+    with:
+      php-versions: '["8.2", "8.3", "8.4", "8.5"]'
+      ignore-plugins: false
+      test: '{"coverage":"codecov","cache":".cache"}'
+      package: |
+        {
+          "tests": "php-css-lint '.example { color: red; }'\nif php-css-lint '.example { unknown-property: invalid; }'; then\n  echo 'Invalid CSS unexpectedly passed validation.' >&2\n  exit 1\nfi"
+        }
+  documentation:
+    uses: hoverkraft-tech/ci-github-php/.github/workflows/documentation.yml@5d4c9035deb6daac5456825c90294439510fdf0c # 1.0.0
+    permissions:
+      contents: read
