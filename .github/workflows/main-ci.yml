@@ -40,13 +40,13 @@ jobs:
           artifact-ids: ${{ needs.ci.outputs.documentation-artifact-id }}
           path: _site
 
-      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/jekyll@4193622a365c0ab0bcbd6645895fd2c3126b72ba # 3.0.2
+      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/jekyll@5b821495b1c3b68eb2e7fba71992dfe851612ae6 # 3.0.3
         id: build
         with:
           pages: |
             ./docs/*.md
 
-      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/github-pages@4193622a365c0ab0bcbd6645895fd2c3126b72ba # 3.0.2
+      - uses: hoverkraft-tech/ci-github-publish/actions/deploy/github-pages@5b821495b1c3b68eb2e7fba71992dfe851612ae6 # 3.0.3
         id: deployment
         with:
           build-path: ${{ steps.build.outputs.build-path }}
