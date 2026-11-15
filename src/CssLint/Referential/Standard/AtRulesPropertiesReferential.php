@@ -137,5 +137,10 @@ class AtRulesPropertiesReferential extends AbstractReferential
             'named-feature' => true,
             'selector' => true,
         ],
+        'view-transition'
+        => [
+            'navigation' => true,
+            'types' => true,
+        ],
     ];
 }
