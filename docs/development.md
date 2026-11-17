@@ -41,6 +41,18 @@ Regenerate the checked-in CSS references from W3C and MDN data with:
 composer generate-css-referentials
 ```
 
+The scheduled `Update CSS Referential` workflow runs every Sunday and can also be
+started manually from `main`. It regenerates the references, runs `composer ci`,
+then uses the shared `create-and-merge-pull-request` action to commit only
+`src/CssLint/Referential` and merge the update. A validation failure prevents the
+PR update and merge. Concurrent updates are serialized.
+
+Validation runs before the shared action: PR workflows created with
+`GITHUB_TOKEN` require approval. The action checks that the PR head has not changed
+after creation. This workflow sets `bypass-branch-protection: "false"` to respect
+active branch rules without requesting an administrator bypass. This process does
+not require GitHub's optional auto-merge setting.
+
 MDN property aliases are included when at least one browser reports support without a removal version. Aliases retain their own classification when available; otherwise, they enter the non-standard compatibility list. Property value aliases are not imported as property names.
 
 Maintain manual non-standard property and at-rule additions in [`css-referential-overrides.php`](../css-referential-overrides.php) at the repository root. The generator rejects entries already supplied by W3C or MDN, so remove an override when it becomes available upstream.
