@@ -7,8 +7,13 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: update-css-referential
+  cancel-in-progress: false
+
 jobs:
   update-css-referential:
+    if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -27,14 +32,16 @@ jobs:
       - name: Generate CSS Referential
         run: composer run-script generate-css-referentials
 
-      - name: Push changes and create pull request
-        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
+      - name: Validate generated CSS Referential
+        run: composer run-script ci
+
+      - name: Create and merge validated CSS Referential update
+        uses: hoverkraft-tech/ci-github-common/actions/create-and-merge-pull-request@a86c260e07b11a7a0ca3b7205bbdba9908230917 # 4.3.0
         with:
           branch: update-css-referential
+          bypass-branch-protection: "false"
           add-paths: |
             src/CssLint/Referential
-          sign-commits: true
-          signoff: true
           title: "feat: update CSS Referential"
           body: |
             This pull request updates the CSS referential files in the `src/CssLint/Referential` directory.
