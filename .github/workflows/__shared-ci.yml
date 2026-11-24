@@ -14,11 +14,26 @@ jobs:
       id-token: write
     with:
       ignore-plugins: false
+      lint: "false"
       test: '{"coverage":"codecov","cache":".cache"}'
       package: |
         {
           "tests": "php-css-lint '.example { color: red; }'\nif php-css-lint '.example { unknown-property: invalid; }'; then\n  echo 'Invalid CSS unexpectedly passed validation.' >&2\n  exit 1\nfi"
         }
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: hoverkraft-tech/ci-github-php/actions/setup-php@b81aa7b46f6b7a18ff1d9582c918cc1cc8296b98 # 2.0.0
+        with:
+          # PHP CS Fixer supports runtimes through PHP 8.5; tests still discover all supported versions.
+          php-version: "8.5"
+          ignore-plugins: false
+      - uses: hoverkraft-tech/ci-github-php/actions/lint@b81aa7b46f6b7a18ff1d9582c918cc1cc8296b98 # 2.0.0
   documentation:
     uses: hoverkraft-tech/ci-github-php/.github/workflows/documentation.yml@b81aa7b46f6b7a18ff1d9582c918cc1cc8296b98 # 2.0.0
     permissions:

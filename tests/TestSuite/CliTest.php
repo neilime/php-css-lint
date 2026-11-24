@@ -140,7 +140,7 @@ class CliTest extends TestCase
     public function unvalidOptionsProvider()
     {
         return [
-            'invalid json' => ['{ "allowedIndentationChars":  }', 'Unable to parse option argument: Syntax error'],
+            'invalid json' => ['{ "allowedIndentationChars":  }', 'Unable to parse option argument: Syntax error' . (PHP_VERSION_ID >= 80600 ? ' near location 1:31' : '')],
             'empty options' => ['[]', 'Unable to parse empty option argument'],
             'non array options' => ['true', 'Unable to parse option argument: must be a json object'],
             'not allowed option' => ['{ "unknownOption": true }', 'Invalid option key: "unknownOption"'],
