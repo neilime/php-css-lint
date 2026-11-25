@@ -8,19 +8,20 @@ on:
 permissions: {}
 jobs:
   checks:
-    uses: hoverkraft-tech/ci-github-php/.github/workflows/continuous-integration.yml@b81aa7b46f6b7a18ff1d9582c918cc1cc8296b98 # 2.0.0
+    uses: hoverkraft-tech/ci-github-php/.github/workflows/continuous-integration.yml@63aed766521b3b3bff31c4d36f59b2916e90a361 # 2.0.3
     permissions:
       contents: read
       id-token: write
     with:
       ignore-plugins: false
-      lint: "false"
+      lint: lint:analysis
       test: '{"coverage":"codecov","cache":".cache"}'
       package: |
         {
           "tests": "php-css-lint '.example { color: red; }'\nif php-css-lint '.example { unknown-property: invalid; }'; then\n  echo 'Invalid CSS unexpectedly passed validation.' >&2\n  exit 1\nfi"
         }
-  lint:
+  formatting:
+    name: PHP CS Fixer
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -28,13 +29,16 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: hoverkraft-tech/ci-github-php/actions/setup-php@b81aa7b46f6b7a18ff1d9582c918cc1cc8296b98 # 2.0.0
+      - uses: hoverkraft-tech/ci-github-php/actions/setup-php@63aed766521b3b3bff31c4d36f59b2916e90a361 # 2.0.3
         with:
-          # PHP CS Fixer supports runtimes through PHP 8.5; tests still discover all supported versions.
+          # PHP CS Fixer supports syntax through 8.5; analysis, tests and packaging use the newest discovered PHP.
+          # https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/v3.95.32/src/ConfigInterface.php
           php-version: "8.5"
           ignore-plugins: false
-      - uses: hoverkraft-tech/ci-github-php/actions/lint@b81aa7b46f6b7a18ff1d9582c918cc1cc8296b98 # 2.0.0
+      - uses: hoverkraft-tech/ci-github-php/actions/lint@63aed766521b3b3bff31c4d36f59b2916e90a361 # 2.0.3
+        with:
+          command: php-cs-fixer
   documentation:
-    uses: hoverkraft-tech/ci-github-php/.github/workflows/documentation.yml@b81aa7b46f6b7a18ff1d9582c918cc1cc8296b98 # 2.0.0
+    uses: hoverkraft-tech/ci-github-php/.github/workflows/documentation.yml@63aed766521b3b3bff31c4d36f59b2916e90a361 # 2.0.3
     permissions:
       contents: read

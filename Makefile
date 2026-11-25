@@ -3,7 +3,7 @@ PHP_IMAGE_TAG = $(if $(PHP_VERSION),$(PHP_VERSION),dev)
 PROJECT_NAME=$(shell basename $(CURDIR))
 UID=$(shell id -u)
 GID=$(shell id -g)
-IMAGE="${PROJECT_NAME}:$(PHP_IMAGE_TAG)"
+IMAGE=${PROJECT_NAME}:$(PHP_IMAGE_TAG)
 
 .PHONY: help
 
@@ -52,11 +52,15 @@ lint-fix: ## Execute lint fixing for given PHP version
 	$(MAKE) php-cs-fixer-fix $(filter-out $@,$(MAKECMDGOALS))
 	$(MAKE) rector-fix $(filter-out $@,$(MAKECMDGOALS))
 
-php-cs-fixer: ## Execute php-cs-fixer for given PHP version
-	@$(call run-php,composer php-cs-fixer -- $(filter-out $@,$(MAKECMDGOALS)))
+# PHP CS Fixer supports syntax through 8.5; keep analysis and tests on PHP_VERSION.
+build-php-cs-fixer:
+	$(MAKE) build-php PHP_VERSION=8.5
 
-php-cs-fixer-fix: ## Execute php-cs-fixer fixing for given PHP version
-	@$(call run-php,composer php-cs-fixer:fix -- $(filter-out $@,$(MAKECMDGOALS)))	
+php-cs-fixer: build-php-cs-fixer ## Execute php-cs-fixer on its supported PHP runtime
+	@$(call run-php,composer php-cs-fixer -- $(filter-out $@,$(MAKECMDGOALS)),$(PROJECT_NAME):8.5)
+
+php-cs-fixer-fix: build-php-cs-fixer ## Execute php-cs-fixer fixing on its supported PHP runtime
+	@$(call run-php,composer php-cs-fixer:fix -- $(filter-out $@,$(MAKECMDGOALS)),$(PROJECT_NAME):8.5)
 
 rector: ## Execute rector for given PHP version
 	@$(call run-php,composer rector -- $(filter-out $@,$(MAKECMDGOALS)))
@@ -69,14 +73,15 @@ phpstan: ## Execute PHPStan for given PHP version
 
 ci: ## Execute CI scripts for given PHP version
 	$(MAKE) setup
-	@$(call run-php,composer ci -- $(filter-out $@,$(MAKECMDGOALS)))
+	$(MAKE) lint
+	$(MAKE) test-ci
 
-generate-css-referentials: ## Generate referentials for given PHP version
-	@$(call run-php,composer generate-css-referentials -- $(filter-out $@,$(MAKECMDGOALS)))
+generate-css-referentials: build-php-cs-fixer ## Generate and format referentials on PHP CS Fixer's supported runtime
+	@$(call run-php,composer generate-css-referentials -- $(filter-out $@,$(MAKECMDGOALS)),$(PROJECT_NAME):8.5)
 
 ## Run PHP for given version
 define run-php
-	@docker run -it --rm -v ${PWD}:${PWD} -w ${PWD} "${IMAGE}" $(1)
+	@docker run -it --rm --volume "$(CURDIR):$(CURDIR)" --workdir "$(CURDIR)" "$(if $(2),$(2),${IMAGE})" $(1)
 endef
 
 #############################

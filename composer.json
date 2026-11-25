@@ -34,7 +34,6 @@
   "require-dev": {
     "guzzlehttp/guzzle": "^7.10 || ^8.0",
     "mikey179/vfsstream": "^1.6",
-    "pcov/clobber": "^2.0",
     "phpunit/phpunit": "^9.5.27",
     "symfony/cache": "^6.4 || ^7.2",
     "symfony/console": "^6.4 || ^7.2",
@@ -84,6 +83,9 @@
     ],
     "lint:ci": [
       "@php-cs-fixer",
+      "@lint:analysis"
+    ],
+    "lint:analysis": [
       "@rector",
       "@phpstan --error-format=github"
     ]
