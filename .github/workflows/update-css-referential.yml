@@ -25,9 +25,11 @@ jobs:
           persist-credentials: false
 
       - name: ⚙️ Setup PHP, with composer and extensions
-        uses: hoverkraft-tech/ci-github-php/actions/setup-php@b81aa7b46f6b7a18ff1d9582c918cc1cc8296b98 # 2.0.0
+        uses: hoverkraft-tech/ci-github-php/actions/setup-php@63aed766521b3b3bff31c4d36f59b2916e90a361 # 2.0.3
         with:
           ignore-plugins: "false"
+          # Referential generation invokes PHP CS Fixer, whose supported syntax stops at PHP 8.5.
+          php-version: "8.5"
 
       - name: Generate CSS Referential
         run: composer run-script generate-css-referentials

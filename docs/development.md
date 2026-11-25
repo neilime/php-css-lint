@@ -23,6 +23,10 @@ make test
 
 ## Fix code linting
 
+PHP CS Fixer currently supports syntax through PHP 8.5. The formatting targets
+build and use a separate PHP 8.5 image. Rector, PHPStan and tests use the selected
+project runtime, including PHP 8.6. No compatibility checks are disabled.
+
 ```sh
 make lint-fix
 ```
@@ -38,11 +42,12 @@ make ci
 Regenerate the checked-in CSS references from W3C and MDN data with:
 
 ```sh
-composer generate-css-referentials
+make generate-css-referentials
 ```
 
 The scheduled `Update CSS Referential` workflow runs every Sunday and can also be
-started manually from `main`. It regenerates the references, runs `composer ci`,
+started manually from `main`. It uses PHP 8.5 for the formatter, regenerates the
+references, runs `composer ci`,
 then uses the shared `create-and-merge-pull-request` action to commit only
 `src/CssLint/Referential` and merge the update. A validation failure prevents the
 PR update and merge. Concurrent updates are serialized.
